@@ -1,0 +1,8 @@
+version: '1'
+
+services:
+
+  feeder:
+    container_name: feeder
+    build:
+      dockerfile: ./feeder/Dockerfile

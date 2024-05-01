@@ -1,0 +1,4 @@
+docker compose up
+docker rm /feeder
+docker rm /infdb
+docker image rm bigdatamanagement-feeder

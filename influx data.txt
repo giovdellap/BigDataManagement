@@ -1,0 +1,4 @@
+Username: giovdellap
+password: pippoPIPPO
+org: my-org
+bucket: testdb
