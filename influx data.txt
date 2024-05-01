@@ -2,3 +2,5 @@ Username: giovdellap
 password: pippoPIPPO
 org: my-org
 bucket: testdb
+
+token: FWNkmM1el4Pu3EtWnxFu5nlwA4nKcD7_jHnwCUhEMdDaFKUu-kzYiibVu18IZcqeqfIQmucbA6lRDKFk2NLe9g==

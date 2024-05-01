@@ -47,7 +47,7 @@ wco = write_client_options(success_callback=callback.success,
                         )
 
 client = InfluxDBClient3(
-    token="0zwfcRCAvBTytJdovSqjZo6JWTouFGwh8TQu3IYq-vxvCwG_Km6oQz39Gki_jZim3bL7JI-Kmz8fF7ug8fZopA==",
+    token="FWNkmM1el4Pu3EtWnxFu5nlwA4nKcD7_jHnwCUhEMdDaFKUu-kzYiibVu18IZcqeqfIQmucbA6lRDKFk2NLe9g==",
     host="http://localhost:8086",
     org="my-org",
     database="testdb", enable_gzip=True, write_client_options=wco)
