@@ -22,7 +22,7 @@ class DataFactory:
             }
             set.append(obj)
     
-        return pd.DataFrame(set).set_index('timestamp')
+        return set
     
 
         
