@@ -1,5 +1,4 @@
 import pandas as pd
-import random
 from utils import *
 
 class DataFactory:
@@ -24,6 +23,29 @@ class DataFactory:
     
         return set
     
+    def hourBasicSet(self, minute_rate, 
+                    start_year, start_month, start_day,
+                    start_hour ):
+        set = []
+        print('factory')
+        for minute in range (60):
+            for i in range(minute_rate):
+                usedModel = randomModel()
+                logItem = basicLogItem()
+                timestamp = randomTS(year=start_year, month=start_month, day=start_day,
+                                     hour=start_hour, minute=minute)
+                obj = {
+                    "customer_ID" : randomCustomer(),
+                    "model": usedModel["model"],
+                    "version": usedModel["version"],
+                    "GEN": logItem["gen"],
+                    "SAT": logItem["sat"],
+                    "WLI": logItem["wli"],
+                    "timestamp": timestamp
+                }
+                set.append(obj)
+            
+        return set
 
         
         

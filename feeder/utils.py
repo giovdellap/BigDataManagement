@@ -1,4 +1,11 @@
 import random
+import pandas as pd
+
+def randomTS(year, month, day, hour, minute):
+    return pd.Timestamp(year=year, month=month, day=day,
+                 hour=hour, minute=minute, 
+                 second=random.randint(0, 59),
+                 microsecond=random.randint(0, 999))    
 
 def randomChar():
     return chr(random.randint(65,90))
