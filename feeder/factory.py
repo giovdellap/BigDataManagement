@@ -1,49 +1,30 @@
+from influxdb_client import Point
 import pandas as pd
 from utils import *
 
 class DataFactory:
     
-    def basicSet(self, logs):
-        
-        now =  pd.Timestamp.now(tz='UTC').floor('ms')
+    def hourBasicSet(self, minute_rate, start_hour, models_set,
+                    start_year, start_month, start_day):
         set = []
-        for i in range (logs):
-            usedModel = randomModel()
-            logItem = basicLogItem()
-            obj = {
-                "customer_ID" : randomCustomer(),
-                "model": usedModel["model"],
-                "version": usedModel["version"],
-                "GEN": logItem["gen"],
-                "SAT": logItem["sat"],
-                "WLI": logItem["wli"],
-                "timestamp": now
-            }
-            set.append(obj)
-    
-        return set
-    
-    def hourBasicSet(self, minute_rate, 
-                    start_year, start_month, start_day,
-                    start_hour ):
-        set = []
-        print('factory')
         for minute in range (60):
             for i in range(minute_rate):
-                usedModel = randomModel()
+                usedModel = randomModel(models_set)
                 logItem = basicLogItem()
+                print(logItem['GEN'])
                 timestamp = randomTS(year=start_year, month=start_month, day=start_day,
                                      hour=start_hour, minute=minute)
-                obj = {
-                    "customer_ID" : randomCustomer(),
-                    "model": usedModel["model"],
-                    "version": usedModel["version"],
-                    "GEN": logItem["gen"],
-                    "SAT": logItem["sat"],
-                    "WLI": logItem["wli"],
-                    "timestamp": timestamp
-                }
-                set.append(obj)
+                point = (
+                    Point("interrogation") \
+                    .tag("model", usedModel["model"]) \
+                    .tag("version", usedModel["version"]) \
+                    .tag("version", usedModel["version"]) \
+                    .field("GEN", logItem["GEN"]) \
+                    .field("SAT", logItem["SAT"]) \
+                    .field("WLI", logItem["WLI"]) \
+                    .time(timestamp)
+                )
+                set.append(point)
             
         return set
 
