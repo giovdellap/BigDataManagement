@@ -2,7 +2,7 @@ version: '1'
 
 services:
 
-  feeder:
-    container_name: feeder
+  backend:
+    container_name: backend
     build:
-      dockerfile: ./feeder/Dockerfile
+      dockerfile: ./backend/Dockerfile
