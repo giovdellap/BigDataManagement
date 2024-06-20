@@ -1,8 +1,25 @@
-version: '1'
+version: '3'
 
 services:
 
   backend:
     container_name: backend
+    restart: always
     build:
-      dockerfile: ./backend/Dockerfile
+      context: ./backend-node
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./backend-node:/code
+
+  db:
+    container_name: couchbase
+    image: couchbase/server:latest
+    ports:
+      - 8091-8096:8091-8096
+      - 11210:11210
+    networks:
+      - main
+
+networks:
+  main:
+    driver: bridge

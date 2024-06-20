@@ -2,7 +2,7 @@ const utils = require("./factory_utils.js");
 
 class LogFactory {
     constructor() {
-
+        
     }
 
     generateTestSet(logOrder) {
