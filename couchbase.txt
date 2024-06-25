@@ -1,3 +1,7 @@
 Cluster: cluster
 user: admin
 password: Couchpw
+
+Struttura:
+- Ogni modello uno scope
+- Ogni giorno una collection

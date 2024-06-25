@@ -10,7 +10,6 @@ class LogFactory {
     }
 
     hourBasicSet(logOrder) {
-        console.log(logOrder)
         let set = []
         for (let i = 0; i < 60; i++) {
             for (let i = 0; i < logOrder.minute_rate; i++) {

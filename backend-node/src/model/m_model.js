@@ -1,58 +1,30 @@
 class Model {
     
-    model = ""
+    name = ""
     version = ""
 
-    constructor(model, version) {
-        this.model = model
+    constructor(name, version) {
+        this.name = name
         this.version = version
     }
 }
 
 const models = [
     {
-        model: "ChartGenerator",
-        version: 1 
+        name: "ChartGenerator",
+        versions: [1, 2, 3] 
     },
     {
-        model: "ChartGenerator",
-        version: 2 
+        name: "ChartAnalyzer",
+        versions: [2, 5] 
     },
     {
-        model: "ChartGenerator",
-        version: 3 
+        name: "GraphPredictor",
+        versions: [1, 3, 6] 
     },
     {
-        model: "ChartAnalyzer",
-        version: 2 
-    },
-    {
-        model: "ChartAnalyzer",
-        version: 5 
-    },
-    {
-        model: "GraphPredictor",
-        version: 1 
-    },
-    {
-        model: "GraphPredictor",
-        version: 1.5 
-    },
-    {
-        model: "GraphPredictor",
-        version: 1.8 
-    },
-    {
-        model: "MarketTracker",
-        version: 5 
-    },
-    {
-        model: "MarketTracker",
-        version: 6 
-    },
-    {
-        model: "MarketTracker",
-        version: 7 
+        name: "MarketTracker",
+        versions: [5, 6, 7] 
     }
 ]
 

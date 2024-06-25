@@ -5,6 +5,8 @@ services:
   backend:
     container_name: backend
     restart: always
+    ports:
+      - 5001:5001
     build:
       context: ./backend-node
       dockerfile: ./Dockerfile
