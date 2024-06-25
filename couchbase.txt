@@ -2,6 +2,8 @@ Cluster: cluster
 user: admin
 password: Couchpw
 
+eralng key: CouchKey
+
 Struttura:
 - Ogni modello uno scope
 - Ogni giorno una collection

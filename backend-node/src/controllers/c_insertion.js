@@ -16,7 +16,7 @@ const insertTest = ((req, res) => {
     console.log('controller - dentro write')
     await handler.connectToDatabase()
     console.log('controller - dentro write 2')
-    await handler.writeItem()
+    //await handler.writeItem()
   })
 
   write()

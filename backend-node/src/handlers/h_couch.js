@@ -1,12 +1,13 @@
 const { models } = require("../model/m_model")
 const couchbase = require('couchbase')
+const axios = require('axios')
 
 
 class CouchBaseHandler {
     
   DB_USERNAME = "admin"
   DB_PASSWORD = "Couchpw"
-  DB_CONN_STR = "couchbases://127.0.0.1/8091"
+  DB_CONN_STR = "http://localhost:8091"
   DB_BUCKET_NAME = "test"
     
   scopes = []
@@ -18,16 +19,19 @@ class CouchBaseHandler {
 
 
   async connectToDatabase() {
-    console.log('handler - connect 1')
-    const cluster = await couchbase.connect(this.DB_CONN_STR, {
-      username: this.DB_USERNAME,
-      password: this.DB_PASSWORD
-    })
-    console.log('dentro 2')
-    this.bucket = cluster.bucket(this.DB_BUCKET_NAME)
-    for (model of models) {
-      this.scopes.push(bucket.scope(model.name))
-    }      
+    const data = {
+      hostname: this.DB_CONN_STR,
+      username: 'admin',
+      password: 'Couchpw'
+    };
+    const url = this.DB_CONN_STR + '/clusterInit'
+    return axios.post(url, data)
+      .then(response => {
+        console.log('Response:', response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
 
 
