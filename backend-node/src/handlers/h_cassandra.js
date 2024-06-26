@@ -1,43 +1,45 @@
 const { models } = require("../model/m_model")
+const async = require('async');
+const cassandra = require('cassandra-driver');
+const { connect, createKeyspace, insert, createTable, createLogItemTable, insertLogItem } = require("./h_cassandra_utils");
 
 
 class CassandraDBHandler {
     
   DB_USERNAME = "admin"
-  DB_PASSWORD = "Couchpw"
-  DB_CONN_STR = "http://localhost:8091"
+  DB_PASSWORD = "admin"
+  DB_CONN_STR = "cassandra"
     
-  scopes = []
+  client = {}
+
 
   constructor() {
-    const client = new cassandra.Client({ contactPoints: [this.DB_CONN_STR], localDataCenter: 'dc1' });
-    client.connect()
-      .then(function () {
-        console.log('Connected to cluster with %d host(s): %j', client.hosts.length, client.hosts.keys());
-        console.log('Keyspaces: %j', Object.keys(client.metadata.keyspaces));
-        console.log('Shutting down');
-      return client.shutdown();
-  })
-  .catch(function (err) {
-    console.error('There was an error when connecting', err);
-    return client.shutdown().then(() => { throw err; });
-  });
+    this.client = new cassandra.Client({ 
+      contactPoints: [this.DB_CONN_STR], 
+      localDataCenter: 'datacenter1'
+      //credentials: { username: this.DB_USERNAME, password: this.DB_PASSWORD }
+ 
+    });
   }
 
+  async initializeDB() {
+    const id = cassandra.types.Uuid.random();
 
-
-  async connectToDatabase() {
-
+    await connect(this.client)
+    await createKeyspace(this.client)
+    await createTable(this.client)
+    await insert(this.client, id)
   }
 
-
-  async writeItem(item) {
-    console.log('write')
-    scope = this.bucket.scope(item.model.name)
-    console.log('scope: ', scope)
+  async testDB(item) {
+    await connect(this.client)
+    await createKeyspace(this.client)
+    await createLogItemTable(this.client)
+    await insertLogItem(this.client, item)
   }
 }
 
+
 module.exports = {
-    CouchBaseHandler
+  CassandraDBHandler
 }

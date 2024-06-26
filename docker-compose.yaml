@@ -12,17 +12,37 @@ services:
       dockerfile: ./Dockerfile
     volumes:
       - ./backend-node:/code
+    networks:
+      - main
 
   cassandra:
     image: cassandra:latest
     container_name: cassandra-container
     ports:
-      - "9042:9042"
+      - 9042:9042
     environment:
       - CASSANDRA_USER=admin
       - CASSANDRA_PASSWORD=admin
     volumes:
       - cassandra-data:/var/lib/cassandra
+    networks:
+      - main
+
+  cassandra-web:
+    image: ipushc/cassandra-web:latest
+    container_name: cassandra-web
+    ports:
+      - 8083:8083
+    environment:
+      - CASSANDRA_HOST=cassandra
+      - CASSANDRA_PORT=9042
+      - CASSANDRA_USERNAME=admin
+      - CASSANDRA_PASSWORD=admin
+    restart: always
+    depends_on:
+      - cassandra
+    networks:
+      - main
 
 volumes:
   cassandra-data:

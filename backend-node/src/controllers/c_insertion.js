@@ -2,6 +2,7 @@ const logfactory = require("../factories/factory.js")
 const logorder =require("../model/m_logorder.js")
 const influxhandler = require("../handlers/h_influx.js")
 const { CouchBaseHandler } = require("../handlers/h_couch.js")
+const { CassandraDBHandler } = require("../handlers/h_cassandra.js")
 
 const insertTest = ((req, res) => {
 
@@ -10,13 +11,13 @@ const insertTest = ((req, res) => {
 
   set = factory.generateTestSet(order)
   
-  handler = new CouchBaseHandler()
+  cassandraHandler = new CassandraDBHandler()
+
   console.log('prima di tutto')
   const write =  ( async () => {
-    console.log('controller - dentro write')
-    await handler.connectToDatabase()
-    console.log('controller - dentro write 2')
-    //await handler.writeItem()
+    //await cassandraHandler.initializeDB()
+    await cassandraHandler.testDB(set[0])
+
   })
 
   write()
