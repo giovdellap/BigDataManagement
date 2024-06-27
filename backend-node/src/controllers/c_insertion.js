@@ -1,26 +1,33 @@
-const logfactory = require("../factories/factory.js")
-const logorder =require("../model/m_logorder.js")
+const { LogFactory } = require("../factories/factory.js")
+const { LogOrder } =require("../model/m_logorder.js")
 const influxhandler = require("../handlers/h_influx.js")
-const { CouchBaseHandler } = require("../handlers/h_couch.js")
 const { CassandraDBHandler } = require("../handlers/h_cassandra.js")
 
-const insertTest = ((req, res) => {
+const insertLogs = ((req, res) => {
 
-  factory = new logfactory.LogFactory()
-  order = new logorder.LogOrder(new Date(2024, 5, 19, 0), 3)
 
-  set = factory.generateTestSet(order)
+  const date = new Date(
+    req.body.year,
+    req.body.month,
+    req.body.day,
+    req.body.hour
+  )
+  const rate = req.body.rate
+  console.log('date: ', date)
+  const logFactory = new LogFactory()
+  let order = new LogOrder(date, rate)
+  let set = logFactory.generateTestSet(order)
+  console.log('first item: ', set[0])
+  console.log('set length: ', set.length)
   
-  cassandraHandler = new CassandraDBHandler()
-
-  console.log('prima di tutto')
-  const write =  ( async () => {
+  const cassandraHandler = new CassandraDBHandler()
+  const write =  ( async (set) => {
     //await cassandraHandler.initializeDB()
-    await cassandraHandler.testDB(set[0])
-
+    for (let i = 0; i < set.length; i++) {
+      await cassandraHandler.insertItem(set[i])
+    }
   })
-
-  write()
+  write(set)
 
   
   //influxHandler = new influxhandler.InfluxDBHandler()
@@ -28,5 +35,7 @@ const insertTest = ((req, res) => {
   res.json({text: set})
 })
   
-module.exports = {insertTest}
+module.exports = {
+  insertLogs
+}
   

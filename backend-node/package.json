@@ -16,6 +16,7 @@
     "@influxdata/influxdb-client-apis": "^1.33.2",
     "async": "^3.2.5",
     "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
     "cassandra-driver": "^4.7.2",
     "couchbase": "^4.3.1",
     "dotenv": "^16.4.5",

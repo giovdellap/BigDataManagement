@@ -1,7 +1,7 @@
 const { models } = require("../model/m_model")
 const async = require('async');
 const cassandra = require('cassandra-driver');
-const { connect, createKeyspace, insert, createTable, createLogItemTable, insertLogItem } = require("./h_cassandra_utils");
+const { QueryFactory } = require("./cassandra/query_factory");
 
 
 class CassandraDBHandler {
@@ -18,24 +18,24 @@ class CassandraDBHandler {
       contactPoints: [this.DB_CONN_STR], 
       localDataCenter: 'datacenter1'
       //credentials: { username: this.DB_USERNAME, password: this.DB_PASSWORD }
- 
     });
   }
 
-  async initializeDB() {
-    const id = cassandra.types.Uuid.random();
 
-    await connect(this.client)
-    await createKeyspace(this.client)
-    await createTable(this.client)
-    await insert(this.client, id)
-  }
 
-  async testDB(item) {
-    await connect(this.client)
-    await createKeyspace(this.client)
-    await createLogItemTable(this.client)
-    await insertLogItem(this.client, item)
+  async insertItem(item) {
+
+    const factory = new QueryFactory()
+    const keyspace = "logs"
+    const table = "table2"
+
+    await this.client.connect()
+    await this.client.execute(factory.createKeyspaceQuery(keyspace))
+    await this.client.execute(factory.createLogItemTableQuery(keyspace, table))
+    
+    const query = factory.insertLogItemQuery(keyspace, table, item)
+    const values = factory.insertLogItemValues(item)
+    await this.client.execute(query, values, {prepare: true})
   }
 }
 
