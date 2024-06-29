@@ -1,25 +1,47 @@
-const utils = require("./factory_utils.js");
+const { getRateClassification } = require("./rates.js");
+const { getDates } = require("./utils.js");
+const { newItem, getRate } = require("./log_utils.js");
+const { newRequest } = require("./request_utils.js");
 
 class LogFactory {
+
+    logSet = []
+    requestSet = []
+
     constructor() {
-        
     }
 
-    generateTestSet(logOrder) {
-        return this.hourBasicSet(logOrder)
-    }
+    generateOneHour(date) {        
+        let rateClassification = getRateClassification(date)
+        console.log('rate classification: ', rateClassification)
 
-    hourBasicSet(logOrder) {
-        let set = []
-        for (let i = 0; i < 60; i++) {
-            for (let i = 0; i < logOrder.minute_rate; i++) {
-                let item = utils.newItem(logOrder.date)
-                set.push(item)
+        let rate = getRate(rateClassification)
+        console.log("logs rate: ", rate)
+
+        let dates = getDates(date, rate)
+
+        for (let i = 0; i < rate; i++) {
+            let item = newItem(dates[i], rateClassification)
+            this.logSet.push(item)
+            if ((i % 3) === 0) {
+                let request = newRequest(
+                    (item.model.name === "ChartAnalyzer"),
+                    dates[i]
+                )
+                this.requestSet.push(request)
             }
         }
 
-        return set
     }
+
+    get logSet() {
+        return this.logSet
+    }
+
+    get requestSet() {
+        return this.requestSet
+    }
+
 }
 
 module.exports = {LogFactory}

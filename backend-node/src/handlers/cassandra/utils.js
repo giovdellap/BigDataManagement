@@ -9,7 +9,7 @@ function getParametersValues(parameters) {
 }
 
 // returns an array containing the names of the columns
-function getColumnsNames(item) {
+function getLogItemColumnsNames(item) {
     let values = [
         "ts", 
         "customer", 
@@ -19,6 +19,14 @@ function getColumnsNames(item) {
     let parameters = Object.keys(item.parameters)
     return values.concat(parameters)
 }
+
+const requestTableColumns = [
+    "ts", "input_tokens", "total_tokens", "stream_messages", "loading_time"
+]
+
+const specialRequestTableColumns = [
+    "ts", "input_tokens", "total_tokens", "stream_messages", "loading_time", "input_dimension"
+]
 
 //returns a string defining the columns
 function getColumnsString(values) {
@@ -43,7 +51,9 @@ function getQuestionMarks(values) {
 
 module.exports = {
     getParametersValues,
-    getColumnsNames,
+    getLogItemColumnsNames,
     getColumnsString,
-    getQuestionMarks
+    getQuestionMarks,
+    requestTableColumns,
+    specialRequestTableColumns
 }

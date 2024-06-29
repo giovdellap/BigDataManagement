@@ -9,6 +9,7 @@ class Model {
     }
 }
 
+
 const models = [
     {
         name: "ChartGenerator",

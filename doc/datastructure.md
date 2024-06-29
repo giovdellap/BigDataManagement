@@ -49,7 +49,7 @@
 - input_tokens:
   - LOW: 1000-2000
   - MEDIUM: 3000-6000
-  - HIGH: 7000-1000
+  - HIGH: 7000-10000
 - total_tokens:
   - LOW: 10000-30000
   - MEDIUM: 30000-60000
@@ -63,8 +63,8 @@
   - MEDIUM: 60-100
   - HIGH: 100-200
 - input_dimension:
-  - LOW: 1000-2000
-  - MEDIUM: 2000-5000
+  - LOW: 1000-2500
+  - MEDIUM: 2500-5000
   - HIGH: 5000-8000
 
 ## LOGS PER HOUR (RATE)
@@ -87,3 +87,13 @@
 - SATURDAY: 00-04 / 16-20
 - SUNDAY: 14-22
 
+## WEEKDAY/HOUR LOADING TIME
+
+### Base Time Categories
+- LOW: 10-25
+- HIGH: 50-90
+  
+### High weekday/hour slots
+- FRIDAY: 14-20
+- SATURDAY: 10-22
+- SUNDAY: 10-22

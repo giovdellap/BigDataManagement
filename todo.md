@@ -23,3 +23,20 @@ Generations = 1/2 (random) più:
 - tokens / 5000
 - wli * 0.2
 - if (temp > 0.4) => temp*2 else 0
+
+
+## Come costruire le requests
+
+1) Prendere input_tokens random
+2) Prendere total_tokens come input_tokens + rand(10000, 70000)
+3) Prendere stream_messages random
+4) (solo ChartAnalyzer) prendere input_dimension random
+5) Assegnare loading_time in base alla tabella
+
+### Loading time table
+
+loading_time = 0 più:
+- base time in base allo slot
+- stream_messages * 2 se LOW/MEDIUM, * 3.5 se HIGH
+- total_tokens / 2000
+- se input_dimension > 2500, add rand(25, 50)

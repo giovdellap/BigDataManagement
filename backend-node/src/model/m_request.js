@@ -28,13 +28,20 @@ class SpecialRequest extends Request {
         input_tokens, 
         total_tokens, 
         timestamp, 
+        loading_time,
         stream_messages,
         input_dimension
     ) {
-        this.input_tokens = input_tokens
-        this.total_tokens = total_tokens
-        this.timestamp = timestamp
-        this.stream_messages = stream_messages
+        super(
+            input_tokens, total_tokens, timestamp,
+            loading_time, stream_messages
+        )
+
         this.input_dimension = input_dimension
     }
+}
+
+module.exports = {
+    Request,
+    SpecialRequest
 }
