@@ -9,7 +9,7 @@ function newRequest(special, date) {
     let input_dimension = 0
     let loading_time = 0
     if (special) {
-        console.log('IM SPECIAL')
+        //console.log('IM SPECIAL')
         input_dimension = randomNumber(1000, 8001)
     }
     if (getRequestClassification(date) === "LOW") {
@@ -36,7 +36,7 @@ function newRequest(special, date) {
             input_tokens,
             total_tokens,
             date,
-            Math.random(loading_time),
+            Math.round(loading_time),
             stream_messages
         )
     }

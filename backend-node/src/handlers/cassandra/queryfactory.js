@@ -1,20 +1,35 @@
 const { SpecialRequest } = require("../../model/m_request");
-const { getLogItemColumnsNames, getColumnsString, getQuestionMarks, requestTableColumns, specialRequestTableColumns } = require("./utils")
+const { LogsTableUtils, TableUtils, SpecialRequestTableUtils, RequestTableUtils } = require("./tableutils")
 const cassandra = require('cassandra-driver');
 
 
 class QueryFactory {
-    createKeyspaceQuery(keyspace_name) {
+
+    keyspace
+    table_name
+
+    constructor(keyspace, table_name) {
+        this.keyspace = keyspace
+        this.table_name = table_name
+    }
+
+    createKeyspaceQuery() {
         const start = "CREATE KEYSPACE IF NOT EXISTS "
         const end =  " WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '3' }"
-        const query = start + keyspace_name + end
+        const query = start + this.keyspace + end
         return query
     }
-    
-    
-    createLogItemTableQuery(keyspace, table_name) {
+
+    createTableQuery() {}
+    insertItemQuery() {}
+    insertItemValues() {}
+}
+
+class LogQueryFactory extends QueryFactory{
+
+    createTableQuery() {
         //console.log('cassandra handler - log item table')
-        let start = "CREATE TABLE IF NOT EXISTS " + keyspace + "." + table_name
+        let start = "CREATE TABLE IF NOT EXISTS " + this.keyspace + "." + this.table_name
         let ts_columns = " (ts timeuuid, "
         let customer_columns = "customer text, "
         let model_columns = "name text, version int, "
@@ -24,23 +39,24 @@ class QueryFactory {
         const query = start + ts_columns + customer_columns + model_columns + parameters_columns + relevation_columns + primary_key
         return query
     }
-    
-    insertLogItemQuery(keyspace, table, item) {
+
+    insertItemQuery(item) {
         //console.log("cassandra handler - insert log item")
+        const utils = new LogsTableUtils()
 
-        let columns_names = getLogItemColumnsNames(item)
+        let columns_names = utils.getColumnNames(item)
 
-        let start = "INSERT INTO " + keyspace + "." + table + " ("
-        let columns = getColumnsString(columns_names)
+        let start = "INSERT INTO " + this.keyspace + "." + this.table_name + " ("
+        let columns = utils.getColumnsString(columns_names)
         let mid_query = " VALUES ("
-        let end = getQuestionMarks(columns_names)
+        let end = utils.getQuestionMarks(columns_names)
         const query = start + columns + mid_query + end
-        console.log('query: ', query)
+        //console.log('query: ', query)
 
         return query
     }
 
-    insertLogItemValues(item) {
+    insertItemValues(item) {
         let values = [
             cassandra.types.TimeUuid.fromDate(item.timestamp),
             item.customer,
@@ -51,10 +67,12 @@ class QueryFactory {
         let parameters = Object.values(item.parameters)
         return values.concat(parameters)
     }
-
-    createRequestTableQuery(keyspace, table_name) {
+}
+    
+class RequestQueryFactory extends QueryFactory {
+    createTableQuery() {
         //console.log('cassandra handler - log item table')
-        let start = "CREATE TABLE IF NOT EXISTS " + keyspace + "." + table_name
+        let start = "CREATE TABLE IF NOT EXISTS " + this.keyspace + "." + this.table_name
         let ts_columns = " (ts timeuuid, "
         let request_columns = "input_tokens int, total_tokens int, stream_messages int, loading_time int, input_dimension int, "
         let primary_key = "PRIMARY KEY(ts))"
@@ -62,29 +80,31 @@ class QueryFactory {
         return query
     }
 
-    insertRequestQuery(keyspace, table, item) {
-        //console.log("cassandra handler - insert log item")
-
-        let columns_names = getColumnsNames(item)
-
-        let start = "INSERT INTO " + keyspace + "." + table + " ("
-        let columns = []
-        if(item instanceof SpecialRequest) {
-            columns = getColumnsString(specialRequestTableColumns)
+    insertItemQuery(item) {
+        //console.log("cassandra handler - insert request item: ", item)
+        
+        let utils = new TableUtils()
+        if (item instanceof SpecialRequest) {
+            utils = new SpecialRequestTableUtils()
         } else {
-            columns = getColumnsString(requestTableColumns)
+            utils = new RequestTableUtils()
         }
+        let columns_names = utils.getColumnNames(item)
+        //console.log("cassandra handler - insert request columns_names: ", columns_names)
+
+
+        let start = "INSERT INTO " + this.keyspace + "." + this.table_name + " ("
+        let columns = utils.getColumnsString(columns_names)
         let mid_query = " VALUES ("
-        let end = getQuestionMarks(requestTableColumns)
+        let end = utils.getQuestionMarks(columns_names)
         const query = start + columns + mid_query + end
         //console.log('query: ', query)
 
-        const ts = cassandra.types.TimeUuid.fromDate(item.timestamp)
         //console.log('time: ', ts)
         return query
     }
 
-    insertRequestValues(item) {
+    insertItemValues(item) {
         let values = [
             cassandra.types.TimeUuid.fromDate(item.timestamp),
             item.input_tokens,
@@ -97,11 +117,12 @@ class QueryFactory {
         }
         return values
     }
-
 }
 
 
 
 module.exports = {
-    QueryFactory
+    QueryFactory,
+    LogQueryFactory,
+    RequestQueryFactory
 }

@@ -1,7 +1,7 @@
 const { models } = require("../model/m_model")
 const async = require('async');
 const cassandra = require('cassandra-driver');
-const { QueryFactory } = require("./cassandra/query_factory");
+const { QueryFactory, LogQueryFactory, RequestQueryFactory } = require("./cassandra/queryfactory");
 
 
 class CassandraDBHandler {
@@ -23,39 +23,35 @@ class CassandraDBHandler {
 
   async insertLogItem(item) {
 
-    const factory = new QueryFactory()
     const keyspace = "ai_company"
     const table = "logs"
+    const factory = new LogQueryFactory(keyspace, table)
 
-    await this.client.connect()
-    await this.client.execute(factory.createKeyspaceQuery(keyspace))
-    console.log('TABLE QUERY: ', factory.createLogItemTableQuery(keyspace, table))
-    await this.client.execute(factory.createLogItemTableQuery(keyspace, table))
-    
-    const query = factory.insertLogItemQuery(keyspace, table, item)
-    const values = factory.insertLogItemValues(item)
-    await this.client.execute(query, values, {prepare: true})
+    await this.insertItem(factory, item)
+
   }
 
   async insertRequestItem(item) {
 
-    const factory = new QueryFactory()
     const keyspace = "ai_company"
     const table = "requests"
+    const factory = new RequestQueryFactory(keyspace, table)
 
+    await this.insertItem(factory, item)
+  }
+
+  async insertItem(factory, item) {
     await this.client.connect()
-    await this.client.execute(factory.createKeyspaceQuery(keyspace))
-    console.log('TABLE QUERY: ', factory.createRequestTableQuery(keyspace, table))
-    await this.client.execute(factory.createRequestTableQuery(keyspace, table))
+    await this.client.execute(factory.createKeyspaceQuery())
+    //console.log('TABLE QUERY: ', factory.createTableQuery())
+    await this.client.execute(factory.createTableQuery())
     
-    
-    const query = factory.insertRequestQuery(keyspace, table, item)
-    console.log('QUERY: ', query)
-    const values = factory.insertRequestValues(item)
-    console.log('VALUES: ', values)
+    const query = factory.insertItemQuery(item)
+    const values = factory.insertItemValues(item)
     await this.client.execute(query, values, {prepare: true})
   }
 }
+
 
 
 module.exports = {

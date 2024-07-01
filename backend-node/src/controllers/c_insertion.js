@@ -1,4 +1,4 @@
-const { LogFactory } = require("../factories/factory.js")
+const { DataFactory } = require("../factories/datafactory.js")
 const influxhandler = require("../handlers/h_influx.js")
 const { CassandraDBHandler } = require("../handlers/h_cassandra.js")
 
@@ -13,8 +13,8 @@ const insertLogs = ((req, res) => {
     0
   )
   console.log('date: ', date)
-  const logFactory = new LogFactory()
-  logFactory.generateOneHour(date)
+  const dataFactory = new DataFactory()
+  dataFactory.generateOneHour(date)
   
   const cassandraHandler = new CassandraDBHandler()
   const writeLogs = ( async (logSet) => {
@@ -23,7 +23,7 @@ const insertLogs = ((req, res) => {
       await cassandraHandler.insertLogItem(logSet[i])
     }
   })
-  writeLogs(logFactory.logSet)
+  writeLogs(dataFactory.logSet)
 
   const writeRequests = ( async (requestSet) => {
     //await cassandraHandler.initializeDB()
@@ -31,11 +31,11 @@ const insertLogs = ((req, res) => {
       await cassandraHandler.insertRequestItem(requestSet[i])
     }
   })
-  writeRequests(logFactory.requestSet)
+  writeRequests(dataFactory.requestSet)
   
   //influxHandler = new influxhandler.InfluxDBHandler()
   //influxHandler.write(set)
-  res.json({text: logFactory.logSet})
+  res.json({text: dataFactory.logSet})
 })
   
 module.exports = {

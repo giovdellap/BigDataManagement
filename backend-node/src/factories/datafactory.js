@@ -3,7 +3,7 @@ const { getDates } = require("./utils.js");
 const { newItem, getRate } = require("./log_utils.js");
 const { newRequest } = require("./request_utils.js");
 
-class LogFactory {
+class DataFactory {
 
     logSet = []
     requestSet = []
@@ -44,4 +44,4 @@ class LogFactory {
 
 }
 
-module.exports = {LogFactory}
+module.exports = {DataFactory}
