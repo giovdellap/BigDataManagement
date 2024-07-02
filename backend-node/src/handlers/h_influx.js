@@ -1,43 +1,67 @@
-const influx = require('@influxdata/influxdb-client')
+const {InfluxDB, HttpError} = require('@influxdata/influxdb-client')
+const {OrgsAPI, BucketsAPI} = require('@influxdata/influxdb-client-apis')
+const { DBHandler } = require('./h_dbhandler')
+const { LogItemToPoint, RequestToPoint } = require('./influxdb/influx_utils')
 //import {InfluxDB, Point} from '@influxdata/influxdb-client'
 
-class InfluxDBHandler {
-
-    influxDB = {}
+class InfluxDBHandler extends DBHandler{
     
-    url = "http://localhost:8086"
-    token = "Ph9-lWs0podQxKiQQlBEkqOm-pzm2Uz2hrzgEw_x-8sMb8FA7v9kz5Po8dL0pgALUe22V-jAU-ZbzjL9Z97VtA=="
-    org = "my-org"
-    bucket = "testina"
+  url = "http://influxdb:8086"
+  token = "kUERQvP1fV7Tra0oo1CbaRIsqHgixJS_qgp5H02zmXOq3dtU0s8O-CGCecPMoWMo1riv5hS3WsJHHr"
+  org = "my-org"
+  bucket = "my-bucket"
 
-    constructor() {
-      console.log("url: ", this.url)
-      this.influxDB = new influx.InfluxDB({url : this.url, token : this.token})
+  constructor() {
+    super()
+    console.log("url: ", this.url)
+    this.client = new InfluxDB({url : this.url, token : this.token})
+  }
+
+  async insertMultipleItems(type, items) {
+    
+    let points = []
+    for (let i = 0; i < items.length; i++) {
+      let point = {}
+      if (type === "LOGS") {
+        point = LogItemToPoint(items[i])
+      } else {
+        point = RequestToPoint(items[i])
+      }
+      points.push(point)
     }
 
-    write(data) {
-        let writeApi = this.influxDB.getWriteApi(this.org, this.bucket)
-        console.log('dat: ', data[0])
-        for (let i = 0; i < data.length; i++) {
-            let point = this.logItemToPoint(data[i])
-            writeApi.writePoint(point)
+    let writeApi = this.client.getWriteApi(this.org, this.bucket)
+    writeApi.writePoints(points)
+    await this.closeConnection(writeApi)
+  }
 
-        }
-        writeApi.close()
-    }
+  async insertLogItem(item) {
+    let point = LogItemToPoint(item)
+    let writeApi = this.client.getWriteApi(this.org, this.bucket)
+    writeApi.writePoint(point)
+    await this.closeConnection(writeApi)
+  }
+  
+  async insertRequestItem(item) {
+    let point = RequestToPoint(item)
+    let writeApi = this.client.getWriteApi(this.org, this.bucket)
+    writeApi.writePoint(point)
+    await this.closeConnection(writeApi)
+  }
 
-    logItemToPoint(item) {
-      console.log(item.model)
-      return new influx.Point("interrogation")
-      .tag("customer", item.customer)
-      .tag("model", item.model.model)
-      .tag("version", item.model.version)
-      .floatField("gen", item.relevations.generations)
-      .floatField("sat", item.relevations.satisfaction)
-      .floatField("wli", item.relevations.wli)
-      .timestamp(item.timestamp)
+  async closeConnection(writeApi) {
+    try {
+      await writeApi.close()
+      console.log('FINISHED')
+    } catch (e) {
+      console.error(e)
+      if (e instanceof HttpError && e.statusCode === 401) {
+        console.log('Httperror', e)
+      }
+      console.log('\nFinished ERROR')
     }
   }
+}
 
 module.exports = {
   InfluxDBHandler
