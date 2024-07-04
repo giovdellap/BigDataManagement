@@ -7,10 +7,12 @@ class DBHandler {
     async initialize() {}
 
     async insertMultipleItems(type, items) {}
-  
+
     async insertLogItem(item) {}
   
     async insertRequestItem(item) {}
+
+    async satisfactionQuery(field) {}
   }
   
   

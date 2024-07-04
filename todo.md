@@ -7,6 +7,4 @@
    5) Vedere se cambiare gli INSERT con i JSON nativi delle query
    6) Vedre come salvare e riapplicare db già fatti
 3) influx:
-   1) vedere come mettere i dati (2 bucket?)
-   2) scrivere dati
-   3) Fare query
+   1) Fare query

@@ -2,6 +2,7 @@ const { DataFactory } = require("../factories/datafactory.js")
 const { InfluxDBHandler} = require("../handlers/h_influx.js")
 const { CassandraDBHandler } = require("../handlers/h_cassandra.js")
 const { DBHandler } = require("../handlers/h_dbhandler.js")
+const { getHandler } = require("./controller_utils.js")
 
 const initializeDB = ( async (req, res) => {
   dbHandler = new InfluxDBHandler()
@@ -20,20 +21,13 @@ const insertLogs = ( async (req, res) => {
     req.body.hour,
     0
   )
-  let db = req.body.db
-  let dbHandler = new DBHandler()
+  let dbHandler = getHandler(req.body.db)
 
   // DATA GENERATION
   const dataFactory = new DataFactory()
   dataFactory.generateOneHour(date)
 
-  // DB INSERTION
-  if (db === "cassandra") {
-    dbHandler = new CassandraDBHandler()
-  } else {
-    dbHandler = new InfluxDBHandler()
-  }
-  
+  // DB INSERTION 
   await dbHandler.insertMultipleItems("LOGS", dataFactory.logSet)
   await dbHandler.insertMultipleItems("REQUESTS", dataFactory.requestSet)
    
@@ -44,6 +38,6 @@ const insertLogs = ( async (req, res) => {
   
 module.exports = {
   insertLogs,
-  initializeDB
+  initializeDB,
 }
   

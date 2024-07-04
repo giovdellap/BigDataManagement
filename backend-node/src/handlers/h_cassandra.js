@@ -3,7 +3,7 @@ const async = require('async');
 const cassandra = require('cassandra-driver');
 const { QueryFactory, LogQueryFactory, RequestQueryFactory } = require("./cassandra/queryfactory");
 const { DBHandler } = require("./h_dbhandler");
-
+const { insertItem, insertItemOnly, createTable } = require("./cassandra/cassandra_utils") 
 
 class CassandraDBHandler extends DBHandler{
     
@@ -30,45 +30,31 @@ class CassandraDBHandler extends DBHandler{
     } else {
       factory = new RequestQueryFactory(this.DB_KEYSPACE, this.REQUEST_TABLE)
     }
-    await this.createTable(factory)
+    await createTable(this.client, factory)
     for (let i = 0; i < items.length; i++) {
-      await this.insertItemOnly(factory, items[i])
+      await insertItemOnly(this.client, factory, items[i])
     }
   }
 
   async insertLogItem(item) {
     const factory = new LogQueryFactory(this.DB_KEYSPACE, this.LOGS_TABLE)
-    await this.insertItem(factory, item)
+    await insertItem(this.client, factory, item)
   }
 
   async insertRequestItem(item) {
     const factory = new RequestQueryFactory(this.DB_KEYSPACE, this.REQUEST_TABLE)
-    await this.insertItem(factory, item)
+    await insertItem(this.client, factory, item)
   }
 
-  async insertItem(factory, item) {
-    await this.client.connect()
-    await this.client.execute(factory.createKeyspaceQuery())
-    console.log('TABLE QUERY: ', factory.createTableQuery())
-    await this.client.execute(factory.createTableQuery())
-    
-    const query = factory.insertItemQuery(item)
-    const values = factory.insertItemValues(item)
-    await this.client.execute(query, values, {prepare: true})
+  async satisfactionQuery(field) {
+    let query = "SELECT satisfaction, " +  field + " FROM " + this.DB_KEYSPACE + "." + this.LOGS_TABLE
+    console.log('QUERY: ', query)
+    let result = this.client.execute(query)
+    console.log('QUERY RESULT: ', result)
+    return result
   }
 
-  async createTable(factory) {
-    await this.client.connect()
-    await this.client.execute(factory.createKeyspaceQuery())
-    console.log('TABLE QUERY: ', factory.createTableQuery())
-    await this.client.execute(factory.createTableQuery())
-  }
 
-  async insertItemOnly(factory, item) {
-    const query = factory.insertItemQuery(item)
-    const values = factory.insertItemValues(item)
-    await this.client.execute(query, values, {prepare: true})
-  }
 }
 
 

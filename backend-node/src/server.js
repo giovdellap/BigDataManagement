@@ -1,6 +1,7 @@
 var express = require('express');
 
-const insertionRouter = require("./routes/r_insertion.js")
+const insertionRouter = require("./routes/r_insertion.js");
+const queryRouter = require('./routes/r_query.js');
 // const insertionRouter = require("./routes/r_insertion")
 
 const app = express();
@@ -10,4 +11,6 @@ const PORT = 5001;
 
 //app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/insertion', insertionRouter);
+app.use('/query', queryRouter);
+
 app.listen(PORT, console.log('Server is running on port: ' + PORT));

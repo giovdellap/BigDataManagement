@@ -41,6 +41,29 @@ class InfluxDBHandler extends DBHandler{
     writeApi.writePoint(point)
     await this.closeConnection(writeApi)
   }
+
+  async satisfactionQuery(field) {
+
+    const queryApi = this.client.getQueryApi(this.org)
+
+    const fluxQuery =
+    'from(bucket:"my-bucket") |> range(start: -1d) |> filter(fn: (r) => r._measurement == "temperature")'
+    console.log('*** IterateRows ***')
+    for await (const {values, tableMeta} of queryApi.iterateRows(fluxQuery)) {
+    // the following line creates an object for each row
+    const o = tableMeta.toObject(values)
+    // console.log(JSON.stringify(o, null, 2))
+    console.log(
+      `${o._time} ${o._measurement} in '${o.location}' (${o.example}): ${o._field}=${o._value}`
+    )
+
+    // alternatively, you can get only a specific column value without
+    // the need to create an object for every row
+    // console.log(tableMeta.get(row, '_time'))
+  }
+  console.log('\nIterateRows SUCCESS')
+  }
+
   
   async insertRequestItem(item) {
     let point = RequestToPoint(item)
