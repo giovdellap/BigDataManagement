@@ -1,7 +1,7 @@
 async function insertItem(client, factory, item) {
     await client.connect()
     await client.execute(factory.createKeyspaceQuery())
-    console.log('TABLE QUERY: ', factory.createTableQuery())
+    //console.log('TABLE QUERY: ', factory.createTableQuery())
     await client.execute(factory.createTableQuery())
     
     const query = factory.insertItemQuery(item)
@@ -12,7 +12,7 @@ async function insertItem(client, factory, item) {
 async function createTable(client, factory) {
     await client.connect()
     await client.execute(factory.createKeyspaceQuery())
-    console.log('TABLE QUERY: ', factory.createTableQuery())
+    //console.log('TABLE QUERY: ', factory.createTableQuery())
     await client.execute(factory.createTableQuery())
 }
 

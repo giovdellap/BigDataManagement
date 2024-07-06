@@ -13,7 +13,7 @@ class InfluxDBHandler extends DBHandler{
 
   constructor() {
     super()
-    console.log("url: ", this.url)
+    //console.log("url: ", this.url)
     this.client = new InfluxDB({url : this.url, token : this.token})
   }
 

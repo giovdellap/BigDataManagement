@@ -11,6 +11,30 @@ const initializeDB = ( async (req, res) => {
 
 })
 
+const insertOneDay = ( async (req, res) => {
+
+  const date = new Date(
+    req.body.year,
+    req.body.month,
+    req.body.day,
+    req.body.hour,
+    0
+  )
+  let dbHandler = getHandler(req.body.db)
+
+  // DATA GENERATION
+  const dataFactory = new DataFactory()
+  dataFactory.generateOneDay(date)
+
+  // DB INSERTION 
+  console.log("DB INSERTION - INITIALIZATION")
+  await dbHandler.insertMultipleItems("LOGS", dataFactory.logSet)
+  console.log("DB INSERTION - LOGSET OK")
+  await dbHandler.insertMultipleItems("REQUESTS", dataFactory.requestSet)
+  console.log("DB INSERTION - REQUESTSET OK")
+
+  res.json({text: dataFactory.logSet})
+})
 
 const insertLogs = ( async (req, res) => {
 
@@ -31,13 +55,12 @@ const insertLogs = ( async (req, res) => {
   await dbHandler.insertMultipleItems("LOGS", dataFactory.logSet)
   await dbHandler.insertMultipleItems("REQUESTS", dataFactory.requestSet)
    
-  //influxHandler = new influxhandler.InfluxDBHandler()
-  //influxHandler.write(set)
   res.json({text: dataFactory.logSet})
 })
   
 module.exports = {
   insertLogs,
   initializeDB,
+  insertOneDay
 }
   

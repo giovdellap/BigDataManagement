@@ -48,9 +48,9 @@ class CassandraDBHandler extends DBHandler{
 
   async satisfactionQuery(field) {
     let query = "SELECT satisfaction, " +  field + " FROM " + this.DB_KEYSPACE + "." + this.LOGS_TABLE
-    console.log('QUERY: ', query)
+    //console.log('QUERY: ', query)
     let result = this.client.execute(query)
-    console.log('QUERY RESULT: ', result)
+    //console.log('QUERY RESULT: ', result)
     return result
   }
 
