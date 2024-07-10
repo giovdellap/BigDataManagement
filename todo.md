@@ -1,6 +1,8 @@
 
 1) Vedere cosa vuole visual analytics
 2) Definire grafici
+   1) Vedere slide 5 - trivariate (ci servono? possiamo usarli?)
+   2) Fine slide 5 - I flitri non si usano solo per escludere ma anche per colorare diversamente
 3) Query
    1) Vedere che query servono per i grafici
 4) frontend

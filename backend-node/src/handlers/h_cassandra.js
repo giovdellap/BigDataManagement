@@ -3,7 +3,7 @@ const async = require('async');
 const cassandra = require('cassandra-driver');
 const { QueryFactory, LogQueryFactory, RequestQueryFactory } = require("./cassandra/queryfactory");
 const { DBHandler } = require("./h_dbhandler");
-const { insertItem, insertItemOnly, createTable } = require("./cassandra/cassandra_utils") 
+const { insertItem, insertItemOnly, createTable, createSecondaryIndex } = require("./cassandra/cassandra_utils") 
 
 class CassandraDBHandler extends DBHandler{
     
@@ -23,6 +23,21 @@ class CassandraDBHandler extends DBHandler{
     });
   }
 
+  async initialize() {
+    const logFactory = new LogQueryFactory(this.DB_KEYSPACE, this.LOGS_TABLE)
+    const requestFactory = new RequestQueryFactory(this.DB_KEYSPACE, this.REQUEST_TABLE)
+
+    // LOG TABLE
+    await createTable(this.client, logFactory)
+    await createSecondaryIndex(this.client, logFactory, "tokens")
+    await createSecondaryIndex(this.client, logFactory, "temperature")
+    await createSecondaryIndex(this.client, logFactory, "wli")
+    await createSecondaryIndex(this.client, logFactory, "presence_penalty")
+
+    //REQUEST TABLE
+    await createTable(this.client, requestFactory)
+  }
+
   async insertMultipleItems(type, items) {
     let factory = new QueryFactory(this.DB_KEYSPACE, "")
     if (type === "LOGS") {
@@ -30,7 +45,7 @@ class CassandraDBHandler extends DBHandler{
     } else {
       factory = new RequestQueryFactory(this.DB_KEYSPACE, this.REQUEST_TABLE)
     }
-    await createTable(this.client, factory)
+    //await createTable(this.client, factory)
     for (let i = 0; i < items.length; i++) {
       await insertItemOnly(this.client, factory, items[i])
     }
@@ -48,16 +63,15 @@ class CassandraDBHandler extends DBHandler{
 
   async satisfactionQuery(field) {
     let query = "SELECT satisfaction, " +  field + " FROM " + this.DB_KEYSPACE + "." + this.LOGS_TABLE
+    if (field === "temperature" || field === "presence_penalty") {
+      query += " WHERE " + field + " > 0.001 ALLOW FILTERING"
+    }
     //console.log('QUERY: ', query)
     let result = this.client.execute(query)
     //console.log('QUERY RESULT: ', result)
     return result
   }
-
-
 }
-
-
 
 module.exports = {
   CassandraDBHandler

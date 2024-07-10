@@ -29,7 +29,7 @@ Categorie diverse per ogni linea(colore) per X o Y
 - Y axis: satisfaction
 - X axis: choose between: 
   - tokens
-  - wli
+  - wli (non si vede un cazzo)
   - temperature (solo chi ce l'ha?)
   - presence penalty (solo chi ce l'ha?)
   - tokens/wli rateo

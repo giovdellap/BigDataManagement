@@ -22,8 +22,13 @@ async function insertItemOnly(client, factory, item) {
     await client.execute(query, values, {prepare: true})
 }
 
+async function createSecondaryIndex(client, factory, column_name) {
+    await client.execute(factory.createSecondaryIndex(column_name))
+}
+
 module.exports = {
     insertItem,
     insertItemOnly, 
-    createTable
+    createTable,
+    createSecondaryIndex
 }

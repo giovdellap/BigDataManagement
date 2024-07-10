@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import { TestResponseItem } from '../../model/testResponseItem';
+import { SatisfactionQueryItem } from '../../model/queryresponses/satisfactionQueryResponse';
 import { ApiService } from '../../services/api.service';
 
 @Component({
@@ -28,10 +28,10 @@ export class BarComponent implements OnInit {
     .attr("transform", "translate(" + this.margin + "," + this.margin + ")");
   }
 
-  private drawPlot(data: TestResponseItem[]): void {
-    // Add X axis - wli
+  private drawPlot(data: SatisfactionQueryItem[]): void {
+    // Add X axis - tokens
     const x = d3.scaleLinear()
-    .domain([0, 6])
+    .domain([2000, 11000])
     .range([ 0, this.width ]);
     this.svg.append("g")
     .attr("transform", "translate(0," + this.height + ")")
@@ -50,7 +50,7 @@ export class BarComponent implements OnInit {
     .data(data)
     .enter()
     .append("circle")
-    .attr("cx", (d: any) => x(d.wli))
+    .attr("cx", (d: any) => x(d.tokens))
     .attr("cy",  (d: any) => y(d.satisfaction))
     .attr("r", 1)
     .style("opacity", 1)
@@ -60,11 +60,11 @@ export class BarComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.apiService.getTestQuery().subscribe(res => {
+    this.apiService.getTestQuery("tokens").subscribe(res => {
       console.log(res)
       this.createSvg();
       console.log("1")
-      this.drawPlot(res.result);
+      this.drawPlot(res);
       console.log("2")
     })
 

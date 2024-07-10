@@ -23,7 +23,9 @@ class QueryFactory {
     createTableQuery() {}
     insertItemQuery() {}
     insertItemValues() {}
-}
+    createSecondaryIndex(column) {
+        return "CREATE INDEX ON " + this.keyspace + "." + this.table_name + " (" + column + ")";
+    }}
 
 class LogQueryFactory extends QueryFactory{
 

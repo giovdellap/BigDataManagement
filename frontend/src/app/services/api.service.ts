@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TestResponse } from '../model/testResponse';
+import { SatisfactionQueryItem } from '../model/queryresponses/satisfactionQueryResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,12 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  getTestQuery(): Observable<TestResponse> {
+  getTestQuery(field: string): Observable<SatisfactionQueryItem[]> {
+    console.log('field', field)
     let body = {
       db: "cassandra",
-      field: "wli"
+      field: field
   }
-    return this.http.post<TestResponse>(this.url + "/query/satisfaction", body)
+    return this.http.post<SatisfactionQueryItem[]>(this.url + "/query/satisfaction", body)
   }
 }

@@ -5,7 +5,7 @@ const { DBHandler } = require("../handlers/h_dbhandler.js")
 const { getHandler } = require("./controller_utils.js")
 
 const initializeDB = ( async (req, res) => {
-  dbHandler = new InfluxDBHandler()
+  let dbHandler = getHandler(req.body.db)
   await dbHandler.initialize()
   res.json({text: "OK"})
 
@@ -55,6 +55,7 @@ const insertLogs = ( async (req, res) => {
   await dbHandler.insertMultipleItems("LOGS", dataFactory.logSet)
   await dbHandler.insertMultipleItems("REQUESTS", dataFactory.requestSet)
    
+
   res.json({text: dataFactory.logSet})
 })
   
