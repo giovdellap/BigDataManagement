@@ -32,3 +32,11 @@ export const settings: XAxisOption[] = [
     domain: [0, 2]
   }
 ]
+
+export const models = [
+  "all",
+  "ChartGenerator",
+  "ChartAnalyzer",
+  "GraphPredictor",
+  "MarketTracker"
+]

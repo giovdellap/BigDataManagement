@@ -1,11 +1,11 @@
 import * as d3 from 'd3';
-import { createAxis } from './graphUtils';
+import { createAxis, getDotRay } from './graphUtils';
 
 export class GraphFactory {
   private svg: any;
   private x: any;
   private y: any;
-  private margin = 25;
+  private margin = 40;
   private width
   private height
 
@@ -30,16 +30,42 @@ export class GraphFactory {
     this.x = createAxis(type, domain, [0, this.width])
     this.svg.append("g")
     .attr("transform", "translate(0," + this.height + ")")
-    .call(d3.axisBottom(this.x));
+    .call(d3.axisBottom(this.x)
+      .tickSize(-this.height)
+    );
   }
 
   public addYAxis(type: string, domain: number[]) {
     this.y = createAxis(type, domain, [this.height, 0])
     this.svg.append("g")
-    .call(d3.axisLeft(this.y));
+    .call(d3.axisLeft(this.y)
+      .tickSize(-this.width)
+    );
   }
 
-  public addScatterplotDots(data: any, x_value: string, y_value:string) {
+  public colorGrid() {
+    this.svg.selectAll(".tick line")
+    .attr("stroke","#C7C7C7");
+  }
+
+  public addXAxisTitle(value: string) {
+    this.svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("x", this.width)
+    .attr("y", this.height + (this.margin / 2))
+    .text(value);
+  }
+
+  public addYAxisTitle(value:string) {
+    this.svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("transform", "rotate(-90)")
+    .attr("y", - (this.margin/2) )
+    .attr("x", 0)
+    .text(value)
+  }
+
+  public addBasicScatterplotDots(data: any, x_value: string, y_value:string) {
     const dots = this.svg.append('g');
     dots.selectAll("dot")
     .data(data)
@@ -48,6 +74,19 @@ export class GraphFactory {
     .attr("cx", (d: any) => this.x(d[x_value]))
     .attr("cy",  (d: any) => this.y(d[y_value]))
     .attr("r", 1)
+    .style("opacity", 1)
+    .style("fill", "#69b3a2");
+  }
+
+  public addVariableScatterplotDots(data: any, x_value: string, y_value: string, total: number) {
+    const dots = this.svg.append('g');
+    dots.selectAll("dot")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("cx", (d: any) => this.x(d[x_value]))
+    .attr("cy",  (d: any) => this.y(d[y_value]))
+    .attr("r", (d: any) => getDotRay(d.count, total))
     .style("opacity", 1)
     .style("fill", "#69b3a2");
   }

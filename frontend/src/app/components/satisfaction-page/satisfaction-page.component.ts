@@ -4,7 +4,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { GraphFactory } from '../../graphFactory/graphfactory';
-import { settings, XAxisOption } from '../../model/graphSettings/satisfactionscatterplotsettings';
+import { getMaxCount } from '../../graphFactory/graphUtils';
+import { models, settings, XAxisOption } from '../../model/graphSettings/satisfactionscatterplotsettings';
 import { ApiService } from '../../services/api.service';
 
 
@@ -23,31 +24,44 @@ import { ApiService } from '../../services/api.service';
 })
 export class SatisfactionPageComponent implements OnInit{
 
-  selectControl = new FormControl()
+  optionControl = new FormControl()
+  modelControl = new FormControl()
+
   options: XAxisOption[] = settings
-  factory = new GraphFactory(750, 400)
+  models = models
+
+  factory = new GraphFactory(1000, 600)
 
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.selectControl.setValue(this.options[0])
+    this.optionControl.setValue(this.options[0])
+    this.modelControl.setValue(this.models[0])
     this.factory.createSvg('scatter')
-    this.getGraph(this.options[0])
-    this.selectControl.valueChanges.subscribe(option => {
-      this.factory.removeSvg('scatter')
-      this.getGraph(option)
-    })
+    this.getGraph(this.options[0], this.models[0])
+    this.optionControl.valueChanges.subscribe(() => this.controlValueChanges())
+    this.modelControl.valueChanges.subscribe(() => this.controlValueChanges())
   }
 
+  controlValueChanges() {
+    this.factory.removeSvg('scatter')
+      this.getGraph(this.optionControl.value, this.modelControl.value)
+  }
 
-  getGraph(option: XAxisOption) {
-    this.apiService.getTestQuery(option.value).subscribe(res => {
+  getGraph(option: XAxisOption, model: string) {
+    this.apiService.getBasicQuery('satisfaction', option.value, model).subscribe(res => {
       //this.factory.createSvg('scatter')
       this.factory.addXAxis(option.type, option.domain)
       this.factory.addYAxis('linear', [0, 6])
-      this.factory.addScatterplotDots(res, option.value, 'satisfaction')
+      this.factory.colorGrid()
+      this.factory.addXAxisTitle(option.value)
+      this.factory.addYAxisTitle('satisfaction')
+      if(option.value === "tokens") {
+        this.factory.addBasicScatterplotDots(res, option.value, 'satisfaction')
+      } else {
+        this.factory.addVariableScatterplotDots(res, option.value, 'satisfaction', getMaxCount(res))
+      }
     })
   }
-
 }

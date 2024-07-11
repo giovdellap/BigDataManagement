@@ -12,7 +12,7 @@ class DBHandler {
   
     async insertRequestItem(item) {}
 
-    async satisfactionQuery(field) {}
+    async basicQuery(field1, field2, model) {}
   }
   
   

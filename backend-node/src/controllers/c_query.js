@@ -1,14 +1,21 @@
 const { countItems, roundFloats } = require("../utils/queryUtils")
 const { getHandler } = require("./controller_utils")
 
-const satisfactionQuery = ( async (req, res) => {
+const basicQuery = ( async (req, res) => {
+
+  const field1 = req.body.field1
+  const field2 = req.body.field2
+  const model_filter = req.body.model_filter
+
   let response = []
   let dbHandler = getHandler(req.body.db)
-  const field = req.body.field
-  let dbResponse = await dbHandler.satisfactionQuery(field)
-  let arr = roundFloats(dbResponse.rows, ['satisfaction', field])
-  if (field !== "token") {
-    response = countItems(arr, "satisfaction", field) 
+
+  let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
+  console.log("RESPONSE LENGTH: ", dbResponse.length)
+  let arr = roundFloats(dbResponse, [field1, field2])
+  response = arr
+  if (field2 !== "token") {
+    response = countItems(arr, field1, field2) 
   } else {
     response = arr
   }
@@ -16,6 +23,6 @@ const satisfactionQuery = ( async (req, res) => {
 })
   
 module.exports = {
-  satisfactionQuery
+  basicQuery
 }
   

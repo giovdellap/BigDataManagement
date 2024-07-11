@@ -3,6 +3,7 @@ const { InfluxDBHandler} = require("../handlers/h_influx.js")
 const { CassandraDBHandler } = require("../handlers/h_cassandra.js")
 const { DBHandler } = require("../handlers/h_dbhandler.js")
 const { getHandler } = require("./controller_utils.js")
+const { generateandInsertOneDay } = require("../utils/insertionUtils.js")
 
 const initializeDB = ( async (req, res) => {
   let dbHandler = getHandler(req.body.db)
@@ -23,17 +24,28 @@ const insertOneDay = ( async (req, res) => {
   let dbHandler = getHandler(req.body.db)
 
   // DATA GENERATION
-  const dataFactory = new DataFactory()
-  dataFactory.generateOneDay(date)
+  generateandInsertOneDay(date, dbHandler)
 
-  // DB INSERTION 
-  console.log("DB INSERTION - INITIALIZATION")
-  await dbHandler.insertMultipleItems("LOGS", dataFactory.logSet)
-  console.log("DB INSERTION - LOGSET OK")
-  await dbHandler.insertMultipleItems("REQUESTS", dataFactory.requestSet)
-  console.log("DB INSERTION - REQUESTSET OK")
+  res.json({text: "OK"})
+})
 
-  res.json({text: dataFactory.logSet})
+const insertOneMonth = ( async (req, res) => {
+
+  const days = new Date(req.body.year, req.body.month, 0).getDate()
+  let dbHandler = getHandler(req.body.db)
+  let counter = 0
+
+  for (let i = 0; i < days; i++) {
+    let date = new Date(
+      req.body.year,
+      req.body.month,
+      i, 0, 0
+    )
+    let dayCount = await generateandInsertOneDay(date, dbHandler)
+    console.log("DAY ", date, " INSERTED")
+    counter += dayCount
+  }
+  res.json({counter: counter})
 })
 
 const insertLogs = ( async (req, res) => {
@@ -62,6 +74,7 @@ const insertLogs = ( async (req, res) => {
 module.exports = {
   insertLogs,
   initializeDB,
-  insertOneDay
+  insertOneDay,
+  insertOneMonth
 }
   

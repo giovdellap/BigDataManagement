@@ -69,6 +69,29 @@ class LogQueryFactory extends QueryFactory{
         let parameters = Object.values(item.parameters)
         return values.concat(parameters)
     }
+
+    basicquery(field1, field2, model) {
+        let basicQuery = "SELECT " + field1 + ", " +  field2 + " FROM " + this.keyspace + "." + this.table_name
+        let whereSection = ""
+
+        let whereClauses = []
+        if (field2 === "temperature" || field2 === "presence_penalty") {
+            whereClauses.push(field2 + " > 0.001")
+        }
+        if (model !== "all") {
+            whereClauses.push("name = '" + model + "'")
+        }
+        if (whereClauses.length > 0) {
+            whereSection = " WHERE " + whereClauses[0]
+        }
+        if (whereClauses.length === 2) {
+            whereSection = whereSection + " AND " + whereClauses[1]
+        }
+        if (whereSection !== "") {
+            whereSection = whereSection + " ALLOW FILTERING"
+        }
+        return basicQuery + whereSection
+    }
 }
     
 class RequestQueryFactory extends QueryFactory {

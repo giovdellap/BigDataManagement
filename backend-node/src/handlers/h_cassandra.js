@@ -61,13 +61,17 @@ class CassandraDBHandler extends DBHandler{
     await insertItem(this.client, factory, item)
   }
 
-  async satisfactionQuery(field) {
-    let query = "SELECT satisfaction, " +  field + " FROM " + this.DB_KEYSPACE + "." + this.LOGS_TABLE
-    if (field === "temperature" || field === "presence_penalty") {
-      query += " WHERE " + field + " > 0.001 ALLOW FILTERING"
-    }
+  async basicQuery(field1, field2, model) {
+    const factory = new LogQueryFactory(this.DB_KEYSPACE, this.LOGS_TABLE)
+    
+    let query = factory.basicquery(field1, field2, model)
     //console.log('QUERY: ', query)
-    let result = this.client.execute(query)
+    let result = []
+    await this.client.eachRow(query, [], [], (n, row) => {
+      console.log(row)
+      result.push(row)
+    })
+    //let result = await this.client.execute(query)
     //console.log('QUERY RESULT: ', result)
     return result
   }
