@@ -1,11 +1,12 @@
 import * as d3 from 'd3';
-import { createAxis, getDotRay } from './graphUtils';
+import { createAxis, getScatterplotLegendPosition } from './graphUtils';
 
 export class GraphFactory {
   private svg: any;
   private x: any;
   private y: any;
-  private margin = 40;
+  private r: any
+  private margin = 80;
   private width
   private height
 
@@ -43,6 +44,10 @@ export class GraphFactory {
     );
   }
 
+  public addRAxis(domain: number[], maxRay: number) {
+    this.r = createAxis('linear', domain, [0, maxRay])
+  }
+
   public colorGrid() {
     this.svg.selectAll(".tick line")
     .attr("stroke","#C7C7C7");
@@ -78,7 +83,12 @@ export class GraphFactory {
     .style("fill", "#69b3a2");
   }
 
-  public addVariableScatterplotDots(data: any, x_value: string, y_value: string, total: number) {
+  public addVariableScatterplotDots(
+    data: any,
+    x_value: string,
+    y_value: string
+  ) {
+
     const dots = this.svg.append('g');
     dots.selectAll("dot")
     .data(data)
@@ -86,8 +96,33 @@ export class GraphFactory {
     .append("circle")
     .attr("cx", (d: any) => this.x(d[x_value]))
     .attr("cy",  (d: any) => this.y(d[y_value]))
-    .attr("r", (d: any) => getDotRay(d.count, total))
+    .attr("r", (d: any) => this.r(d.count))
     .style("opacity", 1)
-    .style("fill", "#69b3a2");
+    .style("fill", "#69b3a2")
   }
+
+  public addScatterplotDimensionLegend() {
+    const positionString = "translate(" + (this.width + this.margin/2) + "," + (this.height) + ")"
+
+    const legend = this.svg.append("g")
+      .attr("fill", "#777")
+      .attr("transform", positionString)
+      .attr("text-anchor", "middle")
+      .style("font", "10px sans-serif")
+      .selectAll()
+      .data(this.r.ticks(4))
+      .join("g");
+
+    legend.append("circle")
+      .attr("fill", "none")
+      .attr("stroke", "#ccc")
+      .attr("cy", (d: any) => - getScatterplotLegendPosition(this.r, 20, 4, d))
+      .attr("r", this.r);
+
+    legend.append("text")
+      .attr("y", (d: any) => - getScatterplotLegendPosition(this.r, 20, 4, d))
+      .attr("dy", "1.3em")
+      .text(this.r.tickFormat(4, "s"));
+  }
+
 }

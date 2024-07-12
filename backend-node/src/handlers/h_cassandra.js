@@ -4,6 +4,7 @@ const cassandra = require('cassandra-driver');
 const { QueryFactory, LogQueryFactory, RequestQueryFactory } = require("./cassandra/queryfactory");
 const { DBHandler } = require("./h_dbhandler");
 const { insertItem, insertItemOnly, createTable, createSecondaryIndex } = require("./cassandra/cassandra_utils") 
+const { once } = require('events');
 
 class CassandraDBHandler extends DBHandler{
     
@@ -67,12 +68,24 @@ class CassandraDBHandler extends DBHandler{
     let query = factory.basicquery(field1, field2, model)
     //console.log('QUERY: ', query)
     let result = []
-    await this.client.eachRow(query, [], [], (n, row) => {
-      console.log(row)
-      result.push(row)
+    let stream = this.client.stream(query)
+    .on('readable', function () {
+      // 'readable' is emitted as soon a row is received and parsed
+      let row;
+      while (row = this.read()) {
+        result.push(row)
+      }
     })
+    .on('end', function () {
+      // Stream ended, there aren't any more rows
+    })
+    .on('error', function (err) {
+      // Something went wrong: err is a response error from Cassandra
+    });
     //let result = await this.client.execute(query)
     //console.log('QUERY RESULT: ', result)
+    await once(stream, 'end')
+    console.log()
     return result
   }
 }

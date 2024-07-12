@@ -13,12 +13,8 @@ const basicQuery = ( async (req, res) => {
   let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
   console.log("RESPONSE LENGTH: ", dbResponse.length)
   let arr = roundFloats(dbResponse, [field1, field2])
-  response = arr
-  if (field2 !== "token") {
-    response = countItems(arr, field1, field2) 
-  } else {
-    response = arr
-  }
+  response = countItems(arr, field1, field2) 
+  
   res.json(response)
 })
   

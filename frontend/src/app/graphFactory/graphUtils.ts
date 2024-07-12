@@ -10,8 +10,8 @@ export function createAxis(type: string, domain: number[], range: number[]) {
   }
 }
 
-export function getDotRay(count: number, total: number) {
-  return 30*count/total
+export function getDotRay(maxRay: number, count: number, total: number) {
+  return maxRay*count/total
 }
 
 export function getTotal(data: any) {
@@ -30,4 +30,21 @@ export function getMaxCount(data: any) {
     }
   }
   return max_count
+}
+
+export function getScatterplotLegendPosition(
+  rAxis: any,
+  margin: number,
+  ticks_num: number,
+  d:any
+) {
+  let values = rAxis.ticks(ticks_num)
+  let positions = [margin + Math.round(rAxis(values[0]))]
+  for (let i = 1; i < values.length; i++) {
+    let position = positions[i-1] + rAxis(values[i-1]) + margin + rAxis(values[i])
+    positions.push(Math.round(position))
+  }
+  //console.log("values", values)
+  //console.log("positions", positions)
+  return positions[values.indexOf(d)]
 }

@@ -2,13 +2,13 @@
 1) Satisfaction page - scatterplot
    1) Alcuni grafici non hanno senso
    2) Aggiustare i filtri (per i modelli che non hanno alcuni parametri, quei parametri dovrebbero essere disabled)
+   3) mettere tooltip sui punti (da vedere)
+
 
 ## TODO
 
-1) Scatterplot Gerations
-   1) Controller BE
-   2) Query cassandra
-   3) grafici FE
+1) Scatterplot Generations
+   1) grafici FE
 2) Aggiustare factory logs (le cose che vorremmo uscissero non escono)
 3) Cose da vedere visual analytics
    1) Vedere slide 5 - trivariate (ci servono? possiamo usarli?)
