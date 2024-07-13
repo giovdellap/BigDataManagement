@@ -1,4 +1,4 @@
-const { DataFactory } = require("../factories/datafactory.js")
+const { DataFactory } = require("../../factories/datafactory.js")
 
 async function generateandInsertOneDay(date, dbHandler) {
   const dataFactory = new DataFactory()

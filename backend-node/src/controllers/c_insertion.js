@@ -3,7 +3,7 @@ const { InfluxDBHandler} = require("../handlers/h_influx.js")
 const { CassandraDBHandler } = require("../handlers/h_cassandra.js")
 const { DBHandler } = require("../handlers/h_dbhandler.js")
 const { getHandler } = require("./controller_utils.js")
-const { generateandInsertOneDay } = require("../utils/insertionUtils.js")
+const { generateandInsertOneDay } = require("./utils/insertionUtils.js")
 
 const initializeDB = ( async (req, res) => {
   let dbHandler = getHandler(req.body.db)

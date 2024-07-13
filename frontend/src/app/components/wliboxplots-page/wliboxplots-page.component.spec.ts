@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LibraryTestComponent } from './library-test.component';
+import { WliboxplotsPageComponent } from './wliboxplots-page.component';
 
-describe('LibraryTestComponent', () => {
-  let component: LibraryTestComponent;
-  let fixture: ComponentFixture<LibraryTestComponent>;
+describe('WliboxplotsPageComponent', () => {
+  let component: WliboxplotsPageComponent;
+  let fixture: ComponentFixture<WliboxplotsPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LibraryTestComponent]
+      imports: [WliboxplotsPageComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(LibraryTestComponent);
+    fixture = TestBed.createComponent(WliboxplotsPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

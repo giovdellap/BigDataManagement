@@ -21,4 +21,8 @@ export class ApiService {
   }
     return this.http.post<SatisfactionQueryItem[]>(this.url + "/query/basicQuery", body)
   }
+
+  getwliBoxplotQuery(field: string, model: string) {
+
+  }
 }

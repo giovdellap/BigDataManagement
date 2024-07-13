@@ -1,4 +1,4 @@
-const { countItems, roundFloats } = require("../utils/queryUtils")
+const { countItems, roundFloats, roundToInt, groupBy } = require("./utils/queryUtils")
 const { getHandler } = require("./controller_utils")
 
 const basicQuery = ( async (req, res) => {
@@ -17,8 +17,27 @@ const basicQuery = ( async (req, res) => {
   
   res.json(response)
 })
+
+const wliBoxplotQuery = ( async (req, res) => {
+
+  const field = req.body.field
+  const model_filter = req.body.model_filter
+
+  let response = []
+  let dbHandler = getHandler(req.body.db)
+
+  let dbResponse = await dbHandler.basicQuery(field, 'wli', model_filter)
+  //console.log(dbResponse)
+  console.log("RESPONSE LENGTH: ", dbResponse.length)
+  //let arr = roundToInt(dbResponse, [field, 'wli'])
+  response = groupBy(dbResponse, 'wli', field) 
+  
+  res.json(response)
+})
+
   
 module.exports = {
-  basicQuery
+  basicQuery,
+  wliBoxplotQuery
 }
   
