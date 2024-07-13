@@ -3,10 +3,10 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { GraphFactory } from '../../graphFactory/graphfactory';
+import { PlotFactory } from '../../graphFactory/plotFactory';
 import { models } from '../../model/graphSettings/xaxissatisfaction';
-import { wliboxplotsettings, YAxisBoxPlot } from '../../model/graphSettings/yaxiswliboxplot';
 import { ApiService } from '../../services/api.service';
+import { NoSanitizePipe } from '../../utils/nosanitizerpipe';
 
 @Component({
   selector: 'app-wliboxplots-page',
@@ -17,6 +17,7 @@ import { ApiService } from '../../services/api.service';
     FormsModule,
     MatSelectModule,
     ReactiveFormsModule,
+    NoSanitizePipe
   ],
   templateUrl: './wliboxplots-page.component.html',
   styleUrl: './wliboxplots-page.component.css'
@@ -26,17 +27,18 @@ export class WliboxplotsPageComponent implements OnInit {
   optionControl = new FormControl()
   modelControl = new FormControl()
 
-  options: YAxisBoxPlot[] = wliboxplotsettings
+  options: string[] = ['satisfaction', 'generations']
   models = models
+  svg: any
 
-  factory = new GraphFactory(1000, 600)
+  factory = new PlotFactory(1200, 600)
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.optionControl.setValue(this.options[0])
     this.modelControl.setValue(this.models[0])
-    this.factory.createSvg('scatter')
+    //this.factory.createSvg('scatter')
     console.log('oninit 1')
     this.getGraph(this.options[0], this.models[0])
     console.log('oninit 2')
@@ -45,26 +47,16 @@ export class WliboxplotsPageComponent implements OnInit {
   }
 
   controlValueChanges() {
-    this.factory.removeSvg('scatter')
+    //this.factory.removeSvg('scatter')
     this.getGraph(this.optionControl.value, this.modelControl.value)
   }
 
-  getGraph(option: YAxisBoxPlot, model: string) {
-    this.apiService.getBasicQuery('generations', option.value, model).subscribe(res => {
+  getGraph(option: string, model: string) {
+    this.apiService.getBasicQueryNoCOunt('wli', option, model).subscribe(res => {
       //this.factory.createSvg('scatter')
-      this.factory.addXAxis(option.type, option.domain)
-      this.factory.addYAxis('linear', [0, 10])
-      this.factory.colorGrid()
-      this.factory.addXAxisTitle(option.value)
-      this.factory.addYAxisTitle('generations')
-      //if(option.value === "tokens") {
-      //  this.factory.addBasicScatterplotDots(res, option.value, 'satisfaction')
-      //} else {
-      //  this.factory.addVariableScatterplotDots(res, option.value, 'satisfaction', getMaxCount(res))
-      //}
-      this.factory.addVariableScatterplotDots(res, option.value, 'generations')
-      this.factory.addScatterplotDimensionLegend()
-
+      console.log('GET GRAPH 1')
+      this.svg = this.factory.getWLIBoxplot(res, option).outerHTML
+      console.log('GET GRAPH 2')
     })
   }
 }

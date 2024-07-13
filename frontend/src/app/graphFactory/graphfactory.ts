@@ -3,12 +3,19 @@ import { createAxis, getScatterplotLegendPosition } from './graphUtils';
 
 export class GraphFactory {
   private svg: any;
-  private x: any;
-  private y: any;
-  private r: any
   private margin = 80;
   private width
   private height
+
+  //axis
+  private x: any;
+  private y: any;
+
+  // scatterplot
+  private r: any
+
+  //boxplot
+  private bins: any
 
   constructor(width: number, height: number) {
     this.width = width - (this.margin * 2)
@@ -44,10 +51,6 @@ export class GraphFactory {
     );
   }
 
-  public addRAxis(domain: number[], maxRay: number) {
-    this.r = createAxis('linear', domain, [0, maxRay])
-  }
-
   public colorGrid() {
     this.svg.selectAll(".tick line")
     .attr("stroke","#C7C7C7");
@@ -70,6 +73,8 @@ export class GraphFactory {
     .text(value)
   }
 
+  // SCATTERPLOT
+
   public addBasicScatterplotDots(data: any, x_value: string, y_value:string) {
     const dots = this.svg.append('g');
     dots.selectAll("dot")
@@ -83,12 +88,15 @@ export class GraphFactory {
     .style("fill", "#69b3a2");
   }
 
+  public addRAxis(domain: number[], maxRay: number) {
+    this.r = createAxis('linear', domain, [0, maxRay])
+  }
+
   public addVariableScatterplotDots(
     data: any,
     x_value: string,
     y_value: string
   ) {
-
     const dots = this.svg.append('g');
     dots.selectAll("dot")
     .data(data)
@@ -124,5 +132,9 @@ export class GraphFactory {
       .attr("dy", "1.3em")
       .text(this.r.tickFormat(4, "s"));
   }
+
+  // BOXPLOT
+
+
 
 }
