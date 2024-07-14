@@ -59,7 +59,7 @@ function getRelevation(classification, tokens, temperature) {
     let wli = getWli(classification)
     
     let satisfaction = 5
-    let wli_factor = wli * 0.1
+    let wli_factor = wli * 0.25
     let tokens_factor = tokens / 20000
 
     satisfaction = satisfaction - (wli_factor + tokens_factor)
@@ -70,7 +70,7 @@ function getRelevation(classification, tokens, temperature) {
         satisfaction = satisfaction - temperature
     }
 
-    let generations = randomNumber (1, 3) + (tokens / 5000) + (wli * 0.2)
+    let generations = randomNumber (1, 3) + (tokens / 5000) + (wli * 0.4)
     if (temperature > 0.4) {
         generations = generations + (temperature * 2)
     }

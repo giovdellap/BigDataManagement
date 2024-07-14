@@ -10,7 +10,7 @@
 ### Satisfaction table
 
 Satisfaction = 5 meno:
-- wli_factor: wli * 0.1
+- wli_factor: wli * 0.1 (0.25)
 - tokens_factor: tokens * 0.5 / 10000 
 - if ((wli_factor + tokens_factor) > 0.75
   - togli ulteriore (wli_factor + tokens_factor)
@@ -21,7 +21,7 @@ Satisfaction = 5 meno:
 
 Generations = 1/2 (random) più:
 - tokens / 5000
-- wli * 0.2
+- wli * 0.2 (0.4)
 - if (temp > 0.4) => temp*2 else 0
 
 

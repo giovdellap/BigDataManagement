@@ -53,10 +53,26 @@ const wliBoxplotQuery = ( async (req, res) => {
   res.json(response)
 })
 
+const basicRequestQuery = ( async (req, res) => {
+
+  const field = req.body.field
+
+  let response = []
+  let dbHandler = getHandler(req.body.db)
+
+  let dbResponse = await dbHandler.basicRequestQuery(field)
+  console.log("RESPONSE LENGTH: ", dbResponse.length)
+  //let arr = roundFloats(dbResponse, [field1, field2])
+  response = countItems(dbResponse, field, "loading_time") 
+  
+  res.json(response)
+})
+
   
 module.exports = {
   basicQuery,
   basicQueryNoCount,
-  wliBoxplotQuery
+  wliBoxplotQuery,
+  basicRequestQuery
 }
   

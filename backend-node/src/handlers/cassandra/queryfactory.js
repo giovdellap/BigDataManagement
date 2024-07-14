@@ -142,6 +142,26 @@ class RequestQueryFactory extends QueryFactory {
         }
         return values
     }
+
+    basicQuery(field) {
+        let basicQuery = "SELECT loading_time, " +  field + " FROM " + this.keyspace + "." + this.table_name
+        let whereSection = ""
+
+        let whereClauses = []
+        if (field === "input_dimension") {
+            whereClauses.push(field + " > 0")
+        }
+        if (whereClauses.length > 0) {
+            whereSection = " WHERE " + whereClauses[0]
+        }
+        if (whereClauses.length === 2) {
+            whereSection = whereSection + " AND " + whereClauses[1]
+        }
+        if (whereSection !== "") {
+            whereSection = whereSection + " ALLOW FILTERING"
+        }
+        return basicQuery + whereSection
+    }
 }
 
 

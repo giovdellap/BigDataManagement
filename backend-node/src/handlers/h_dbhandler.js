@@ -13,6 +13,8 @@ class DBHandler {
     async insertRequestItem(item) {}
 
     async basicQuery(field1, field2, model) {}
+
+    async basicRequestQuery(field) {}
   }
   
   

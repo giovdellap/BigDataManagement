@@ -88,7 +88,37 @@ class CassandraDBHandler extends DBHandler{
     console.log()
     return result
   }
+
+  async basicRequestQuery(field) {
+    const factory = new RequestQueryFactory(this.DB_KEYSPACE, this.REQUEST_TABLE)
+    
+    let query = factory.basicQuery(field)
+    //console.log('QUERY: ', query)
+    let result = []
+    
+    let stream = this.client.stream(query)
+    .on('readable', function () {
+      // 'readable' is emitted as soon a row is received and parsed
+      let row;
+      while (row = this.read()) {
+        result.push(row)
+      }
+    })
+    .on('end', function () {
+      // Stream ended, there aren't any more rows
+    })
+    .on('error', function (err) {
+      // Something went wrong: err is a response error from Cassandra
+    });
+
+    await once(stream, 'end')
+    console.log()
+    return result
+  }
 }
+
+
+
 
 module.exports = {
   CassandraDBHandler

@@ -5,5 +5,6 @@ const queryRouter = express.Router();
 queryRouter.post('/basicQuery', queryController.basicQuery)
 queryRouter.post('/basicQueryNoCount', queryController.basicQueryNoCount)
 queryRouter.post('/wliboxplotquery', queryController.wliBoxplotQuery)
+queryRouter.post('/basicRequestQuery', queryController.basicRequestQuery)
 
 module.exports = queryRouter;

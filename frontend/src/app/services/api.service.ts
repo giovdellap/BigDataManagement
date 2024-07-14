@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BasicQueryNoCountResponseItem } from '../model/queryresponses/basicQueryNoCountResponse';
+import { BasicRequestQueryItem } from '../model/queryresponses/basicRequestQueryItem';
 import { SatisfactionQueryItem } from '../model/queryresponses/satisfactionQueryResponse';
 import { WLIBoxPlotqueryItem } from '../model/queryresponses/wliBoxPlotQueryItem';
 
@@ -41,5 +42,13 @@ export class ApiService {
       model_filter: model
     }
     return this.http.post<WLIBoxPlotqueryItem[]>(this.url + "/query/wliboxplotquery", body)
+  }
+
+  getBasicRequestQuery(field: string): Observable<BasicRequestQueryItem[]> {
+    let body = {
+      db: "cassandra",
+      field: field
+    }
+    return this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQuery', body)
   }
 }
