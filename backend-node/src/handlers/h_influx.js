@@ -59,6 +59,7 @@ class InfluxDBHandler extends DBHandler{
   async basicQuery(field1, field2, model) {
 
     const queryFactory = new InfluxQueryFactory(this.bucket)
+    console.log(field1, field2)
     const fluxQuery = queryFactory.getBasicQuery(field1, model)
     console.log('QUERY: ', fluxQuery)
     let result = await this.queryRows(fluxQuery, field1, field2)
@@ -95,13 +96,7 @@ class InfluxDBHandler extends DBHandler{
   
     // creates a bucket, entity properties are specified in the "body" property
     const bucket = await bucketsAPI.postBuckets({body: {orgID, name}})
-    console.log(
-      JSON.stringify(
-        bucket,
-        (key, value) => (key === 'links' ? undefined : value),
-        2
-      )
-    )
+    
   }
 
   async queryRows(query, field1, field2) {
@@ -122,8 +117,8 @@ class InfluxDBHandler extends DBHandler{
       obj[field2] = Number(value2)
       result.push(obj)
     }
-    console.log(result[0])
-    console.log('fuori dal for', result.length)
+    //console.log(result[0])
+    //console.log('fuori dal for', result.length)
     return result
   }
   

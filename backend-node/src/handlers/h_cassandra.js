@@ -85,7 +85,7 @@ class CassandraDBHandler extends DBHandler{
     });
 
     await once(stream, 'end')
-    console.log()
+    //console.log()
     return result
   }
 
@@ -112,7 +112,7 @@ class CassandraDBHandler extends DBHandler{
     });
 
     await once(stream, 'end')
-    console.log()
+    //console.log()
     return result
   }
 }

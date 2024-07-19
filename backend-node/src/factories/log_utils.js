@@ -86,11 +86,11 @@ function getRelevation(classification, tokens, temperature) {
 function getRate(classification) {
     switch (classification) {
         case "LOW":
-            return randomNumber(20, 51)
+            return randomNumber(5, 31)
         case "MEDIUM":
-            return randomNumber(51, 81)
+            return randomNumber(31, 51)
         case "HIGH":
-            return randomNumber(81, 130)
+            return randomNumber(51, 100)
         default:
             return 10
     }

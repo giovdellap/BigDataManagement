@@ -44,7 +44,7 @@ const wliBoxplotQuery = ( async (req, res) => {
   let response = []
   let dbHandler = getHandler(req.body.db)
 
-  let dbResponse = await dbHandler.basicQuery(field, 'wli', model_filter)
+  let dbResponse = await dbHandler.basicQuery('wli', field, model_filter)
   //console.log(dbResponse)
   console.log("RESPONSE LENGTH: ", dbResponse.length)
   //let arr = roundToInt(dbResponse, [field, 'wli'])

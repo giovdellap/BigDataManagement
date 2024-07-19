@@ -44,6 +44,7 @@ export class WliboxplotsPageComponent implements OnInit {
     console.log('oninit 2')
     this.optionControl.valueChanges.subscribe(() => this.controlValueChanges())
     this.modelControl.valueChanges.subscribe(() => this.controlValueChanges())
+    this.apiService.getObservable().subscribe(() => this.controlValueChanges())
   }
 
   controlValueChanges() {
@@ -52,7 +53,7 @@ export class WliboxplotsPageComponent implements OnInit {
   }
 
   getGraph(option: string, model: string) {
-    this.apiService.getBasicQueryNoCOunt('wli', option, model).subscribe(res => {
+    this.apiService.getBasicQueryNoCOunt(option, 'wli', model).subscribe(res => {
       //this.factory.createSvg('scatter')
       console.log('GET GRAPH 1')
       this.svg = this.factory.getWLIBoxplot(res, option).outerHTML
