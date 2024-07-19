@@ -2,6 +2,7 @@ const {InfluxDB, HttpError} = require('@influxdata/influxdb-client')
 const {OrgsAPI, BucketsAPI} = require('@influxdata/influxdb-client-apis')
 const { DBHandler } = require('./h_dbhandler')
 const { LogItemToPoint, RequestToPoint } = require('./influxdb/influx_utils')
+const { InfluxQueryFactory } = require('./influxdb/queryfactory')
 //import {InfluxDB, Point} from '@influxdata/influxdb-client'
 
 class InfluxDBHandler extends DBHandler{
@@ -9,13 +10,18 @@ class InfluxDBHandler extends DBHandler{
   url = "http://influxdb:8086"
   token = "kUERQvP1fV7Tra0oo1CbaRIsqHgixJS_qgp5H02zmXOq3dtU0s8O-CGCecPMoWMo1riv5hS3WsJHHr"
   org = "my-org"
-  bucket = "my-bucket"
+  bucket = "ai_company"
 
   constructor() {
     super()
     //console.log("url: ", this.url)
     this.client = new InfluxDB({url : this.url, token : this.token})
   }
+
+  async initialize() {
+    this.recreateBucket(this.bucket)
+  }
+
 
   async insertMultipleItems(type, items) {
     
@@ -42,29 +48,7 @@ class InfluxDBHandler extends DBHandler{
     await this.closeConnection(writeApi)
   }
 
-  async satisfactionQuery(field) {
-
-    const queryApi = this.client.getQueryApi(this.org)
-
-    const fluxQuery =
-    'from(bucket:"my-bucket") |> range(start: -1d) |> filter(fn: (r) => r._measurement == "temperature")'
-    console.log('*** IterateRows ***')
-    for await (const {values, tableMeta} of queryApi.iterateRows(fluxQuery)) {
-    // the following line creates an object for each row
-    const o = tableMeta.toObject(values)
-    // console.log(JSON.stringify(o, null, 2))
-    console.log(
-      `${o._time} ${o._measurement} in '${o.location}' (${o.example}): ${o._field}=${o._value}`
-    )
-
-    // alternatively, you can get only a specific column value without
-    // the need to create an object for every row
-    // console.log(tableMeta.get(row, '_time'))
-  }
-  console.log('\nIterateRows SUCCESS')
-  }
-
-  
+    
   async insertRequestItem(item) {
     let point = RequestToPoint(item)
     let writeApi = this.client.getWriteApi(this.org, this.bucket)
@@ -72,17 +56,104 @@ class InfluxDBHandler extends DBHandler{
     await this.closeConnection(writeApi)
   }
 
+  async basicQuery(field1, field2, model) {
+
+    const queryFactory = new InfluxQueryFactory(this.bucket)
+    const fluxQuery = queryFactory.getBasicQuery(field1, model)
+    console.log('QUERY: ', fluxQuery)
+    let result = await this.queryRows(fluxQuery, field1, field2)
+    return result
+  }
+
+  async basicRequestQuery(field) {
+
+    const queryFactory = new InfluxQueryFactory(this.bucket)
+    const fluxQuery = queryFactory.getRequestQuery()
+    console.log('QUERY: ', fluxQuery)
+    let result = await this.queryRows(fluxQuery, "loading_time", field)
+    return result
+  }
+
+  async recreateBucket(name) {
+    const orgsAPI = new OrgsAPI(this.client)
+    const organizations = await orgsAPI.getOrgs({org: this.org})
+    const orgID = organizations.orgs[0].id
+    const bucketsAPI = new BucketsAPI(this.client)
+    try {
+      const buckets = await bucketsAPI.getBuckets({orgID, name})
+      if (buckets && buckets.buckets && buckets.buckets.length) {
+        const bucketID = buckets.buckets[0].id
+        await bucketsAPI.deleteBucketsID({bucketID})
+      }
+    } catch (e) {
+      if (e instanceof HttpError && e.statusCode == 404) {
+        // OK, bucket not found
+      } else {
+        throw e
+      }
+    }
+  
+    // creates a bucket, entity properties are specified in the "body" property
+    const bucket = await bucketsAPI.postBuckets({body: {orgID, name}})
+    console.log(
+      JSON.stringify(
+        bucket,
+        (key, value) => (key === 'links' ? undefined : value),
+        2
+      )
+    )
+  }
+
+  async queryRows(query, field1, field2) {
+    let result = []
+    const queryApi = this.client.getQueryApi(this.org)
+    for await (const {values, tableMeta} of queryApi.iterateRows(query)) {
+      // the following line creates an object for each row
+      //const o = await tableMeta.toObject(values)
+      //console.log(o)
+      //result.push(o)
+      
+      // console.log(JSON.stringify(o, null, 2)
+      
+      let obj = {}
+      obj[field1] = await tableMeta.get(values, '_value')
+      //console.log(tableMeta.get(row, field1))
+      let value2 = await tableMeta.get(values, field2)
+      obj[field2] = Number(value2)
+      result.push(obj)
+    }
+    console.log(result[0])
+    console.log('fuori dal for', result.length)
+    return result
+  }
+  
+
   async closeConnection(writeApi) {
     try {
       await writeApi.close()
-      console.log('FINISHED')
+      //console.log('FINISHED')
     } catch (e) {
       console.error(e)
       if (e instanceof HttpError && e.statusCode === 401) {
         console.log('Httperror', e)
       }
-      console.log('\nFinished ERROR')
+      //console.log('\nFinished ERROR')
     }
+  }
+
+  async test() {
+    const query = 'from(bucket: "ai_company") |> range(start: -60d) |> filter(fn: (r) => r._measurement == "satisfaction") |> window(period: 1s) |> group(columns: ["_start"]) |> count()'
+    let result = []
+    const queryApi = this.client.getQueryApi(this.org)
+    for await (const {values, tableMeta} of queryApi.iterateRows(query)) {
+      // the following line creates an object for each row
+      const o = await tableMeta.toObject(values)
+      result.push(o)
+      //console.log(o)
+      //result.push(o)
+    }
+    console.log('fuori dal for', result.length)
+    return result
   }
 }
 

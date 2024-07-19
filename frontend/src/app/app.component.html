@@ -1,10 +1,20 @@
 <div class="container">
   <div class="button-row">
-    <button mat-flat-button routerLink = "/satisfaction">Satisfaction</button>
-    <button mat-flat-button routerLink = "/generations">Generations</button>
-    <button mat-flat-button routerLink = "/loadingtime">Loading time</button>
-    <button mat-flat-button routerLink = "/wliboxplots">WLI Boxplots</button>
+    <button mat-raised-button routerLink = "/satisfaction">Satisfaction</button>
+    <button mat-raised-button routerLink = "/generations">Generations</button>
+    <button mat-raised-button routerLink = "/loadingtime">Loading time</button>
+    <button mat-raised-button routerLink = "/wliboxplots">WLI Boxplots</button>
+    <button mat-raised-button routerLink = "/setup">SETUP</button>
+    <mat-form-field class="formField">
+      <mat-label></mat-label>
+      <mat-select [formControl]="dbControl" [(value)]="db">
+        @for (option of options; track option) {
+          <mat-option [value]="option">{{option}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
   </div>
+
 </div>
 
 <router-outlet />

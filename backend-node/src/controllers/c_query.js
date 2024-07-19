@@ -68,11 +68,24 @@ const basicRequestQuery = ( async (req, res) => {
   res.json(response)
 })
 
+const test = ( async (req, res) => {
+
+  let dbHandler = getHandler(req.body.db)
+
+  let dbResponse = await dbHandler.test()
+  console.log("dbResponse: ", dbResponse)
+  //console.log("RESPONSE LENGTH: ", dbResponse.length)
+  //let arr = roundFloats(dbResponse, [field1, field2])
+  res.json(dbResponse)
+
+})
+
   
 module.exports = {
   basicQuery,
   basicQueryNoCount,
   wliBoxplotQuery,
-  basicRequestQuery
+  basicRequestQuery,
+  test
 }
   

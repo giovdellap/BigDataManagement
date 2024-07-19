@@ -93,7 +93,7 @@ class CassandraDBHandler extends DBHandler{
     const factory = new RequestQueryFactory(this.DB_KEYSPACE, this.REQUEST_TABLE)
     
     let query = factory.basicQuery(field)
-    //console.log('QUERY: ', query)
+    console.log('QUERY: ', query)
     let result = []
     
     let stream = this.client.stream(query)

@@ -2,14 +2,16 @@ const { SpecialRequest } = require("../../model/m_request")
 const {InfluxDB, Point} = require('@influxdata/influxdb-client')
 
 function LogItemToPoint(item) {
+    //console.log(item)
+
     let point = new Point("logItem")
     .tag("customer", item.customer)
-    .tag("model", item.model.model)
+    .tag("model", item.model.name)
     .tag("version", item.model.version)
-    .floatField("gen", item.relevations.generations)
-    .floatField("sat", item.relevations.satisfaction)
-    .floatField("wli", item.relevations.wli)
-    .floatField("tokens", item.relevations.tokens)
+    .tag("wli", item.relevations.wli)
+    .tag("tokens", item.relevations.tokens)
+    .intField("generations", item.relevations.generations)
+    .intField("satisfaction", item.relevations.satisfaction)
     .timestamp(item.timestamp)
     
     switch(item.model.name) {
@@ -39,9 +41,9 @@ function LogItemToPoint(item) {
 function RequestToPoint(item) {
     let point = new Point("request")
     .tag("input_tokens", item.input_tokens)
-    .floatField("total_tokens", item.total_tokens)
-    .floatField("stream_messages", item.stream_messages)
-    .floatField("loading_time", item.loading_time)
+    .tag("total_tokens", item.total_tokens)
+    .tag("stream_messages", item.stream_messages)
+    .intField("loading_time", item.loading_time)
     .timestamp(item.timestamp)
     if (item instanceof SpecialRequest) {
         point.tag("input_dimension", item.input_dimension)

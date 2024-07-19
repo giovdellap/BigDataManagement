@@ -41,6 +41,7 @@ export class SatisfactionPageComponent implements OnInit{
     this.getGraph(this.options[0], this.models[0])
     this.optionControl.valueChanges.subscribe(() => this.controlValueChanges())
     this.modelControl.valueChanges.subscribe(() => this.controlValueChanges())
+    this.apiService.getObservable().subscribe(() => this.controlValueChanges())
   }
 
   controlValueChanges() {

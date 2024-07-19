@@ -21,7 +21,11 @@
    5) Vedere se cambiare gli INSERT con i JSON nativi delle query
    6) Vedre come salvare e riapplicare db già fatti
 5) influx:
-   1) Inizializzare query 1
+   1) controllo che scriva bene il ts e dove lo mette (_time)
+   2) Basic query con field 2 temperature o presence_penalty si rompe perché chi non ce l'ha ritorna NaN
+   3) basic query con loading time non funziona
 6) Generic:
-   1) Automatizzare riempimento db
-   2) Definire req/res backend
+   1) Abbassare rateo factory
+   2) Metere il randomico nella generaione dei parametri
+   3) Fix generazione giorni per mese (deve partire dal primo) (febbraio funziona?)
+   4) Mettere both db come opzione per le query

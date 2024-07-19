@@ -24,9 +24,9 @@ const insertOneDay = ( async (req, res) => {
   let dbHandler = getHandler(req.body.db)
 
   // DATA GENERATION
-  generateandInsertOneDay(date, dbHandler)
+  let daycount = await generateandInsertOneDay(date, dbHandler)
 
-  res.json({text: "OK"})
+  res.json({text: daycount})
 })
 
 const insertOneMonth = ( async (req, res) => {
@@ -67,7 +67,7 @@ const insertLogs = ( async (req, res) => {
   await dbHandler.insertMultipleItems("LOGS", dataFactory.logSet)
   await dbHandler.insertMultipleItems("REQUESTS", dataFactory.requestSet)
    
-
+  console.log("LOGSET LENGTH: ", dataFactory.logSet.length)
   res.json({text: dataFactory.logSet})
 })
   

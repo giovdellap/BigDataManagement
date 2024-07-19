@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BasicQueryNoCountResponseItem } from '../model/queryresponses/basicQueryNoCountResponse';
 import { BasicRequestQueryItem } from '../model/queryresponses/basicRequestQueryItem';
@@ -12,12 +12,31 @@ import { WLIBoxPlotqueryItem } from '../model/queryresponses/wliBoxPlotQueryItem
 export class ApiService {
 
   private url = "http://localhost:5001"
+  public dbObservable = new EventEmitter<string>()
+  private db: string = 'influx'
 
   constructor(private http: HttpClient) { }
 
+  // SERVICE SETTINGS
+
+  setDB(db:string) {
+    this.db = db
+    this.dbObservable.emit(db)
+  }
+
+  getDB() {
+    return this.db
+  }
+
+  getObservable() {
+    return this.dbObservable.asObservable()
+  }
+
+  // QUERY
+
   getBasicQuery(field1: string, field2: string, model: string): Observable<SatisfactionQueryItem[]> {
     let body = {
-      db: "cassandra",
+      db: this.db,
       field1: field1,
       field2: field2,
       model_filter: model
@@ -27,7 +46,7 @@ export class ApiService {
 
   getBasicQueryNoCOunt(field1: string, field2: string, model: string): Observable<BasicQueryNoCountResponseItem[]> {
     let body = {
-      db: "cassandra",
+      db: this.db,
       field1: field1,
       field2: field2,
       model_filter: model
@@ -37,7 +56,7 @@ export class ApiService {
 
   getwliBoxplotQuery(field: string, model: string): Observable<WLIBoxPlotqueryItem[]> {
     let body = {
-      db: "cassandra",
+      db: this.db,
       field: field,
       model_filter: model
     }
@@ -46,9 +65,24 @@ export class ApiService {
 
   getBasicRequestQuery(field: string): Observable<BasicRequestQueryItem[]> {
     let body = {
-      db: "cassandra",
+      db: this.db,
       field: field
     }
     return this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQuery', body)
+  }
+
+  //INSERTION
+
+  initializeDB(db: string) {
+    return this.http.post<BasicRequestQueryItem[]>(this.url + '/insertion/initializeDB', {db: db})
+  }
+
+  insertOneMonth(db: string) {
+    let body = {
+      year: 2024,
+      month: 5,
+      db: db
+    }
+    return this.http.post<BasicRequestQueryItem[]>(this.url + '/insertion/insertOneMonth', body)
   }
 }

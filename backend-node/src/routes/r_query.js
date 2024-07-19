@@ -6,5 +6,6 @@ queryRouter.post('/basicQuery', queryController.basicQuery)
 queryRouter.post('/basicQueryNoCount', queryController.basicQueryNoCount)
 queryRouter.post('/wliboxplotquery', queryController.wliBoxplotQuery)
 queryRouter.post('/basicRequestQuery', queryController.basicRequestQuery)
+queryRouter.post('/test', queryController.test)
 
 module.exports = queryRouter;

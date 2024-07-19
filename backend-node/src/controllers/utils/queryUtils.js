@@ -16,7 +16,7 @@ function countItems(data, value1, value2) {
             resArray.push(obj)
         }
     }
-    return resArray
+    return resArray.slice(1, resArray.length)
 }
 
 function roundFloats(data, values) {

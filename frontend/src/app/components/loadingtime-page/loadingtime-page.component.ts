@@ -35,11 +35,12 @@ export class LoadingtimePageComponent implements OnInit{
     this.factory.createSvg('scatter')
     this.getGraph(this.options[0])
     this.optionControl.valueChanges.subscribe(() => this.controlValueChanges())
+    this.apiService.getObservable().subscribe(() => this.controlValueChanges())
   }
 
   controlValueChanges() {
     this.factory.removeSvg('scatter')
-      this.getGraph(this.optionControl.value)
+    this.getGraph(this.optionControl.value)
   }
 
   getGraph(option: XAxisLoadingTime) {
