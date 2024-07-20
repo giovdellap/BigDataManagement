@@ -19,6 +19,42 @@ function countItems(data, value1, value2) {
     return resArray.slice(1, resArray.length)
 }
 
+//value2 è il valore sul quale calcoliamo la media (tokens/wli)
+function calculateMean(data, value1, value2) {
+
+    //calculate count and sum
+    let countArray = []
+    for (let i = 0; i < data.length; i++) {
+        let resIndex = undefined
+        for (let j = 0; j < countArray.length; j++) {
+            if (data[i][value1] === countArray[j][value1]) {
+                resIndex = j
+            }
+        }
+        if (resIndex) {
+            countArray[resIndex].count++
+            countArray[resIndex].sum = countArray[resIndex].sum + data[i][value2]
+        } else {
+            let obj = data[i]
+            obj.count = 1
+            obj.sum = data[i][value2]
+            countArray.push(obj)
+        }
+    }
+    countArray = countArray.slice(1, countArray.length)
+
+    // calculate mean
+    let resArray = []
+    for (let i = 0; i < countArray.length; i++) {
+        let obj = {}
+        obj[value1] = countArray[i][value1]
+        obj[value2] = countArray[i].sum/countArray[i].count
+        resArray.push(obj)
+    }
+    
+    return resArray
+}
+
 function roundFloats(data, values) {
     let res = []
     for (let i = 0; i < data.length; i++) {
@@ -73,5 +109,6 @@ module.exports = {
     countItems,
     roundFloats,
     roundToInt,
-    groupBy
+    groupBy,
+    calculateMean
 }

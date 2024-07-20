@@ -81,6 +81,16 @@ export class ApiService {
     return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQuery', body))
   }
 
+  getLineChartQuery(field1: string, field2: string, model: string): Observable<BasicRequestQueryItem[]> {
+    let body = {
+      db: this.db,
+      field1: field1,
+      field2: field2,
+      model_filter: model
+    }
+    return this.getLogObservable(this.http.post<BasicQueryNoCountResponseItem[]>(this.url + '/query/linechartQuery', body))
+  }
+
   //INSERTION
 
   initializeDB(db: string) {

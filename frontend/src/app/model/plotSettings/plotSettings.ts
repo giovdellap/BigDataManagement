@@ -5,6 +5,14 @@ export class WLIBoxPlotSettings {
   fxDomain: number[] = []
 }
 
+export class LineChartXSettings {
+
+}
+
+export class LineChartYSettings {
+
+}
+
 export const wliboxplotSettings: WLIBoxPlotSettings[] = [
   {
     valueAPI: "satisfaction",
@@ -28,3 +36,5 @@ export function getWLIBoxPlotSettings(value: string): WLIBoxPlotSettings {
   }
   return new WLIBoxPlotSettings()
 }
+
+

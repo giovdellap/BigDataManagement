@@ -40,7 +40,7 @@ export class MultipleLinechartComponent implements OnInit{
 
   ngOnInit(): void {
 
-    this.getGraph(this.options[0], this.models[0])
+    this.loadGraphs()
     this.xAxisControl.valueChanges.subscribe(() => this.onValueChanges())
     this.yAxisControl.valueChanges.subscribe(() => this.onValueChanges())
     this.apiService.getObservable().subscribe(() => this.onValueChanges())
@@ -58,11 +58,11 @@ export class MultipleLinechartComponent implements OnInit{
     }
   }
 
-  getGraph(graph_id: string) {
-    this.apiService.getBasicQueryNoCOunt(option, 'wli', model).subscribe(res => {
+  getGraph(graph_id: number) {
+    this.apiService.getBasicQueryNoCOunt(this.xAxis, this.yAxis, this.models[graph_id]).subscribe(res => {
       //this.factory.createSvg('scatter')
       console.log('GET GRAPH 1')
-      this.svg = this.factory.getWLIBoxplot(res, option).outerHTML
+      this.svgArray[graph_id] = this.factory.getWLIBoxplot(res, option).outerHTML
       console.log('GET GRAPH 2')
     })
   }

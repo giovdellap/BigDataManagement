@@ -1,4 +1,4 @@
-const { countItems, roundFloats, roundToInt, groupBy } = require("./utils/queryUtils")
+const { countItems, roundFloats, roundToInt, groupBy, calculateMean } = require("./utils/queryUtils")
 const { getHandler } = require("./controller_utils")
 
 const basicQuery = ( async (req, res) => {
@@ -28,11 +28,31 @@ const basicQueryNoCount = ( async (req, res) => {
   let dbHandler = getHandler(req.body.db)
 
   let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
+
   console.log("RESPONSE LENGTH: ", dbResponse.length)
   //let arr = roundFloats(dbResponse, [field1, field2])
   //response = countItems(arr, field1, field2) 
   
   res.json(dbResponse)
+})
+
+const linechartQuery = ( async (req, res) => {
+
+  const field1 = req.body.field1
+  const field2 = req.body.field2
+  const model_filter = req.body.model_filter
+
+  //let response = []
+  let dbHandler = getHandler(req.body.db)
+
+  let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
+  console.log("RESPONSE LENGTH: ", dbResponse.length)
+  let response = calculateMean(dbResponse, field1, field2)
+
+  //let arr = roundFloats(dbResponse, [field1, field2])
+  //response = countItems(arr, field1, field2) 
+  
+  res.json(response)
 })
 
 
@@ -86,6 +106,7 @@ module.exports = {
   basicQueryNoCount,
   wliBoxplotQuery,
   basicRequestQuery,
-  test
+  test,
+  linechartQuery
 }
   
