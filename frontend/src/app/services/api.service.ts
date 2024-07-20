@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { BasicQueryNoCountResponseItem } from '../model/queryresponses/basicQueryNoCountResponse';
 import { BasicRequestQueryItem } from '../model/queryresponses/basicRequestQueryItem';
 import { SatisfactionQueryItem } from '../model/queryresponses/satisfactionQueryResponse';
@@ -32,6 +32,12 @@ export class ApiService {
     return this.dbObservable.asObservable()
   }
 
+  getLogObservable(request: Observable<any>) {
+    return request.pipe(tap((response: any) => {
+      console.log('RESPONSE: ', response)
+    }))
+  }
+
   // QUERY
 
   getBasicQuery(field1: string, field2: string, model: string): Observable<SatisfactionQueryItem[]> {
@@ -41,7 +47,9 @@ export class ApiService {
       field2: field2,
       model_filter: model
     }
-    return this.http.post<SatisfactionQueryItem[]>(this.url + "/query/basicQuery", body)
+    return this.getLogObservable(
+      this.http.post<SatisfactionQueryItem[]>(this.url + "/query/basicQuery", body)
+    )
   }
 
   getBasicQueryNoCOunt(field1: string, field2: string, model: string): Observable<BasicQueryNoCountResponseItem[]> {
@@ -51,7 +59,9 @@ export class ApiService {
       field2: field2,
       model_filter: model
     }
-    return this.http.post<BasicQueryNoCountResponseItem[]>(this.url + "/query/basicQueryNoCount", body)
+    return this.getLogObservable(
+      this.http.post<BasicQueryNoCountResponseItem[]>(this.url + "/query/basicQueryNoCount", body)
+    )
   }
 
   getwliBoxplotQuery(field: string, model: string): Observable<WLIBoxPlotqueryItem[]> {
@@ -60,7 +70,7 @@ export class ApiService {
       field: field,
       model_filter: model
     }
-    return this.http.post<WLIBoxPlotqueryItem[]>(this.url + "/query/wliboxplotquery", body)
+    return this.getLogObservable(this.http.post<WLIBoxPlotqueryItem[]>(this.url + "/query/wliboxplotquery", body))
   }
 
   getBasicRequestQuery(field: string): Observable<BasicRequestQueryItem[]> {
@@ -68,7 +78,7 @@ export class ApiService {
       db: this.db,
       field: field
     }
-    return this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQuery', body)
+    return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQuery', body))
   }
 
   //INSERTION
@@ -85,4 +95,5 @@ export class ApiService {
     }
     return this.http.post<BasicRequestQueryItem[]>(this.url + '/insertion/insertOneMonth', body)
   }
+
 }

@@ -58,7 +58,7 @@ function getParameters(name, temperature) {
 function getRelevation(classification, tokens, temperature) {
     let wli = getWli(classification)
     
-    let satisfaction = 5
+    let satisfaction = randomFloat(4.2, 5)
     let wli_factor = wli * 0.25
     let tokens_factor = tokens / 20000
 
@@ -70,7 +70,7 @@ function getRelevation(classification, tokens, temperature) {
         satisfaction = satisfaction - temperature
     }
 
-    let generations = randomNumber (1, 3) + (tokens / 5000) + (wli * 0.4)
+    let generations = randomFloat(0.8, 3.5) + (tokens / 5000) + (wli * 0.4)
     if (temperature > 0.4) {
         generations = generations + (temperature * 2)
     }
@@ -86,11 +86,11 @@ function getRelevation(classification, tokens, temperature) {
 function getRate(classification) {
     switch (classification) {
         case "LOW":
-            return randomNumber(5, 31)
+            return randomNumber(5, 21)
         case "MEDIUM":
-            return randomNumber(31, 51)
+            return randomNumber(21, 41)
         case "HIGH":
-            return randomNumber(51, 100)
+            return randomNumber(41, 80)
         default:
             return 10
     }

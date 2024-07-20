@@ -4,40 +4,56 @@
 - boxplot
 - line graph
 
-## Visualization types
 
-### SINGLE
-SVG singolo
-Un solo valore(scala) per X e uno solo per Y
-Filtri:
-- Cambio di variabile su X
-- Cambio di variabile su Y
-
-### MULTIPLE
-SVG multipli
-Stesso valore(scala) per ogni grafico su X o Y
-Valori diversi(scala) per ogni grafico su X o Y
-
-### LEGEND
-SVG singolo
-Un solo valore(scala) per X o Y
-Categorie diverse per ogni linea(colore) per X o Y
-
-## LOGS TABLE
-
-### SINGLE - Scatterplot satisfaction
+### Scatterplot generations/satisfaction 3D (OK)
 - Y axis: satisfaction
 - X axis: choose between: 
   - tokens
-  - wli (non si vede un cazzo)
+  - wli (non si vede un
   - temperature (solo chi ce l'ha?)
   - presence penalty (solo chi ce l'ha?)
   - tokens/wli rateo
+- TODO: 
+  - Mettere disabled su alcuni parametri per i modelli che non li hanno
+
+### Scatterplot loading time (OK)
+- Y axis: loading time
+- X axis: choose between: 
+  - imput tokens
+  - total tokens
+  - input dimension
+  - stream messages
+
+### Boxplot WLI (OK)
+- Y axis: generations / satisfaction
+- X axis: WLI
+
+### Scatterplot generations/ satisfaction color coded
+- Y axis: satisfaction
+- X axis: choose between: 
+  - tokens
+  - wli (non si vede un
+  - temperature (solo chi ce l'ha)
+  - presence penalty (solo chi ce l'ha)
+  - tokens/wli rateo
+Ogni modello è di un colore diverso
+Legenda con colore e nome modello
+
+### Multiple LineChart generations/satisfaction - model
+4 graph, uno per modello
+Y Axis: generations/satisfaction
+X axis: media di Tokens o wli
+
+### Multiple Linechart weekday-hour loading time
+- Y axis: loading time (mean of the hour(minute?) for each value that has that weekday (tutte le settimane))
+- X axis: hour
+- X values:
+  - weekday
 - visualizzazione:
   - un singolo valore su X
-- filters:
-  - scegli valore X
-  - scegli modello
+
+
+# VECCHIE IDEE
 
 ### SINGLE - Barchart satisfaction - model
 - Y axis: satisfaction
