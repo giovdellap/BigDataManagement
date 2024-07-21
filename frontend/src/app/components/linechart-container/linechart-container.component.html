@@ -16,17 +16,13 @@
         }
       </mat-select>
     </mat-form-field>
-    <mat-radio-group label="Multiple graphs or one graph" [value] = "multiple" [formControl]="multipleControl">
-      <mat-radio-button value="true">Multiple</mat-radio-button>
-      <mat-radio-button value="false">Single</mat-radio-button>
-    </mat-radio-group>
+    <button mat-raised-button class="button-class" [disabled]="multipleObservable | async" (click)="changeMultiple()">Multiple Charts</button>
+    <button mat-raised-button class="button-class" [disabled]="notMultipleObservable | async"(click)="changeMultiple()">Single Chart</button>
   </div>
-  <ng-container *ngIf="(multipleObservable| async); else elseBlock">
+  <ng-container *ngIf="(multipleObservable| async)">
     <app-multiple-linechart ></app-multiple-linechart>
-
   </ng-container>
-  <ng-template #elseBlock>
-    <app-single-linechart></app-single-linechart>
-  </ng-template>
-
+  <ng-container *ngIf="(notMultipleObservable| async)">
+    <app-single-linechart ></app-single-linechart>
+  </ng-container>
 </div>

@@ -102,6 +102,7 @@ export class PlotFactory {
       marginBottom: this.margin,
       x: xOptions,
       y: yOptions,
+      color: {legend: true},
       marks: [
         //ruleY([0]),
         Plot.lineY(data, {x: xAxis, y: yAxis, sort: xAxis, stroke: 'model'}),
