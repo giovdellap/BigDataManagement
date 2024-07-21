@@ -1,5 +1,5 @@
 import * as Plot from "@observablehq/plot";
-import { getWLIBoxPlotSettings } from "../model/plotSettings/plotSettings";
+import { getLineChartSettings, getWLIBoxPlotSettings } from "../model/plotSettings/plotSettings";
 import { BasicQueryNoCountResponseItem } from "../model/queryresponses/basicQueryNoCountResponse";
 
 export class PlotFactory {
@@ -42,35 +42,71 @@ export class PlotFactory {
     })
   }
 
-  getLineChart(data: BasicQueryNoCountResponseItem[], yAxis: string) {
-    const settings = getWLIBoxPlotSettings(yAxis)
+  getLineChart(data: BasicQueryNoCountResponseItem[], xAxis: string, yAxis: string) {
+
+    let xSettings = getLineChartSettings(xAxis)
+    let ySettings = getLineChartSettings(yAxis)
+
     let yOptions: Plot.ScaleOptions = {
       grid: true,
-      interval: 1,
-      label: settings.yLabel,
-      domain: settings.yDomain,
+      interval: ySettings.interval,
+      label: yAxis,
+      domain: ySettings.domain,
     }
     let xOptions: Plot.ScaleOptions = {
-      interval: 1,
-      domain: settings.fxDomain,
-      label: "WLI",
+      grid: true,
+      interval: xSettings.interval,
+      domain: xSettings.domain,
+      label: xAxis,
       labelAnchor: "right",
-      tickFormat: (x) => x.toFixed(1),
+      //tickFormat: (x) => x.toFixed(1),
     }
-    return Plot.lineY(aapl, {x: "Date", y: "Close"}).plot({y: {grid: true}})
     return Plot.plot({
       width: this.width,
       height: this.height,
       marginLeft: this.margin,
       marginBottom: this.margin,
+      x: xOptions,
       y: yOptions,
-      fx: fxOptions,
       marks: [
         //ruleY([0]),
-        Plot.boxY(data, {fx: "wli", y: yAxis}),
+        Plot.lineY(data, {x: xAxis, y: yAxis, sort: xAxis}),
         Plot.frame()
       ]
     })
   }
 
+  getColoredLineChart(data: BasicQueryNoCountResponseItem[], xAxis: string, yAxis: string) {
+
+    let xSettings = getLineChartSettings(xAxis)
+    let ySettings = getLineChartSettings(yAxis)
+
+    let yOptions: Plot.ScaleOptions = {
+      grid: true,
+      interval: ySettings.interval,
+      label: yAxis,
+      domain: ySettings.domain,
+    }
+    let xOptions: Plot.ScaleOptions = {
+      grid: true,
+      interval: xSettings.interval,
+      domain: xSettings.domain,
+      label: xAxis,
+      labelAnchor: "right",
+      //tickFormat: (x) => x.toFixed(1),
+    }
+    return Plot.plot({
+      width: this.width,
+      height: this.height,
+      marginLeft: this.margin,
+      marginBottom: this.margin,
+      x: xOptions,
+      y: yOptions,
+      marks: [
+        //ruleY([0]),
+        Plot.lineY(data, {x: xAxis, y: yAxis, sort: xAxis, stroke: 'model'}),
+        Plot.frame()
+      ]
+    })
+  }
 }

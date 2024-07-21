@@ -34,7 +34,7 @@ export class ApiService {
 
   getLogObservable(request: Observable<any>) {
     return request.pipe(tap((response: any) => {
-      console.log('RESPONSE: ', response)
+      //console.log('RESPONSE: ', response)
     }))
   }
 
@@ -81,7 +81,7 @@ export class ApiService {
     return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQuery', body))
   }
 
-  getLineChartQuery(field1: string, field2: string, model: string): Observable<BasicRequestQueryItem[]> {
+  getLineChartQuery(field1: string, field2: string, model: string): Observable<BasicQueryNoCountResponseItem[]> {
     let body = {
       db: this.db,
       field1: field1,

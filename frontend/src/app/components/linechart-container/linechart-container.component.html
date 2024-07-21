@@ -16,25 +16,17 @@
         }
       </mat-select>
     </mat-form-field>
+    <mat-radio-group label="Multiple graphs or one graph" [value] = "multiple" [formControl]="multipleControl">
+      <mat-radio-button value="true">Multiple</mat-radio-button>
+      <mat-radio-button value="false">Single</mat-radio-button>
+    </mat-radio-group>
   </div>
-  <div class="graph-row">
-    <div class="graph-container">
-      <div class="title-container">{{models[0]}}</div>
-      <figure id="scatter0"></figure>
-    </div>
-    <div class="graph-container">
-      <div class="title-container">{{models[1]}}</div>
-      <figure id="scatter1"></figure>
-    </div>
-  </div>
-  <div class="graph-row">
-    <div class="graph-container">
-      <div class="title-container">{{models[2]}}</div>
-      <figure id="scatter2"></figure>
-    </div>
-    <div class="graph-container">
-      <div class="title-container">{{models[3]}}</div>
-      <figure id="scatter3"></figure>
-    </div>
-  </div>
+  <ng-container *ngIf="(multipleObservable| async); else elseBlock">
+    <app-multiple-linechart ></app-multiple-linechart>
+
+  </ng-container>
+  <ng-template #elseBlock>
+    <app-single-linechart></app-single-linechart>
+  </ng-template>
+
 </div>

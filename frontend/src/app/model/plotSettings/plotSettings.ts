@@ -1,3 +1,4 @@
+
 export class WLIBoxPlotSettings {
   valueAPI: string = ""
   yLabel: string = ""
@@ -5,13 +6,36 @@ export class WLIBoxPlotSettings {
   fxDomain: number[] = []
 }
 
-export class LineChartXSettings {
+export class LineChartScaleSettings {
+  value: string = ""
+  interval: number = 0
+  domain: number[] = []
 
 }
 
-export class LineChartYSettings {
+export const lineChartScaleSettings: LineChartScaleSettings[] = [
+  {
+    value: 'wli',
+    interval: 1,
+    domain: [0, 6]
+  },
+  {
+    value: 'tokens',
+    interval: 500,
+    domain: [0, 10000]
+  },
+  {
+    value: 'generations',
+    interval: 1,
+    domain: [0, 10]
+  },
+  {
+    value: 'satisfaction',
+    interval: 1,
+    domain: [0, 6]
+  }
+]
 
-}
 
 export const wliboxplotSettings: WLIBoxPlotSettings[] = [
   {
@@ -35,6 +59,15 @@ export function getWLIBoxPlotSettings(value: string): WLIBoxPlotSettings {
     }
   }
   return new WLIBoxPlotSettings()
+}
+
+export function getLineChartSettings(value: string): LineChartScaleSettings {
+  for (let i = 0; i < lineChartScaleSettings.length; i++) {
+    if(value === lineChartScaleSettings[i].value) {
+      return lineChartScaleSettings[i]
+    }
+  }
+  return new LineChartScaleSettings()
 }
 
 
