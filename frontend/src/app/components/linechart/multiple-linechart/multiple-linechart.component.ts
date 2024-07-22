@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PlotFactory } from '../../../graphFactory/plotFactory';
-import { models } from '../../../model/graphSettings/xaxisgenerations';
+import { models } from '../../../model/models';
 import { ApiService } from '../../../services/api.service';
 import { LinechartService } from '../../../services/linechart.service';
 import { NoSanitizePipe } from '../../../utils/nosanitizerpipe';
@@ -18,7 +18,7 @@ export class MultipleLinechartComponent {
 
   models = models.slice(1)
   svgArray: any[] = [{}, {}, {}, {}]
-  factory = new PlotFactory(700, 450)
+  factory = new PlotFactory(1000, 700)
   xAxis: string
   yAxis: string
 

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GenerationsPageComponent } from './generations-page.component';
+import { ScatterplotComponent } from './scatterplot.component';
 
-describe('GenerationsPageComponent', () => {
-  let component: GenerationsPageComponent;
-  let fixture: ComponentFixture<GenerationsPageComponent>;
+describe('ScatterplotComponent', () => {
+  let component: ScatterplotComponent;
+  let fixture: ComponentFixture<ScatterplotComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GenerationsPageComponent]
+      imports: [ScatterplotComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(GenerationsPageComponent);
+    fixture = TestBed.createComponent(ScatterplotComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

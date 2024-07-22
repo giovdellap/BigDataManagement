@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { PlotFactory } from '../../graphFactory/plotFactory';
-import { models } from '../../model/graphSettings/xaxissatisfaction';
+import { models } from '../../model/models';
 import { ApiService } from '../../services/api.service';
 import { NoSanitizePipe } from '../../utils/nosanitizerpipe';
 

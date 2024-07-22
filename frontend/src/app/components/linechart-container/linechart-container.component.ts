@@ -8,7 +8,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PlotFactory } from '../../graphFactory/plotFactory';
-import { models } from '../../model/graphSettings/xaxisgenerations';
+import { models } from '../../model/models';
 import { LinechartService } from '../../services/linechart.service';
 import { NoSanitizePipe } from "../../utils/nosanitizerpipe";
 import { MultipleLinechartComponent } from "../linechart/multiple-linechart/multiple-linechart.component";

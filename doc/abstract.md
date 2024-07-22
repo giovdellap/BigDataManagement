@@ -54,11 +54,18 @@ We want to identify correlations between high loading time requests and:
 - high tokens/high wli worse
 - high temperature worse
 - presence penalty doesn't matter
+- ChartGenerator worse
+- ChartAnalyzer worse
+- MarketTracker better
 
 ### High generations
 - tokens worse
 - wli slightly worse
 - high temperature worse
+- ChartGenerator better
+- ChartAnalyzer better
+- GraphPredictor worse
+- MarketTracker worse
 
 ### High loading time
 - weekday and hour worse (to be defined)

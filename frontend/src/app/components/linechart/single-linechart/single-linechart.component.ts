@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { forkJoin, map } from 'rxjs';
 import { PlotFactory } from '../../../graphFactory/plotFactory';
-import { models } from '../../../model/graphSettings/xaxisgenerations';
+import { models } from '../../../model/models';
 import { BasicQueryNoCountResponseItem } from '../../../model/queryresponses/basicQueryNoCountResponse';
 import { ApiService } from '../../../services/api.service';
 import { LinechartService } from '../../../services/linechart.service';

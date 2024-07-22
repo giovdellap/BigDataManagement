@@ -10,7 +10,7 @@ function newItem(date, classification) {
     let model = randomModel()
     let temperature = randomFloat(0.2, 0.6)
     let tokens = randomNumber(3000, 10001)
-    let relevation = getRelevation(classification, tokens, temperature)
+    let relevation = getRelevation(classification, tokens, temperature, model)
     let parameters = getParameters(model.name, temperature)
 
     return new LogItem(
@@ -23,8 +23,19 @@ function newItem(date, classification) {
 }
 
 function randomModel() {
-    modelArray = model.models
-    model_index = randomNumber(0, modelArray.length)
+    let modelArray = model.models
+    let model_index = 0
+    let fl = randomFloat(0, 1)
+    if(fl > 0.35 && fl <= 0.7) {
+        model_index = 1
+    }
+    if (fl > 0.7 && fl < 0.85) {
+        model_index = 2
+    }
+    if (fl > 0.85) {
+        model_index = 3
+    }
+
     selected = modelArray[model_index]
     version_index = randomNumber(0, selected.versions.length)
     return new model.Model(selected.name, selected.versions[version_index])
@@ -55,7 +66,7 @@ function getParameters(name, temperature) {
     }
 }
 
-function getRelevation(classification, tokens, temperature) {
+function getRelevation(classification, tokens, temperature, model) {
     let wli = getWli(classification)
     
     let satisfaction = randomFloat(4.2, 5)
@@ -74,13 +85,32 @@ function getRelevation(classification, tokens, temperature) {
     if (temperature > 0.4) {
         generations = generations + (temperature * 2)
     }
+    satisfaction = satisfaction + getSatifactionModifier(model.name)
+    generations = generations + getGenerationsModifier(model.name)
 
     return new Relevation (
         Math.round(generations),
         Math.round(satisfaction),
         wli, tokens
     )
+}
 
+function getGenerationsModifier(model_name) {
+    if (model_name === "ChartGenerator" || model_name === "ChartAnalyzer") {
+        return randomFloat (0.8, 1.3)
+    } else {
+        return - randomFloat(0.6, 1.1)
+    }
+}
+
+function getSatifactionModifier(model_name) {
+    if (model_name === "ChartGenerator" || model_name === "ChartAnalyzer") {
+        return - randomFloat (0.3, 0.6)
+    }
+    if (model_name === "MarketTracker") {
+        return randomFloat(0.3, 0.6)
+    }
+    return 0
 }
 
 function getRate(classification) {

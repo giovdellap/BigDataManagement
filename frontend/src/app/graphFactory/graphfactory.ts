@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { models } from '../model/models';
 import { createAxis, getScatterplotLegendPosition } from './graphUtils';
 
 export class GraphFactory {
@@ -75,7 +76,8 @@ export class GraphFactory {
 
   // SCATTERPLOT
 
-  public addBasicScatterplotDots(data: any, x_value: string, y_value:string) {
+  public addColoredScatterplotDots(data: any, x_value: string, y_value:string) {
+
     const dots = this.svg.append('g');
     dots.selectAll("dot")
     .data(data)
@@ -85,7 +87,16 @@ export class GraphFactory {
     .attr("cy",  (d: any) => this.y(d[y_value]))
     .attr("r", 1)
     .style("opacity", 1)
-    .style("fill", "#69b3a2");
+    .style("fill", (d:any) => this.getColor(d['model']));
+  }
+
+  public addColoredBackground() {
+    this.svg.append("rect")
+    .attr("x",0)
+    .attr("y",0)
+    .attr("height", this.height)
+    .attr("width", this.width)
+    .style("fill", "EBEBEB")
   }
 
   public addRAxis(domain: number[], maxRay: number) {
@@ -133,8 +144,16 @@ export class GraphFactory {
       .text(this.r.tickFormat(4, "s"));
   }
 
-  // BOXPLOT
-
+  getColor(model: string) {
+    let realModels = models.slice(1)
+    let colors = [ "#F8766D", "#00BA38", "#619CFF", "#8B8000"]
+    for (let i = 0; i < realModels.length; i++) {
+      if (model === realModels[i]) {
+        return colors[i]
+      }
+    }
+    return "all"
+  }
 
 
 }

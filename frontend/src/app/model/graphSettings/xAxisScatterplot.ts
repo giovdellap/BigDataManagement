@@ -1,4 +1,4 @@
-export class XAxisGenerations {
+export class XAxisScatterplot {
   value: string
   type: string
   domain: number[]
@@ -12,7 +12,7 @@ export class XAxisGenerations {
   }
 }
 
-export const generationsSettings: XAxisGenerations[] = [
+export const xScatterplotSettings: XAxisScatterplot[] = [
   {
     value: 'tokens',
     type: 'linear',
@@ -39,10 +39,4 @@ export const generationsSettings: XAxisGenerations[] = [
   }
 ]
 
-export const models = [
-  "all",
-  "ChartGenerator",
-  "ChartAnalyzer",
-  "GraphPredictor",
-  "MarketTracker"
-]
+
