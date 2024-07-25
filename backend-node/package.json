@@ -24,6 +24,7 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "nodemon": "^3.1.4",
+    "pca-js": "^1.0.2",
     "sequelize": "^6.37.3"
   }
 }

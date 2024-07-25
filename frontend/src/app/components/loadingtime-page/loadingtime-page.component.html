@@ -3,11 +3,14 @@
     <mat-label>Select x axis</mat-label>
     <mat-select [formControl]="optionControl">
       @for (option of options; track option) {
-        <mat-option [value]="option">{{option.value}}</mat-option>
+        <mat-option [value]="option">{{option}}</mat-option>
       }
     </mat-select>
   </mat-form-field>
 </div>
 
+<div class="graph-container">
+  <figure id="scatter"></figure>
+  <figure id="pcagraph"></figure>
+</div>
 
-<figure id="scatter"></figure>

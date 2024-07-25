@@ -1,5 +1,5 @@
 const { getRequestClassification } = require("./rates");
-const { randomNumber } = require("./utils");
+const { randomNumber, randomFloat } = require("./utils");
 const { Request, SpecialRequest } = require("../model/m_request")
 
 function newRequest(special, date) {
@@ -12,14 +12,28 @@ function newRequest(special, date) {
         //console.log('IM SPECIAL')
         input_dimension = randomNumber(1000, 8001)
     }
+
+    // date/hour increase
     if (getRequestClassification(date) === "LOW") {
-        loading_time = randomNumber(10, 31) + (stream_messages * 2)
+        loading_time = randomNumber(10, 31) 
     } else {
-        loading_time = randomNumber(51, 90) + (stream_messages * 3.5)
+        loading_time = randomNumber(51, 90)
     }
-    loading_time = loading_time + (total_tokens / 2000)
-    if (input_dimension > 2500) {
-        loading_time = loading_time + randomNumber(25, 51)
+
+    // total tokens increase
+    loading_time = loading_time + ((total_tokens - input_tokens)/ 2000)
+    
+    // input dimension increase
+    if(input_dimension > 0) {
+        let multiplier = 0
+        if (input_dimension > randomNumber(2000, 4000)) {
+            multiplier = randomFloat(1, 1.4)
+            let add = Math.round((25/8000*input_dimension) * randomFloat(1, 1.2))
+            loading_time = loading_time + add
+        } else {
+            multiplier = randomFloat(0.5, 0.8)
+        }
+        loading_time = loading_time + Math.round((25/8000*input_dimension) * multiplier)
     }
     
     if (special) {

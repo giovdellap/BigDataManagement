@@ -12,7 +12,34 @@ export class XAxisLoadingTime {
   }
 }
 
-export const loadingTimeSettings: XAxisLoadingTime[] = [
+export const pcaLoadingTimeSettings: XAxisLoadingTime[] = [
+  {
+    value: 'input_tokens',
+    type: 'linear',
+    domain: [-10000, 10000],
+    maxRay: 5
+  },
+  {
+    value: 'total_tokens',
+    type: 'linear',
+    domain: [-40000, 40000],
+    maxRay: 5
+  },
+  {
+    value: 'stream_messages',
+    type: 'linear',
+    domain: [-10, 10],
+    maxRay: 7
+  },
+  {
+    value: 'input_dimension',
+    type: 'linear',
+    domain: [-50, 50],
+    maxRay: 5
+  }
+]
+
+export const simpleLoadingTimeSettings: XAxisLoadingTime[] = [
   {
     value: 'input_tokens',
     type: 'linear',
@@ -29,7 +56,7 @@ export const loadingTimeSettings: XAxisLoadingTime[] = [
     value: 'stream_messages',
     type: 'linear',
     domain: [0, 10],
-    maxRay: 5
+    maxRay: 7
   },
   {
     value: 'input_dimension',

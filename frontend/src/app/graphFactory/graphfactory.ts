@@ -120,6 +120,24 @@ export class GraphFactory {
     .style("fill", "#69b3a2")
   }
 
+  public addSimpleScatterplotDots(
+    data: any,
+    x_value: string,
+    y_value: string,
+    ray: number
+  ) {
+    const dots = this.svg.append('g');
+    dots.selectAll("dot")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("cx", (d: any) => this.x(d[x_value]))
+    .attr("cy",  (d: any) => this.y(d[y_value]))
+    .attr("r", ray)
+    .style("opacity", 1)
+    .style("fill", "#69b3a2")
+  }
+
   public addScatterplotDimensionLegend() {
     const positionString = "translate(" + (this.width + this.margin/2) + "," + (this.height) + ")"
 

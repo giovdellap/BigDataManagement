@@ -1,5 +1,6 @@
 const { countItems, roundFloats, roundToInt, groupBy, calculateMean } = require("./utils/queryUtils")
 const { getHandler } = require("./controller_utils")
+const PCA = require ("pca-js")
 
 const basicQuery = ( async (req, res) => {
 
@@ -88,6 +89,58 @@ const basicRequestQuery = ( async (req, res) => {
   res.json(response)
 })
 
+const basicRequestNoCountQuery = ( async (req, res) => {
+
+  const field = req.body.field
+
+  let dbHandler = getHandler(req.body.db)
+
+  let dbResponse = await dbHandler.basicRequestQuery(field)
+  console.log("RESPONSE LENGTH: ", dbResponse.length)
+  //let arr = roundFloats(dbResponse, [field1, field2])
+  //response = countItems(dbResponse, field, "loading_time") 
+  
+  res.json(dbResponse)
+})
+
+const pcaRequestQuery = ( async (req, res) => {
+
+  const field = req.body.field
+
+  let dbHandler = getHandler(req.body.db)
+
+  let dbResponse = await dbHandler.basicRequestQuery(field)
+  console.log("RESPONSE LENGTH: ", dbResponse.length)
+
+  // transorm items to numbers arrays
+  let onlyNumbers = []
+  for (let i = 0; i < dbResponse.length; i++) {
+    //let item = [dbResponse[i]['loading_time'], dbResponse [i][field]]
+    let item = [dbResponse [i][field], dbResponse[i]['loading_time']]
+
+    onlyNumbers.push(item)
+  }
+  console.log('ONLYNUMBERS: ',onlyNumbers)
+  let vectors = PCA.getEigenVectors(onlyNumbers)
+  //var first = PCA.computePercentageExplained(vectors,vectors[0])
+  //var topTwo = PCA.computePercentageExplained(vectors,vectors[0],vectors[1])
+  
+  var adData = PCA.computeAdjustedData(onlyNumbers,vectors[0])
+  let results = []
+  console.log('FORMATTEDDATA: ', adData.formattedAdjustedData)
+  for (let i = 0; i < adData.formattedAdjustedData[0].length; i++) {
+    let result = {}
+    result['loading_time'] = 0
+    result[field] = adData.formattedAdjustedData[0][i]
+    results.push(result)
+  }
+  response = countItems(results, field, "loading_time") 
+
+
+  //console.log(adData)
+  res.json(response)
+})
+
 const test = ( async (req, res) => {
 
   let dbHandler = getHandler(req.body.db)
@@ -106,6 +159,8 @@ module.exports = {
   basicQueryNoCount,
   wliBoxplotQuery,
   basicRequestQuery,
+  basicRequestNoCountQuery,
+  pcaRequestQuery,
   test,
   linechartQuery
 }

@@ -81,6 +81,22 @@ export class ApiService {
     return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQuery', body))
   }
 
+  getBasicRequestQueryNoCount(field: string): Observable<BasicRequestQueryItem[]> {
+    let body = {
+      db: this.db,
+      field: field
+    }
+    return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQueryNoCount', body))
+  }
+
+  getPCARequestQuery(field: string): Observable<BasicRequestQueryItem[]> {
+    let body = {
+      db: this.db,
+      field: field
+    }
+    return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/pcaquery', body))
+  }
+
   getLineChartQuery(field1: string, field2: string, model: string): Observable<BasicQueryNoCountResponseItem[]> {
     let body = {
       db: this.db,

@@ -69,8 +69,8 @@ We want to identify correlations between high loading time requests and:
 
 ### High loading time
 - weekday and hour worse (to be defined)
-- stream_messages worse
+- stream_messages no
 - total_tokens worse
-- input_tokens doesn't matter
+- input_tokens no
 - input_dimension worse (every value higher than LOW takes a lot more time)
 

@@ -34,7 +34,7 @@ class DataFactory {
         for (let i = 0; i < rate; i++) {
             let item = newItem(dates[i], rateClassification)
             this.logSet.push(item)
-            if ((i % 3) === 0) {
+            if ((i % 2) === 0) {
                 let request = newRequest(
                     (item.model.name === "ChartAnalyzer"),
                     dates[i]
