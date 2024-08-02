@@ -1,5 +1,19 @@
 ## COSE DA AGGIUSTARE
 
+## Proposal Information Integration
+- Scenario
+  - Passaggio da Cassandra a Influx + Visualizzazione dati riuniti
+  - Query già esistenti
+- Source Schema:
+  - Schema ER dei preesistenti
+- Global Schema:
+  - Schema ER del risultato
+- Mapping:
+  - Descrizione del backend (?)
+- Definire tipologia risultato
+- Definire Query Answering
+
+
 ## TODO
 1) Grafici da fare:
    1) Dimensionality reduction su request
