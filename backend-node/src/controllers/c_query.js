@@ -143,6 +143,18 @@ const pcaRequestQuery = ( async (req, res) => {
 
 const test = ( async (req, res) => {
 
+  const test = ( async (req, res) => {
+
+    let dbHandler = getHandler(req.body.db)
+  
+    let dbResponse = await dbHandler.test()
+    console.log("dbResponse: ", dbResponse)
+    //console.log("RESPONSE LENGTH: ", dbResponse.length)
+    //let arr = roundFloats(dbResponse, [field1, field2])
+    res.json(dbResponse)
+  
+  })
+
   let dbHandler = getHandler(req.body.db)
 
   let dbResponse = await dbHandler.test()

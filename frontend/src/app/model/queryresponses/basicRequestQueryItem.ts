@@ -4,4 +4,5 @@ export class BasicRequestQueryItem {
   input_tokens: number = 0
   total_tokens: number = 0
   stream_messages: number = 0
+  time: string = ""
 }

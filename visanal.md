@@ -1,0 +1,1 @@
+In loading time stream messages è l'unico che non ha pca perché è l'unico con gli interi

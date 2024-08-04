@@ -4,7 +4,7 @@ import { createAxis, getScatterplotLegendPosition } from './graphUtils';
 
 export class GraphFactory {
   private svg: any;
-  private margin = 80;
+  private margin = 40;
   private width
   private height
 
@@ -35,7 +35,7 @@ export class GraphFactory {
     .attr("transform", "translate(" + this.margin + "," + this.margin + ")");
   }
 
-  public addXAxis(type: string, domain: number[]) {
+  public addXAxis(type: string, domain: number[] | Date[]) {
     this.x = createAxis(type, domain, [0, this.width])
     this.svg.append("g")
     .attr("transform", "translate(0," + this.height + ")")

@@ -1,12 +1,14 @@
 import * as d3 from 'd3';
 
-export function createAxis(type: string, domain: number[], range: number[]) {
+export function createAxis(type: string, domain: any[], range: number[]) {
   if (type === 'linear') {
     return d3.scaleLinear()
     .domain(domain)
     .range(range);
   } else {
-    return d3.scaleLinear()
+    return d3.scaleTime()
+    .domain(domain)
+    .range(range);
   }
 }
 

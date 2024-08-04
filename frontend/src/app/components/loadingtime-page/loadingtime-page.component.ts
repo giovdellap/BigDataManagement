@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Observable, switchMap, tap } from 'rxjs';
+import { mergeMap, Observable, tap } from 'rxjs';
 import { GraphFactory } from '../../graphFactory/graphfactory';
 import { getMaxCount } from '../../graphFactory/graphUtils';
 import { pcaLoadingTimeSettings, simpleLoadingTimeSettings, XAxisLoadingTime } from '../../model/graphSettings/xaxisloadingtime';
@@ -50,34 +50,35 @@ export class LoadingtimePageComponent implements OnInit{
   }
 
   newGraph() {
-    this.getSimpleObservable().pipe(
-      switchMap(() => this.getPCAObservable())
-    ).subscribe()
-  }
-
-
-  getSimpleObservable(): Observable<any> {
-    //SIMPLE GRAPH CREATION
+    let resObservable: Observable<any>
     if (this.optionControl.value === this.countOption) {
-      return this.apiService.getBasicRequestQuery(this.optionControl.value).pipe(
+      resObservable = this.apiService.getBasicRequestQuery(this.optionControl.value).pipe(
         tap(
           res => this.getCountGraph(res, this.normalFactory, this.getSimpleOption(this.optionControl.value), [0, 150])
         )
       )
     } else {
-      return this.apiService.getBasicRequestQueryNoCount (this.optionControl.value).pipe(
-        tap(
-          res => this.getSimpleGraph(res, this.normalFactory, this.getSimpleOption(this.optionControl.value), [0, 150])
-        )
+      resObservable = this.getSimpleObservable().pipe(mergeMap(() => this.getPCAObservable())
       )
     }
+
+    resObservable.subscribe()
+  }
+
+
+  getSimpleObservable(): Observable<any> {
+    return this.apiService.getBasicRequestQueryNoCount (this.optionControl.value).pipe(
+      tap(
+        res => this.getSimpleGraph(res, this.normalFactory, this.getSimpleOption(this.optionControl.value), [0, 150])
+      )
+    )
 
   }
 
   getPCAObservable(): Observable<any> {
     return this.apiService.getPCARequestQuery(this.optionControl.value).pipe(
       tap(
-        res => this.getCountGraph(res, this.pcaFactory, this.getPCAOption(this.optionControl.value), [-5, 5])
+        res => this.getCountGraph(res, this.pcaFactory, this.getPCAOption(this.optionControl.value), [-3, 3])
       )
     )
   }

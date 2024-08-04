@@ -113,8 +113,13 @@ class InfluxDBHandler extends DBHandler{
       let obj = {}
       obj[field1] = await tableMeta.get(values, '_value')
       //console.log(tableMeta.get(row, field1))
-      let value2 = await tableMeta.get(values, field2)
-      obj[field2] = Number(value2)
+      if (field2 !== 'time') {
+        let value2 = await tableMeta.get(values, field2)
+        obj[field2] = Number(value2)
+      } else {
+        let value2 = await tableMeta.get(values, '_time')
+        obj[field2] = value2
+      }
       result.push(obj)
     }
     //console.log(result[0])

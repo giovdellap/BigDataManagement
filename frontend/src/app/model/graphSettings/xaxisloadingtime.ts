@@ -16,7 +16,7 @@ export const pcaLoadingTimeSettings: XAxisLoadingTime[] = [
   {
     value: 'input_tokens',
     type: 'linear',
-    domain: [-10000, 10000],
+    domain: [-6000, 6000],
     maxRay: 5
   },
   {

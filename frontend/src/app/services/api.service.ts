@@ -116,7 +116,7 @@ export class ApiService {
   insertOneMonth(db: string) {
     let body = {
       year: 2024,
-      month: 5,
+      month: 6,
       db: db
     }
     return this.http.post<BasicRequestQueryItem[]>(this.url + '/insertion/insertOneMonth', body)
