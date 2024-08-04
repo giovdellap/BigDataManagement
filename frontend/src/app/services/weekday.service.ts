@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BasicRequestQueryItem } from '../model/queryresponses/basicRequestQueryItem';
-import { addMinutes, emptydataArray, getMiddleDate, getMinMaxDates, WeekdayLogItem, WeekdaySlot } from '../utils/weekDayUtils';
+import { addMinutes, emptydataArray, getMiddleDate, getMinMaxDates, WeekdayLogItem, weekdayNames, WeekdaySlot } from '../utils/weekDayUtils';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +8,12 @@ import { addMinutes, emptydataArray, getMiddleDate, getMinMaxDates, WeekdayLogIt
 export class WeekdayService {
 
   dataArray: WeekdayLogItem[][] = emptydataArray
-  singleArray: WeekdayLogItem[][] = emptydataArray
+  singleArray: WeekdayLogItem[] = []
 
   constructor() { }
 
   insertArray(data: BasicRequestQueryItem[]) {
-    this.dataArray = []
+    this.dataArray = emptydataArray
     for (let i = 0; i < data.length; i++) {
       let originalDate = new Date(data[i].time)
       let newDate = new Date()
@@ -22,15 +22,13 @@ export class WeekdayService {
         originalDate.getMinutes(),
         originalDate.getSeconds()
       )
-      let obj = new WeekdayLogItem(data[i].loading_time, newDate)
-
+      let obj = new WeekdayLogItem(data[i].loading_time, newDate, weekdayNames[originalDate.getDay()])
       this.dataArray[originalDate.getDay()].push(obj)
     }
-    console.log(this.dataArray)
   }
 
   generateSingleLinechartArray() {
-    for (let weekday = 0; weekday < this.singleArray.length; weekday++) {
+    for (let weekday = 0; weekday < 7; weekday++) {
 
       // SLOT CREATION
 
@@ -69,9 +67,8 @@ export class WeekdayService {
         for (let j = 0; j < slot.loading_times.length; j++) {
           loadingTime = loadingTime + slot.loading_times[j]
         }
-        this.singleArray[weekday].push(new WeekdayLogItem(loadingTime/slot.loading_times.length, slot.date))
+        this.singleArray.push(new WeekdayLogItem(loadingTime/slot.loading_times.length, slot.date, weekdayNames[weekday]))
       }
-
     }
   }
 

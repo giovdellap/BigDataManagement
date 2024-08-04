@@ -23,10 +23,9 @@ export class SingleWeekdayComponent {
     console.log('MULTIPLE COMPONENT')
 
     this.apiService.getBasicRequestQueryNoCount('time').subscribe( res => {
-      console.log(res)
       this.weekdayService.insertArray(res)
       this.weekdayService.generateSingleLinechartArray()
-      this.svg = this.factory.getColoredLineChart(this.weekdayService.singleArray, this.xAxis, this.yAxis).outerHTML
+      this.svg = this.factory.getWeekdayLineChart(this.weekdayService.singleArray).outerHTML
     })
 
   }

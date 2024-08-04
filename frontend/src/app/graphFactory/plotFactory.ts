@@ -1,6 +1,7 @@
 import * as Plot from "@observablehq/plot";
 import { getLineChartSettings, getWLIBoxPlotSettings } from "../model/plotSettings/plotSettings";
 import { BasicQueryNoCountResponseItem } from "../model/queryresponses/basicQueryNoCountResponse";
+import { getMinMaxDates, WeekdayLogItem } from "../utils/weekDayUtils";
 
 export class PlotFactory {
   private margin = 80;
@@ -106,6 +107,40 @@ export class PlotFactory {
       marks: [
         //ruleY([0]),
         Plot.lineY(data, {x: xAxis, y: yAxis, sort: xAxis, stroke: 'model'}),
+        Plot.frame()
+      ]
+    })
+  }
+
+  getWeekdayLineChart(data: WeekdayLogItem[]) {
+
+    console.log(data)
+
+    let yOptions: Plot.ScaleOptions = {
+      grid: true,
+      interval: 10,
+      label: 'loading time',
+      domain: [0, 80],
+    }
+    let xOptions: Plot.ScaleOptions = {
+      type: 'time',
+      grid: true,
+      domain: getMinMaxDates(0, 0, 23, 59),
+      label: 'daytime',
+      labelAnchor: "right",
+      //tickFormat: (x) => x.toFixed(1),
+    }
+    return Plot.plot({
+      width: this.width,
+      height: this.height,
+      marginLeft: this.margin,
+      marginBottom: this.margin,
+      x: xOptions,
+      y: yOptions,
+      color: {legend: true},
+      marks: [
+        //ruleY([0]),
+        Plot.lineY(data, {x: 'date', y: 'loading_time', sort: 'date', stroke: 'weekDay'}),
         Plot.frame()
       ]
     })

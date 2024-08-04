@@ -16,10 +16,12 @@ export const emptydataArray: WeekdayLogItem[][] = [[], [], [], [], [], [], []]
 export class WeekdayLogItem {
   loading_time: number
   date: Date
+  weekDay: string
 
-  constructor(loading_time: number, date: Date) {
+  constructor(loading_time: number, date: Date, weekDay: string) {
     this.loading_time = loading_time
     this.date = date
+    this.weekDay = weekDay
   }
 }
 
@@ -48,6 +50,7 @@ export class WeekdaySlot {
   loading_times: number[] = []
 
   constructor(dates: Date[], date: Date) {
+
     this.minDate = dates[0]
     this.maxDate = dates[1]
     this.date = date

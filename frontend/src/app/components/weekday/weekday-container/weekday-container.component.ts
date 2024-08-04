@@ -19,7 +19,7 @@ import { SingleWeekdayComponent } from '../single-weekday/single-weekday.compone
 })
 export class WeekdayContainerComponent {
 
-  multiple = true;
+  multiple = false;
   multipleEmitter = new BehaviorSubject<boolean>(this.multiple)
   multipleObservable: Observable<boolean>
 
