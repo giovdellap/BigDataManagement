@@ -17,7 +17,7 @@ export const lineChartScaleSettings: LineChartScaleSettings[] = [
   {
     value: 'wli',
     interval: 1,
-    domain: [0, 6]
+    domain: [0, 5]
   },
   {
     value: 'tokens',
@@ -32,7 +32,7 @@ export const lineChartScaleSettings: LineChartScaleSettings[] = [
   {
     value: 'satisfaction',
     interval: 1,
-    domain: [0, 6]
+    domain: [0, 5]
   }
 ]
 
@@ -41,7 +41,7 @@ export const wliboxplotSettings: WLIBoxPlotSettings[] = [
   {
     valueAPI: "satisfaction",
     yLabel: "Satisfaction",
-    yDomain: [0, 6],
+    yDomain: [0, 5],
     fxDomain: [1, 2, 3, 4, 5]
   },
   {

@@ -11,6 +11,9 @@
 
 <div class="graph-container">
   <figure id="scatter"></figure>
+  <div class="pcatitle" *ngIf="titleObservable | async">
+    PRINCIPAL COMPONENT ANALYSIS
+  </div>
   <figure id="pcagraph"></figure>
 </div>
 

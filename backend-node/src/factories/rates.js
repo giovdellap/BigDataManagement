@@ -73,12 +73,12 @@ const highRequests = [
     {
         day: 6,
         start: 10,
-        end: 22
+        end: 16
     },
     {
         day: 0,
-        start: 10,
-        end: 22
+        start: 20,
+        end: 24
     },
 ]
 
@@ -111,15 +111,19 @@ function getRateClassification(date) {
 function getRequestClassification(date) {
     const weekday = date.getDay()
     const start = date.getHours()
-    for (highTime in highRequests) {
+    for (let i = 0; i < highRequests.length; i++) {
+        let highTime = highRequests[i]
         if (
             highTime.day == weekday 
             && highTime.start <= start
             && highTime.end > start
         ) {
+
             return "HIGH"        
         }
+
     }
+
     return "LOW"
 }
 

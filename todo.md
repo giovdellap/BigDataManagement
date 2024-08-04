@@ -2,11 +2,9 @@
 
 ## Visual Analytics
 1) Controllo errori teoria
-2) Togliere PCA da total tokens e stream messages
-3) Pompare un po' weekday
-4) Powerpoint
-5) Report
-6) Ricerca paper
+2) Powerpoint
+3) Report
+4) Ricerca paper
 
 
 ## TODO

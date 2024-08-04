@@ -17,3 +17,8 @@
   flex-direction: column;
   align-items: center;
 }
+
+.pcatitle {
+  font-size: 2em;
+  font-weight: bold;
+}

@@ -1,8 +1,9 @@
 .filter-container {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   margin: 0px 20px;
+  heght: 100px;
 }
 
 .button-class {
@@ -10,4 +11,9 @@
   font-size: 16px;
   width: 160px;
   margin: 0px 30px;
+}
+
+.formField {
+  margin: auto 10px;
+
 }

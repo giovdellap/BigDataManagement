@@ -1,10 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { mergeMap, Observable, tap } from 'rxjs';
+import { BehaviorSubject, mergeMap, Observable, tap } from 'rxjs';
 import { GraphFactory } from '../../graphFactory/graphfactory';
 import { getMaxCount } from '../../graphFactory/graphUtils';
 import { pcaLoadingTimeSettings, simpleLoadingTimeSettings, XAxisLoadingTime } from '../../model/graphSettings/xaxisloadingtime';
@@ -19,7 +20,8 @@ import { ApiService } from '../../services/api.service';
     FormsModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatButtonModule
+    MatButtonModule,
+    CommonModule
   ],
   templateUrl: './loadingtime-page.component.html',
   styleUrl: './loadingtime-page.component.css'
@@ -29,10 +31,15 @@ export class LoadingtimePageComponent implements OnInit{
   countOption = "stream_messages"
   options: string[] = ['input_tokens', 'total_tokens', 'stream_messages', 'input_dimension']
 
+  titleBehaviourSubject = new BehaviorSubject<boolean>(true)
+  titleObservable: Observable<boolean>
+
   normalFactory = new GraphFactory(1000, 600)
   pcaFactory = new GraphFactory(1000, 350)
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) {
+    this.titleObservable = this.titleBehaviourSubject.asObservable()
+  }
 
   ngOnInit(): void {
     this.optionControl.setValue(this.options[0])
@@ -52,12 +59,14 @@ export class LoadingtimePageComponent implements OnInit{
   newGraph() {
     let resObservable: Observable<any>
     if (this.optionControl.value === this.countOption) {
+      this.titleBehaviourSubject.next(false)
       resObservable = this.apiService.getBasicRequestQuery(this.optionControl.value).pipe(
         tap(
           res => this.getCountGraph(res, this.normalFactory, this.getSimpleOption(this.optionControl.value), [0, 150])
         )
       )
     } else {
+      this.titleBehaviourSubject.next(true)
       resObservable = this.getSimpleObservable().pipe(mergeMap(() => this.getPCAObservable())
       )
     }

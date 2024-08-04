@@ -43,7 +43,7 @@ export class ScatterplotComponent implements OnInit{
   model = this.models[0]
   modelControl = new FormControl<string>(this.model)
 
-  colored = true
+  colored = false
   coloredEmitter = new BehaviorSubject<boolean>(this.colored)
   coloredObservable: Observable<boolean>
 

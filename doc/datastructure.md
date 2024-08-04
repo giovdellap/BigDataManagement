@@ -95,5 +95,5 @@
   
 ### High weekday/hour slots
 - FRIDAY: 14-20
-- SATURDAY: 10-22
-- SUNDAY: 10-22
+- SATURDAY: 10-16
+- SUNDAY: 20-24

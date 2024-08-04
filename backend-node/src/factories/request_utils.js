@@ -13,27 +13,30 @@ function newRequest(special, date) {
         input_dimension = randomNumber(1000, 8001)
     }
 
+    let classification = getRequestClassification(date)
     // date/hour increase
     if (getRequestClassification(date) === "LOW") {
         loading_time = randomNumber(10, 31) 
     } else {
-        loading_time = randomNumber(51, 90)
+        loading_time = randomNumber(25, 60)
+    }
+    if(classification !== 'LOW') {
     }
 
     // total tokens increase
     loading_time = loading_time + ((total_tokens - input_tokens)/ 2000)
-    
+    if(classification !== 'LOW') {
+    }
     // input dimension increase
     if(input_dimension > 0) {
         let multiplier = 0
         if (input_dimension > randomNumber(2000, 4000)) {
             multiplier = randomFloat(1, 1.4)
-            let add = Math.round((25/8000*input_dimension) * randomFloat(1, 1.2))
-            loading_time = loading_time + add
         } else {
             multiplier = randomFloat(0.5, 0.8)
         }
-        loading_time = loading_time + Math.round((25/8000*input_dimension) * multiplier)
+        let add = Math.round((25/8000*input_dimension) * multiplier)
+        loading_time = loading_time + add
     }
     
     if (special) {

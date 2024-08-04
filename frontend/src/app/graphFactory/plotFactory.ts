@@ -120,7 +120,7 @@ export class PlotFactory {
       grid: true,
       interval: 10,
       label: 'loading time',
-      domain: [0, 80],
+      domain: [0, 200],
     }
     let xOptions: Plot.ScaleOptions = {
       type: 'time',
