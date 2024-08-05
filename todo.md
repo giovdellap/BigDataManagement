@@ -1,11 +1,9 @@
 ## TODO
 
 ## Visual Analytics
-1) Controllo errori teoria
-2) Scatterplot temperature, presence_penalty non funziona
-2) Powerpoint
-3) Report
-4) Ricerca paper
+1) Powerpoint
+2) Report
+3) Ricerca paper
 
 
 ## TODO

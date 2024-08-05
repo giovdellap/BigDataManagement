@@ -11,7 +11,7 @@ import { GraphFactory } from '../../graphFactory/graphfactory';
 import { getMaxCount } from '../../graphFactory/graphUtils';
 import { XAxisScatterplot, xScatterplotSettings } from '../../model/graphSettings/xAxisScatterplot';
 import { YAxisScatterplot, yScatterplotSettings } from '../../model/graphSettings/yAxisScatterplot';
-import { models } from '../../model/models';
+import { models, ModelScatterplot, scatterplotModels } from '../../model/models';
 import { BasicQueryNoCountResponseItem } from '../../model/queryresponses/basicQueryNoCountResponse';
 import { ApiService } from '../../services/api.service';
 import { scatterplotinsightsXAxis } from '../../utils/insights';
@@ -44,9 +44,14 @@ export class ScatterplotComponent implements OnInit{
   yAxis: YAxisScatterplot = this.yAxisOptions[0]
   yAxisControl = new FormControl<YAxisScatterplot>(this.yAxis)
 
-  models = models
+  models = scatterplotModels
   model = this.models[0]
-  modelControl = new FormControl<string>(this.model)
+  modelControl = new FormControl<ModelScatterplot>(this.model)
+
+  temperatureEmitter = new BehaviorSubject<boolean>(false)
+  temperatureObservable: Observable<boolean>
+  presenceEmitter = new BehaviorSubject<boolean>(false)
+  presenceObservable: Observable<boolean>
 
   colored = false
   coloredEmitter = new BehaviorSubject<boolean>(this.colored)
@@ -59,6 +64,8 @@ export class ScatterplotComponent implements OnInit{
   constructor(private apiService: ApiService) {
     this.coloredObservable = this.coloredEmitter.asObservable()
     this.insightObservable = this.insightEmitter.asObservable()
+    this.temperatureObservable = this.temperatureEmitter.asObservable()
+    this.presenceObservable = this.presenceEmitter.asObservable()
   }
 
   ngOnInit(): void {
@@ -79,7 +86,9 @@ export class ScatterplotComponent implements OnInit{
   valueChanges() {
     this.xAxis = this.xAxisControl.value || {} as XAxisScatterplot
     this.yAxis = this.yAxisControl.value || {} as YAxisScatterplot
-    this.model = this.modelControl.value || ""
+    this.model = this.modelControl.value || {} as ModelScatterplot
+    this.temperatureEmitter.next(this.xAxis.value === 'temperature')
+    this.presenceEmitter.next(this.xAxis.value === 'presence_penalty')
     this.insightEmitter.next(this.xAxis.insight)
     this.factory.removeSvg('scatter')
     this.getGraph()
@@ -96,7 +105,7 @@ export class ScatterplotComponent implements OnInit{
   }
 
   getCountScatterplot() {
-    this.apiService.getBasicQuery(this.yAxis.value, this.xAxis.value, this.model).subscribe(res => {
+    this.apiService.getBasicQuery(this.yAxis.value, this.xAxis.value, this.model.value).subscribe(res => {
       //this.factory.createSvg('scatter')
       console.log(res)
       this.factory.addXAxis(this.xAxis.type, this.xAxis.domain)

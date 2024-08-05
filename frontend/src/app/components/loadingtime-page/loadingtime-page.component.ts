@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -10,6 +11,7 @@ import { GraphFactory } from '../../graphFactory/graphfactory';
 import { getMaxCount } from '../../graphFactory/graphUtils';
 import { pcaLoadingTimeSettings, simpleLoadingTimeSettings, XAxisLoadingTime } from '../../model/graphSettings/xaxisloadingtime';
 import { ApiService } from '../../services/api.service';
+import { requestScatterplotInsights } from '../../utils/insights';
 
 @Component({
   selector: 'app-loadingtime-page',
@@ -21,7 +23,8 @@ import { ApiService } from '../../services/api.service';
     MatSelectModule,
     ReactiveFormsModule,
     MatButtonModule,
-    CommonModule
+    CommonModule,
+    MatCardModule
   ],
   templateUrl: './loadingtime-page.component.html',
   styleUrl: './loadingtime-page.component.css'
@@ -31,6 +34,10 @@ export class LoadingtimePageComponent implements OnInit{
   countOption = "stream_messages"
   options: string[] = ['input_tokens', 'total_tokens', 'stream_messages', 'input_dimension']
 
+  insights: string[] = requestScatterplotInsights
+  insightEmitter = new BehaviorSubject<string>(this.insights[0])
+  insightObservable: Observable<string>
+
   titleBehaviourSubject = new BehaviorSubject<boolean>(true)
   titleObservable: Observable<boolean>
 
@@ -39,6 +46,7 @@ export class LoadingtimePageComponent implements OnInit{
 
   constructor(private apiService: ApiService) {
     this.titleObservable = this.titleBehaviourSubject.asObservable()
+    this.insightObservable = this.insightEmitter.asObservable()
   }
 
   ngOnInit(): void {
@@ -53,6 +61,7 @@ export class LoadingtimePageComponent implements OnInit{
   controlValueChanges() {
     this.normalFactory.removeSvg('scatter')
     this.pcaFactory.removeSvg('pcagraph')
+    this.insightEmitter.next(this.insights[this.options.indexOf(this.optionControl.value)])
     this.newGraph()
   }
 

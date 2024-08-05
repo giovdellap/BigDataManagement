@@ -6,8 +6,17 @@
 
 .filter-row {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-evenly;
+}
+
+.filter-container {
+  display: flex;
+}
+
+.button-container {
+  display: flex;
+}
+
+.card-container {
 }
 
 .graph-row {

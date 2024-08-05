@@ -7,6 +7,13 @@
       }
     </mat-select>
   </mat-form-field>
+  <div class="card-container">
+    <mat-card class="card"appearance="outlined">
+      <mat-card-content>
+        {{insightObservable | async}}
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
 
 <div class="graph-container">
