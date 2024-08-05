@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -13,6 +14,7 @@ import { YAxisScatterplot, yScatterplotSettings } from '../../model/graphSetting
 import { models } from '../../model/models';
 import { BasicQueryNoCountResponseItem } from '../../model/queryresponses/basicQueryNoCountResponse';
 import { ApiService } from '../../services/api.service';
+import { scatterplotinsightsXAxis } from '../../utils/insights';
 
 @Component({
   selector: 'app-scatterplot',
@@ -24,7 +26,8 @@ import { ApiService } from '../../services/api.service';
     MatSelectModule,
     ReactiveFormsModule,
     MatButtonModule,
-    CommonModule
+    CommonModule,
+    MatCardModule
   ],
   templateUrl: './scatterplot.component.html',
   styleUrl: './scatterplot.component.css'
@@ -34,6 +37,8 @@ export class ScatterplotComponent implements OnInit{
   xAxisOptions = xScatterplotSettings
   xAxis: XAxisScatterplot = this.xAxisOptions[0]
   xAxisControl = new FormControl<XAxisScatterplot>(this.xAxis)
+  insightEmitter = new BehaviorSubject<string>(this.xAxis.insight)
+  insightObservable: Observable<string>
 
   yAxisOptions = yScatterplotSettings
   yAxis: YAxisScatterplot = this.yAxisOptions[0]
@@ -49,8 +54,11 @@ export class ScatterplotComponent implements OnInit{
 
   factory = new GraphFactory(1200, 800)
 
+  insights = scatterplotinsightsXAxis
+
   constructor(private apiService: ApiService) {
     this.coloredObservable = this.coloredEmitter.asObservable()
+    this.insightObservable = this.insightEmitter.asObservable()
   }
 
   ngOnInit(): void {
@@ -72,6 +80,7 @@ export class ScatterplotComponent implements OnInit{
     this.xAxis = this.xAxisControl.value || {} as XAxisScatterplot
     this.yAxis = this.yAxisControl.value || {} as YAxisScatterplot
     this.model = this.modelControl.value || ""
+    this.insightEmitter.next(this.xAxis.insight)
     this.factory.removeSvg('scatter')
     this.getGraph()
   }

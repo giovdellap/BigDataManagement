@@ -2,6 +2,7 @@
 
 ## Visual Analytics
 1) Controllo errori teoria
+2) Scatterplot temperature, presence_penalty non funziona
 2) Powerpoint
 3) Report
 4) Ricerca paper
@@ -20,9 +21,6 @@
    5) Vedere se cambiare gli INSERT con i JSON nativi delle query
    6) Vedre come salvare e riapplicare db già fatti
 3) influx:
-   1) controllo che scriva bene il ts e dove lo mette (_time)
-   2) Basic query con field 2 temperature o presence_penalty si rompe perché chi non ce l'ha ritorna NaN
-   3) basic query con loading time non funziona
 4) Generic:
    1) Fix generazione giorni per mese (deve partire dal primo) (febbraio funziona?)
    2) Mettere both db come opzione per le query

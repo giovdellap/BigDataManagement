@@ -23,8 +23,11 @@
       }
     </mat-select>
   </mat-form-field>
-  <button mat-raised-button class="button-class" [disabled]="(coloredObservable | async)" (click)="onClickColored()">Colored</button>
-  <button mat-raised-button class="button-class" [disabled]="!(coloredObservable | async)" (click)="onClickColored()">Area</button>
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      {{insightObservable | async}}
+    </mat-card-content>
+  </mat-card>
 </div>
 
 

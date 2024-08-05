@@ -41,7 +41,7 @@ export class MultipleWeekdayComponent {
       let id = 'scatter' + i
       this.factoryArray[i].createSvg(id)
       this.factoryArray[i].addXAxis('time', xDomain)
-      this.factoryArray[i].addYAxis('linear', [0, 200])
+      this.factoryArray[i].addYAxis('linear', [0, 160])
       this.factoryArray[i].colorGrid()
       this.factoryArray[i].addXAxisTitle('daytime')
       this.factoryArray[i].addYAxisTitle('loading time')

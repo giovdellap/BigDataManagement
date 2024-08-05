@@ -18,6 +18,11 @@
     </mat-form-field>
     <button mat-raised-button class="button-class" [disabled]="multipleObservable | async" (click)="changeMultiple()">Multiple Charts</button>
     <button mat-raised-button class="button-class" [disabled]="notMultipleObservable | async"(click)="changeMultiple()">Single Chart</button>
+    <mat-card class="card"appearance="outlined">
+      <mat-card-content>
+        TOKENS RANGE: 10000-80000
+      </mat-card-content>
+    </mat-card>
   </div>
   <ng-container *ngIf="(multipleObservable| async)">
     <app-multiple-linechart ></app-multiple-linechart>
