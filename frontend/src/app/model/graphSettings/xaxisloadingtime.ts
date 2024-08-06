@@ -43,25 +43,25 @@ export const simpleLoadingTimeSettings: XAxisLoadingTime[] = [
   {
     value: 'input_tokens',
     type: 'linear',
-    domain: [0, 11000],
+    domain: [0, 10000],
     maxRay: 5
   },
   {
     value: 'total_tokens',
     type: 'linear',
-    domain: [0, 100000],
+    domain: [0, 80000],
     maxRay: 5
   },
   {
     value: 'stream_messages',
     type: 'linear',
-    domain: [0, 10],
+    domain: [0, 12],
     maxRay: 7
   },
   {
     value: 'input_dimension',
     type: 'linear',
-    domain: [0, 10000],
+    domain: [0, 8000],
     maxRay: 5
   }
 ]

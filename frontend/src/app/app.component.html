@@ -23,7 +23,7 @@
   <div class="card-row" *ngIf="(subrowObservable | async) && (subrowGenObservable | async)">
     <mat-card class="card" appearance="outlined">
       <mat-card-header class="card-header">
-        <mat-card-title class="card-title">Scatterplot</mat-card-title>
+        <mat-card-title class="card-title">Scatterplot + dimension</mat-card-title>
       </mat-card-header>
       <mat-card-content class="content-container">
         <div class="content-column-left">
@@ -38,10 +38,8 @@
         <div class="content-column">
           <b>Y Axis: </b>
           <ul>
-            <li>Tokens</li>
-            <li>WLI</li>
-            <li>Temperaure</li>
-            <li>Presence Penalty</li>
+            <li>Generations</li>
+            <li>Satisfaction</li>
           </ul>
         </div>
         <div class="content-column-right">
@@ -94,15 +92,15 @@
         <div class="content-column-left">
           <b>X Axis: </b>
           <ul>
-            <li>Generations</li>
-            <li>Satisfaction</li>
+            <li>Tokens</li>
+
           </ul>
         </div>
         <div class="content-column">
           <b>Y Axis: </b>
           <ul>
-            <li>Tokens</li>
-            <li>WLI</li>
+            <li>Generations</li>
+            <li>Satisfaction</li>
           </ul>
         </div>
       </mat-card-content>

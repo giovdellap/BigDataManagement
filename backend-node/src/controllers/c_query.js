@@ -47,8 +47,9 @@ const linechartQuery = ( async (req, res) => {
   let dbHandler = getHandler(req.body.db)
 
   let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
-  console.log("RESPONSE LENGTH: ", dbResponse.length)
+  console.log("RESPONSE LENGTH: ", dbResponse)
   let response = calculateMean(dbResponse, field1, field2)
+  console.log('LINECHART RESPONSE', response)
 
   //let arr = roundFloats(dbResponse, [field1, field2])
   //response = countItems(arr, field1, field2) 

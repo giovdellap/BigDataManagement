@@ -18,9 +18,9 @@ export const xScatterplotSettings: XAxisScatterplot[] = [
   {
     value: 'tokens',
     type: 'linear',
-    domain: [2000, 11000],
+    domain: [0, 10000],
     maxRay: 5,
-    insight: 'TOKENS RANGE: 10000-80000'
+    insight: 'TOKENS RANGE: 3000-10000'
   },
   {
     value: 'wli',
@@ -32,7 +32,7 @@ export const xScatterplotSettings: XAxisScatterplot[] = [
   {
     value: 'temperature',
     type: 'linear',
-    domain: [0, 0.8],
+    domain: [0, 1],
     maxRay: 5,
     insight: 'TEMPERATURE RANGE: 0.0-1.0'
   },

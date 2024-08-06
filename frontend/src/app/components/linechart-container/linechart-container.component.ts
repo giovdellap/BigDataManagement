@@ -51,9 +51,7 @@ export class LinechartContainerComponent implements OnInit{
   xAxis: string = this.xAxisOptions[0]
   xAxisControl = new FormControl<string>(this.xAxis)
 
-  yAxisOptions = ['tokens', 'wli']
-  yAxis: string = this.yAxisOptions[0]
-  yAxisControl = new FormControl<string>(this.yAxis)
+  yAxis: string = 'tokens'
 
   svgArray: any[] = [{}, {}, {}, {}]
   svg: any
@@ -73,10 +71,6 @@ export class LinechartContainerComponent implements OnInit{
     this.xAxisControl.valueChanges.subscribe((x: any) => {
       this.xAxis = x
       this.linechart.setXAxis(x)
-    })
-    this.yAxisControl.valueChanges.subscribe((y: any) => {
-      this.yAxis = y
-      this.linechart.setYAxis(y)
     })
       }
 

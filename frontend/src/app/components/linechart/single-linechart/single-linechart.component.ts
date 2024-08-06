@@ -65,7 +65,7 @@ export class SingleLinechartComponent {
       for (let i = 0; i < res.length; i++) {
         result = result.concat(res[i])
       }
-      this.svg = this.factory.getColoredLineChart(result, this.xAxis, this.yAxis).outerHTML
+      this.svg = this.factory.getColoredLineChart(result, this.yAxis, this.xAxis).outerHTML
     })
   }
 

@@ -55,7 +55,7 @@ export class MultipleLinechartComponent {
   getGraph(graph_id: number) {
     this.apiService.getLineChartQuery(this.xAxis, this.yAxis, this.models[graph_id]).subscribe(res => {
       //console.log('GET GRAPH 1')
-      this.svgArray[graph_id] = this.factory.getLineChart(res, this.xAxis, this.yAxis).outerHTML
+      this.svgArray[graph_id] = this.factory.getLineChart(res, this.yAxis, this.xAxis).outerHTML
       //console.log('GET GRAPH 2')
     })
   }

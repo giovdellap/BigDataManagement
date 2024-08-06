@@ -67,6 +67,8 @@ export class LoadingtimePageComponent implements OnInit{
 
   newGraph() {
     let resObservable: Observable<any>
+    console.log('OPTIONCONTROL: ', this.optionControl.value)
+    console.log('COUNTOPTION: ', this.countOption)
     if (this.optionControl.value === this.countOption) {
       this.titleBehaviourSubject.next(false)
       resObservable = this.apiService.getBasicRequestQuery(this.optionControl.value).pipe(
