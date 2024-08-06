@@ -106,15 +106,24 @@ export class ScatterplotComponent implements OnInit{
 
   getCountScatterplot() {
     this.apiService.getBasicQuery(this.yAxis.value, this.xAxis.value, this.model.value).subscribe(res => {
+      let arr = res
+      for (var item of arr) {
+
+        if (this.xAxis.value === 'temperature' && isNaN(item.temperature)) {
+          arr.splice(arr.indexOf(item), 1)
+        }
+        if (this.xAxis.value === 'presence_penalty' && isNaN(item.presence_penalty)) {
+          arr.splice(arr.indexOf(item), 1)
+        }
+      }
       //this.factory.createSvg('scatter')
-      console.log(res)
       this.factory.addXAxis(this.xAxis.type, this.xAxis.domain)
       this.factory.addYAxis(this.yAxis.type, this.yAxis.domain)
-      this.factory.addRAxis([1, getMaxCount(res)], this.xAxis.maxRay)
+      this.factory.addRAxis([1, getMaxCount(arr)], this.xAxis.maxRay)
       this.factory.colorGrid()
       this.factory.addXAxisTitle(this.xAxis.value)
       this.factory.addYAxisTitle(this.yAxis.value)
-      this.factory.addVariableScatterplotDots(res, this.xAxis.value, this.yAxis.value)
+      this.factory.addVariableScatterplotDots(arr, this.xAxis.value, this.yAxis.value)
       this.factory.addScatterplotDimensionLegend()
     })
   }

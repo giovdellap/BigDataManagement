@@ -27,19 +27,15 @@ export class MultipleLinechartComponent {
     private linechartService: LinechartService
   ) {
     console.log('MULTIPLE COMPONENT')
-    this.xAxis = linechartService.getXAxis()
-    this.yAxis = linechartService.getYAxis()
+    this.xAxis = linechartService.getYAxis()
+    this.yAxis = 'tokens'
   }
 
   ngOnInit(): void {
 
     this.loadGraphs()
-    this.linechartService.getXAxisObservable().subscribe((x: string) => {
+    this.linechartService.getYAxisObservable().subscribe((x: string) => {
       this.xAxis = x
-      this.loadGraphs()
-    })
-    this.linechartService.getYAxisObservable().subscribe((y: string) => {
-      this.yAxis = y
       this.loadGraphs()
     })
     this.linechartService
@@ -53,9 +49,9 @@ export class MultipleLinechartComponent {
   }
 
   getGraph(graph_id: number) {
-    this.apiService.getLineChartQuery(this.xAxis, this.yAxis, this.models[graph_id]).subscribe(res => {
+    this.apiService.getBasicQueryNoCOunt(this.xAxis, 'tokens', this.models[graph_id]).subscribe(res => {
       //console.log('GET GRAPH 1')
-      this.svgArray[graph_id] = this.factory.getLineChart(res, this.yAxis, this.xAxis).outerHTML
+      this.svgArray[graph_id] = this.factory.getTokensBoxplot(res, this.xAxis).outerHTML
       //console.log('GET GRAPH 2')
     })
   }

@@ -58,19 +58,15 @@ export class LinechartContainerComponent implements OnInit{
   factory = new PlotFactory(700, 450)
 
   constructor(private linechart: LinechartService) {
-    console.log('1')
+    this.linechart.setYAxis(this.xAxis)
     this.multipleObservable = this.multipleEmitter.asObservable()
     this.notMultipleObservable = this.notMultipleEmitter.asObservable()
-    console.log('2')
   }
 
   ngOnInit(): void {
-    console.log('3')
-    this.multipleObservable.subscribe(x => console.log('OBSERVABLE: ', x))
-    this.notMultipleObservable.subscribe(x => console.log('NOT OBSERVABLE', x))
     this.xAxisControl.valueChanges.subscribe((x: any) => {
       this.xAxis = x
-      this.linechart.setXAxis(x)
+      this.linechart.setYAxis(x)
     })
       }
 

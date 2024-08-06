@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { forkJoin, map } from 'rxjs';
 import { PlotFactory } from '../../../graphFactory/plotFactory';
-import { models } from '../../../model/models';
-import { BasicQueryNoCountResponseItem } from '../../../model/queryresponses/basicQueryNoCountResponse';
 import { ApiService } from '../../../services/api.service';
 import { LinechartService } from '../../../services/linechart.service';
 import { NoSanitizePipe } from "../../../utils/nosanitizerpipe";
@@ -17,7 +14,7 @@ import { NoSanitizePipe } from "../../../utils/nosanitizerpipe";
 export class SingleLinechartComponent {
 
   svg: any
-  factory = new PlotFactory(1200, 800)
+  factory = new PlotFactory(1200, 700)
   xAxis: string
   yAxis: string
 
@@ -26,46 +23,28 @@ export class SingleLinechartComponent {
     private linechartService: LinechartService
   ) {
     console.log('SINGLE COMPONENT')
-    this.xAxis = linechartService.getXAxis()
-    this.yAxis = linechartService.getYAxis()
+    this.xAxis = linechartService.getYAxis()
+    this.yAxis = 'tokens'
   }
 
   ngOnInit(): void {
 
     this.getGraph()
-    this.linechartService.getXAxisObservable().subscribe((x: string) => {
+
+    this.linechartService.getYAxisObservable().subscribe((x: string) => {
       this.xAxis = x
       this.getGraph()
     })
-    this.linechartService.getYAxisObservable().subscribe((y: string) => {
-      this.yAxis = y
-      this.getGraph()
-    })
-    this.linechartService
     this.apiService.getObservable().subscribe(() => this.getGraph())
   }
 
   getGraph() {
-    let observables = []
-    for (let i = 0; i < models.length; i++) {
-      observables.push(
-        this.apiService.getLineChartQuery(this.xAxis, this.yAxis, models[i]).pipe(
-          map((x: BasicQueryNoCountResponseItem[]) => {
-            //console.log('X: ', x)
-            for (let j = 0; j < x.length; j++) {
-              x[j].model = models[i]
-            }
-            return x
-          })
-        ))
-    }
-    forkJoin(observables).subscribe((res: any[]) => {
-      //console.log('FORKJOIN: ',res)
-      let result: BasicQueryNoCountResponseItem[] = []
-      for (let i = 0; i < res.length; i++) {
-        result = result.concat(res[i])
-      }
-      this.svg = this.factory.getColoredLineChart(result, this.yAxis, this.xAxis).outerHTML
+    this.apiService.getBasicQueryNoCOunt(this.xAxis, 'tokens', 'all').subscribe(res => {
+      //console.log('GET GRAPH 1')
+      console.log('SINGLE LINECHART X AXIS: ', this.xAxis)
+      console.log(res)
+      this.svg = this.factory.getTokensBoxplot(res, this.xAxis).outerHTML
+      //console.log('GET GRAPH 2')
     })
   }
 

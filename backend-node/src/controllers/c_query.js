@@ -12,6 +12,20 @@ const basicQuery = ( async (req, res) => {
   let dbHandler = getHandler(req.body.db)
 
   let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
+  if (field2 === 'temperature') {
+    for (item in dbResponse) {
+      if(item.temperature === 0 || isNaN(item.temperature)) {
+        dbResponse.splice(dbResponse.indexOf(item), 1)
+      }
+    }
+  }
+  if (field2 === 'presence_penalty') {
+    for (item in dbResponse) {
+      if(item.presence_penalty === 0 || isNaN(item.presence_penalty)) {
+        dbResponse.splice(dbResponse.indexOf(item), 1)
+      }
+    }
+  }
   console.log("RESPONSE LENGTH: ", dbResponse.length)
   let arr = roundFloats(dbResponse, [field1, field2])
   response = countItems(arr, field1, field2) 

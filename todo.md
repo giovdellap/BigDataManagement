@@ -1,18 +1,17 @@
 ## TODO
 
+
+
 ## Visual Analytics
 1) Codice
-   1) Metter in ordine i colori loading time linechart
-   2) Aggiungere Tokens a WLI BOXPLOT(?)
-   3) Eliminare generations linechart (?)
-   4) Loading time - linechart dobbiamo mettere un insight che è la media sulla mezz'ora
+   1) SELETTORE DI RISOLUZIONE
+   2) bottone per chiudere tendina
 2) Powerpoint
 3) Report
    1) INTRODUCTION: OK
-   2) DESIGN
-      1) Mettere foto
+   2) DESIGN: OK
    3) RELATED PAPERS
-   4) INSIGHTS
+   4) INSIGHTS: 
 4) Ricerca paper
 
 

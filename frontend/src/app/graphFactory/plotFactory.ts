@@ -4,7 +4,7 @@ import { BasicQueryNoCountResponseItem } from "../model/queryresponses/basicQuer
 import { getMinMaxDates, WeekdayLogItem } from "../utils/weekDayUtils";
 
 export class PlotFactory {
-  private margin = 80;
+  private margin = 40;
   private width
   private height
 
@@ -38,6 +38,36 @@ export class PlotFactory {
       marks: [
         //ruleY([0]),
         Plot.boxY(data, {fx: "wli", y: yAxis}),
+        Plot.frame()
+      ]
+    })
+  }
+
+  getTokensBoxplot(data: BasicQueryNoCountResponseItem[], xAxis: string) {
+    const settings = getWLIBoxPlotSettings(xAxis)
+    console.log(settings)
+    let yOptions: Plot.ScaleOptions = {
+      label: 'tokens',
+      //domain: [0, 10000],
+      //tickFormat: (x) => 1,
+    }
+    let fxOptions: Plot.ScaleOptions = {
+      interval: 1,
+      label: settings.yLabel,
+      labelAnchor: "right",
+      //tickFormat: (x) => 1,
+
+    }
+    return Plot.plot({
+      width: this.width,
+      height: this.height,
+      marginLeft: this.margin,
+      marginBottom: this.margin,
+      fx: fxOptions,
+      y: yOptions,
+      marks: [
+        //ruleY([0]),
+        Plot.boxY(data, {fx: settings.valueAPI, y: 'tokens'}),
         Plot.frame()
       ]
     })
@@ -130,6 +160,7 @@ export class PlotFactory {
       labelAnchor: "right",
       //tickFormat: (x) => x.toFixed(1),
     }
+    console.log(data)
     return Plot.plot({
       width: this.width,
       height: this.height,
@@ -137,10 +168,13 @@ export class PlotFactory {
       marginBottom: this.margin,
       x: xOptions,
       y: yOptions,
-      color: {legend: true},
+      color: {
+        legend: true,
+        scheme: "Spectral"
+      },
       marks: [
         //ruleY([0]),
-        Plot.lineY(data, {x: 'date', y: 'loading_time', sort: 'date', stroke: 'weekDay'}),
+        Plot.lineY(data, {x: 'date', y: 'loading_time', stroke: 'weekDay'}),
         Plot.frame()
       ]
     })

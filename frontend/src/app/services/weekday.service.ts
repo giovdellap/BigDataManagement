@@ -34,19 +34,17 @@ export class WeekdayService {
 
       // Estremi
       let slots: WeekdaySlot[] = []
-      slots.push(new WeekdaySlot(getMinMaxDates(0, 0, 0, 14), getMiddleDate(0, 0, 0)))
-      slots.push(new WeekdaySlot(getMinMaxDates(23, 30, 23, 59), getMiddleDate(23, 59, 59)))
 
       // inizio ciclo
-      let dates = getMinMaxDates(0, 15, 0, 45)
-      let middleDate = getMiddleDate(0, 30, 0)
+      let dates = getMinMaxDates(0, 0, 0, 9)
+      let middleDate = getMiddleDate(0, 5, 0)
       slots.push(new WeekdaySlot(dates, middleDate))
-      let lastMaxHour = getMiddleDate(23, 30, 0)
+      let lastMaxHour = getMiddleDate(23, 59, 59)
 
       while(dates[1] < lastMaxHour) {
-        dates[0] = addMinutes(dates[0], 30)
-        dates[1] = addMinutes(dates[1], 30)
-        middleDate = addMinutes(middleDate, 30)
+        dates[0] = addMinutes(dates[0], 10)
+        dates[1] = addMinutes(dates[1], 10)
+        middleDate = addMinutes(middleDate, 10)
         slots.push(new WeekdaySlot(dates, middleDate))
       }
 
