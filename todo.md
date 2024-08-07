@@ -6,13 +6,11 @@
 1) Codice
    1) SELETTORE DI RISOLUZIONE
    2) bottone per chiudere tendina
-2) Powerpoint
-3) Report
-   1) INTRODUCTION: OK
-   2) DESIGN: OK
-   3) RELATED PAPERS
-   4) INSIGHTS: 
-4) Ricerca paper
+   3) github a parte
+   4) angular in docker
+2) Report
+   1) RELATED PAPERS
+3) Ricerca paper
 
 
 ## TODO
