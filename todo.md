@@ -6,12 +6,40 @@
 1) Codice
    1) SELETTORE DI RISOLUZIONE
    2) bottone per chiudere tendina
-   3) github a parte
-   4) angular in docker
+   3) angular in docker
 2) Report
    1) RELATED PAPERS
-3) Ricerca paper
 
+
+## Information Integration
+
+1) Generic
+   1) Definire source schema: OK
+   2) Definire global schema(ontology): OK
+   3) Mapping FOL: OK
+   4) Query
+      1) BasicQuery / No Count
+         1) Teoria Influx
+         2) Teoria cassandra
+         3) codice cassandra: OK
+      2) BasicRequest Query / No Count
+         1) Teoria Influx
+         2) Teoria Cassandra
+         3) Codice Cassandra: OK
+2) Presentation
+   1) Introduction
+      1) Scenario
+      2) Data structure
+      3) Tasks
+   2) Information Integration System
+   3) Implementation
+3) Codice
+   1) Split repo
+   2) Controller per riempimento di entrambi i db
+   3) Mediator
+   4) Wrappers (RIFARE GLI HANDLER)
+      1) Cassandra
+      2) Influx
 
 ## TODO
 

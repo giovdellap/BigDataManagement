@@ -64,7 +64,6 @@ class CassandraDBHandler extends DBHandler{
 
   async basicQuery(field1, field2, model) {
     const factory = new LogQueryFactory(this.DB_KEYSPACE, this.LOGS_TABLE)
-    
     let query = factory.basicquery(field1, field2, model)
     //console.log('QUERY: ', query)
     let result = []
@@ -92,6 +91,7 @@ class CassandraDBHandler extends DBHandler{
   async basicRequestQuery(field) {
     const factory = new RequestQueryFactory(this.DB_KEYSPACE, this.REQUEST_TABLE)
     
+    
     let query = factory.basicQuery(field)
     console.log('QUERY: ', query)
     let result = []
@@ -101,7 +101,13 @@ class CassandraDBHandler extends DBHandler{
       // 'readable' is emitted as soon a row is received and parsed
       let row;
       while (row = this.read()) {
-        result.push(row)
+        if (field === "time") {
+          //console.log(row)
+          result.push({
+            loading_time: row.loading_time,
+            time: row["system.dateof(ts)"]
+          })
+        } else result.push(row)
       }
     })
     .on('end', function () {
@@ -110,7 +116,7 @@ class CassandraDBHandler extends DBHandler{
     .on('error', function (err) {
       // Something went wrong: err is a response error from Cassandra
     });
-
+    
     await once(stream, 'end')
     //console.log()
     return result

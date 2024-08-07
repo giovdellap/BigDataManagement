@@ -11,22 +11,26 @@ class DataFactory {
     constructor() {
     }
 
-    generateOneDay(date) {
+    generateOneDay(date, db) {
         for (let i = 0; i < 24; i++) {
             let newDate = date
             newDate.setHours(i, 0, 1)
             //console.log("GENERATION - STARTING TIME: ", newDate)
-            this.generateOneHour(newDate)
+            this.generateOneHour(newDate, db)
             //console.log("GENERATION - LOGSET LENGTH: ", this.logSet.length)
             //console.log("GENERATION - REQUESTSET LENGTH: ", this.requestSet.length)
         }
     }
 
-    generateOneHour(date) {        
+    generateOneHour(date, db) {        
         let rateClassification = getRateClassification(date)
         //console.log('rate classification: ', rateClassification)
 
         let rate = getRate(rateClassification)
+        if (db === "cassandra") {
+            rate = Math.floor(rate/3)
+            console.log(rate)
+        }
         //console.log("logs rate: ", rate)
 
         let dates = getDates(date, rate)

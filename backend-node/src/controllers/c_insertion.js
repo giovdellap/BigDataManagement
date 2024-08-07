@@ -41,7 +41,7 @@ const insertOneMonth = ( async (req, res) => {
       req.body.month,
       i, 0, 0
     )
-    let dayCount = await generateandInsertOneDay(date, dbHandler)
+    let dayCount = await generateandInsertOneDay(date, dbHandler, req.body.db)
     console.log("DAY ", date, " INSERTED")
     counter += dayCount
   }

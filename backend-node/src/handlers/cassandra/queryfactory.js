@@ -144,7 +144,11 @@ class RequestQueryFactory extends QueryFactory {
     }
 
     basicQuery(field) {
-        let basicQuery = "SELECT loading_time, " +  field + " FROM " + this.keyspace + "." + this.table_name
+        let basicQuery = ""
+        console.log(field)
+        if (field !== "time") {
+            basicQuery = "SELECT loading_time, " +  field + " FROM " + this.keyspace + "." + this.table_name
+        } else basicQuery = "SELECT loading_time, DateOf(ts) FROM " + this.keyspace + "." + this.table_name
         let whereSection = ""
 
         let whereClauses = []

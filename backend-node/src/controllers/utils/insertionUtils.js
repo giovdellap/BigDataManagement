@@ -1,8 +1,8 @@
 const { DataFactory } = require("../../factories/datafactory.js")
 
-async function generateandInsertOneDay(date, dbHandler) {
+async function generateandInsertOneDay(date, dbHandler, db) {
   const dataFactory = new DataFactory()
-  dataFactory.generateOneDay(date)
+  dataFactory.generateOneDay(date, db)
 
   // DB INSERTION 
   //console.log("DB INSERTION - INITIALIZATION")
