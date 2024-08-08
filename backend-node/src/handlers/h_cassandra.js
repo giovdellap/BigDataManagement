@@ -3,7 +3,7 @@ const async = require('async');
 const cassandra = require('cassandra-driver');
 const { QueryFactory, LogQueryFactory, RequestQueryFactory } = require("./cassandra/queryfactory");
 const { DBHandler } = require("./h_dbhandler");
-const { insertItem, insertItemOnly, createTable, createSecondaryIndex } = require("./cassandra/cassandra_utils") 
+const { insertItem, insertItemOnly, createTable, createSecondaryIndex, deleteTable } = require("./cassandra/cassandra_utils") 
 const { once } = require('events');
 
 class CassandraDBHandler extends DBHandler{
@@ -29,6 +29,7 @@ class CassandraDBHandler extends DBHandler{
     const requestFactory = new RequestQueryFactory(this.DB_KEYSPACE, this.REQUEST_TABLE)
 
     // LOG TABLE
+    await deleteTable(this.client, logFactory)
     await createTable(this.client, logFactory)
     await createSecondaryIndex(this.client, logFactory, "tokens")
     await createSecondaryIndex(this.client, logFactory, "temperature")
@@ -36,6 +37,7 @@ class CassandraDBHandler extends DBHandler{
     await createSecondaryIndex(this.client, logFactory, "presence_penalty")
 
     //REQUEST TABLE
+    await deleteTable(this.client, requestFactory)
     await createTable(this.client, requestFactory)
   }
 

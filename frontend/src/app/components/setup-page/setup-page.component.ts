@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { setupBothResponse } from '../../model/queryresponses/setupResponse';
 import { ApiService } from '../../services/api.service';
 
 @Component({
@@ -51,6 +52,15 @@ export class SetupPageComponent {
       } else {
         this.status.populate.influx = status
       }
+    })
+  }
+
+  setupBoth() {
+    this.apiService.setupBoth().subscribe((res: setupBothResponse) => {
+      this.status.initialize.cassandra = "OK"
+      this.status.initialize.influx = "OK"
+      this.status.populate.cassandra = "LOGITEMS: " + res.cassandra
+      this.status.populate.influx = "LOGITEMS: " + res.influx
     })
   }
 }

@@ -35,9 +35,8 @@
    3) Implementation
 3) Codice
    1) Split repo
-   2) Controller per riempimento di entrambi i db
-   3) Mediator
-   4) Wrappers (RIFARE GLI HANDLER)
+   2) Mediator
+   3) Wrappers (RIFARE GLI HANDLER)
       1) Cassandra
       2) Influx
 

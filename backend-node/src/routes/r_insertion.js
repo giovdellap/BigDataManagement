@@ -6,7 +6,7 @@ insertionRouter.post('/insertLogs', insertionController.insertLogs);
 insertionRouter.post('/insertOneDay', insertionController.insertOneDay);
 insertionRouter.post('/insertOneMonth', insertionController.insertOneMonth);
 
-
 insertionRouter.post('/initializeDB', insertionController.initializeDB)
+insertionRouter.post('/setupBothDB', insertionController.setupBothDB)
 
 module.exports = insertionRouter;

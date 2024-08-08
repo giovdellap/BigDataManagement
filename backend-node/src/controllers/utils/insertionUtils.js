@@ -13,6 +13,8 @@ async function generateandInsertOneDay(date, dbHandler, db) {
   return dataFactory.logSet.length
 }
 
+
+
 module.exports = {
     generateandInsertOneDay
 }

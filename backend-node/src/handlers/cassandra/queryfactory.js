@@ -24,8 +24,13 @@ class QueryFactory {
     insertItemQuery() {}
     insertItemValues() {}
     createSecondaryIndex(column) {
-        return "CREATE INDEX ON " + this.keyspace + "." + this.table_name + " (" + column + ")";
-    }}
+        return "CREATE INDEX ON " + this.keyspace + "." + this.table_name + " (" + column + ")"
+    }
+
+    deleteTable() {
+        return "DROP TABLE IF EXISTS " + this.keyspace + "." + this.table_name
+    }
+}
 
 class LogQueryFactory extends QueryFactory{
 

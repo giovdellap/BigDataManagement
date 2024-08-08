@@ -12,8 +12,41 @@ const initializeDB = ( async (req, res) => {
 
 })
 
-const insertOneDay = ( async (req, res) => {
+const setupBothDB = ( async (req, res) => {
 
+  let cassandraHandler = getHandler('cassandra')
+  let influxHandler = getHandler('influx')
+
+  // initialization
+  await cassandraHandler.initialize()
+  console.log('CASSANDRA INITIALIZATION OK')
+  await influxHandler.initialize()
+  console.log('INFLUX INITIALIZATION OK')
+
+  //FILL UP
+  let cassandraTotal = 0
+  let influxTotal = 0
+  const days = new Date(req.body.year, req.body.month, 0).getDate()
+  for (let i = 0; i < days; i++) {
+    let date = new Date(
+      req.body.year,
+      req.body.month,
+      i, 0, 0
+    )
+    let cassandraCount = await generateandInsertOneDay(date, cassandraHandler, req.body.db)
+    console.log("CASSANDRA: DAY ", date, " INSERTED")
+    cassandraTotal += cassandraCount
+
+    let influxCount = await generateandInsertOneDay(date, influxHandler, req.body.db)
+    console.log("INFLUX: DAY ", date, " INSERTED")
+    influxTotal += influxCount
+  }
+
+  res.json({cassandra: cassandraTotal, influx: influxTotal})
+
+})
+
+const insertOneDay = ( async (req, res) => {
   const date = new Date(
     req.body.year,
     req.body.month,
@@ -75,6 +108,7 @@ module.exports = {
   insertLogs,
   initializeDB,
   insertOneDay,
-  insertOneMonth
+  insertOneMonth,
+  setupBothDB
 }
   

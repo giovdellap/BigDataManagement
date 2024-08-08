@@ -22,6 +22,12 @@ async function insertItemOnly(client, factory, item) {
     await client.execute(query, values, {prepare: true})
 }
 
+async function deleteTable(client, factory) {
+    await client.connect()
+    await client.execute(factory.deleteTable())
+    //console.log('TABLE QUERY: ', factory.createTableQuery())
+}
+
 async function createSecondaryIndex(client, factory, column_name) {
     await client.execute(factory.createSecondaryIndex(column_name))
 }
@@ -30,5 +36,6 @@ module.exports = {
     insertItem,
     insertItemOnly, 
     createTable,
-    createSecondaryIndex
+    createSecondaryIndex,
+    deleteTable
 }

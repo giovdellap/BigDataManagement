@@ -4,6 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { BasicQueryNoCountResponseItem } from '../model/queryresponses/basicQueryNoCountResponse';
 import { BasicRequestQueryItem } from '../model/queryresponses/basicRequestQueryItem';
 import { SatisfactionQueryItem } from '../model/queryresponses/satisfactionQueryResponse';
+import { setupBothResponse } from '../model/queryresponses/setupResponse';
 import { WLIBoxPlotqueryItem } from '../model/queryresponses/wliBoxPlotQueryItem';
 
 @Injectable({
@@ -120,6 +121,14 @@ export class ApiService {
       db: db
     }
     return this.http.post<BasicRequestQueryItem[]>(this.url + '/insertion/insertOneMonth', body)
+  }
+
+  setupBoth() {
+    let body = {
+      year: 2024,
+      month: 6,
+    }
+    return this.http.post<setupBothResponse>(this.url + '/insertion/setupBothDB', body)
   }
 
 }
