@@ -20,13 +20,10 @@ function newRequest(special, date) {
     } else {
         loading_time = randomNumber(25, 60)
     }
-    if(classification !== 'LOW') {
-    }
 
     // total tokens increase
     loading_time = loading_time + ((total_tokens - input_tokens)/ 2000)
-    if(classification !== 'LOW') {
-    }
+
     // input dimension increase
     if(input_dimension > 0) {
         let multiplier = 0

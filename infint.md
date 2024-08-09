@@ -1,14 +1,15 @@
 # Source schema
 
 ## InfluxDB
-UserSession (timestamp, UserID, name, presence_penalty, frequency_penalty, top_p, temperature, Sat, Gen, tokens, wli)
-ServiceRequest(timestamp, tokens, messages, input_t, input_d, time)
+UserSatisfaction (timestamp, UserID, name, version, presence_penalty, frequency_penalty, top_p, temperature, Sat, tokens, wli)
+UserGenerations (timestamp, UserID, name, version, presence_penalty, frequency_penalty, top_p, temperature, Gen, tokens, wli)
+ServiceRequest(timestamp, tokens, messages, input_t, input_d, l_time)
 
 ## Cassandra
-SessionRelevation(logID, ts, name, version, Satisfaction, Generations)
-SessionSpecification(logID, UserID, tokens, wli, presence penalty, frequency_penalty, top_p, temperature)
-ExternalRequest(timestamp, tokens, messages, time, input_tokens)
-RequestAttachment(ts, d)
+SessionRelevation(logID, ts, name, version, satisfaction, generations)
+SessionSpecification(logID, user, tokens, wli, p_penalty, f_penalty, top_p, temp)
+ExternalRequest(rid, timestamp, tokens, messages, time, input_tokens)
+RequestAttachment(rid, d)
 
 # Global Schema
 Session(timestamp, UserID, ModelName, ModelVersion, presence_penalty, frequency_penalty, top_p, temperature, Satisfaction, Generations, Tokens, wli)
@@ -31,7 +32,6 @@ Domain-Based IIS
 ### Result
 Result as Logical Theory
 There is no Global Schema, there is an Ontology
-Ontology => Mapping non GAV
 Non dovrebbero servire Global Schema Constraints
 
 ### Mapping
