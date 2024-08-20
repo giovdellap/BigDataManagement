@@ -1,56 +1,49 @@
 ## TODO
 
-
-
 ## Visual Analytics
 1) Codice
    1) SELETTORE DI RISOLUZIONE
-   2) bottone per chiudere tendina
-   3) angular in docker
-2) Report
-   1) RELATED PAPERS
-
 
 ## Information Integration
 
-1) Generic
-   1) Definire source schema: OK
-   2) Definire global schema(ontology): OK
-   3) Mapping FOL: OK
+1) Pulire i log, lasciare solo le query
 
-2) Presentation
-   1) Introduction
-      1) Scenario: OK
-      2) Data structure: OK
-      3) Tasks: NO
-   2) Information Integration System
-      1) Source Schema: OK
-      2) Ontology: OK
-      3) Mapping: OK
-      4) Query
-         1) SessionQueryGenerations / No Count
-            1) Teoria Influx: OK
-            2) Teoria cassandra: OK
-         2) BasicRequest Query / No Count
-            1) Teoria Influx: OK
-            2) Teoria Cassandra: OK 
-   3) Implementation
-3) Codice
-   1) Mediator
-   2) Wrappers
-      1) Cassandra
-         1) Initialize: OK
-         2) Insert items: OK
-         3) SessionQuery: OK
-         4) RequestQuery: OK
-      2) Influx
-         1) Initialize: OK
-         2) Insert items: OK
-         3) SessionQuery: OK
-         4) RequestQuery: OK
-   3) Togliere tutti i riferimenti ai modelli dal frontend
-   4) Pulire i log, lasciare solo le query
-   5) Frontend in docker
+
+## Big Data Management 
+
+usiamo direttamente infint come codice?
+## PARTITIONING CASSANDRA
+1) vedere come configurare docker con 3 repliche
+2) vedere slide meetup-docker su downloads
+3) https://portworx.com/wp-content/uploads/2017/10/Portworx_Cassandra_Guide_10-17-17.pdf
+4) https://medium.com/@kayvan.sol2/deploying-apache-cassandra-cluster-3-nodes-with-docker-compose-3634ef8345e8
+
+### Presentzione
+1) Cassandra
+   1) Generic
+      1) https://dataxschool.medium.com/cassandra-internals-architecture-9824897ff11e (BELLO)
+      2) https://docs.datastax.com/en/cql/hcd-1.0/overview/cassandra-structure.html
+   2) Logical Data Model (progetto)
+      1) Lucidchart
+   3) Native storage data structure
+      1) https://www.baeldung.com/cassandra-storage-engine
+      2) 
+   4) query language (CQL)
+      1) Data Definition
+      2) Data Manipulation
+      3) Materialized views (?)
+   5) features
+   6) Project features
+      1) Cassandra utils 
+         1) libreria js
+         2) Come facciamo le insert multiple
+      2) Query factory + query
+2) Influx
+   1) Logical Data Model
+   2) Native storage data structure
+   3) query language
+   4) features
+
 
 ## TODO
 
