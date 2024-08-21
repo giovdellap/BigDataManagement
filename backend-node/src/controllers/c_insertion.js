@@ -6,7 +6,7 @@ const { getHandler } = require("./controller_utils.js")
 const { generateandInsertOneDay } = require("./utils/insertionUtils.js")
 
 const initializeDB = ( async (req, res) => {
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
   await dbHandler.initialize()
   res.json({text: "OK"})
 
@@ -33,11 +33,11 @@ const setupBothDB = ( async (req, res) => {
       req.body.month,
       i, 0, 0
     )
-    let cassandraCount = await generateandInsertOneDay(date, cassandraHandler, req.body.db)
+    let cassandraCount = await generateandInsertOneDay(date, cassandraHandler, process.env.DB)
     console.log("CASSANDRA: DAY ", date, " INSERTED")
     cassandraTotal += cassandraCount
 
-    let influxCount = await generateandInsertOneDay(date, influxHandler, req.body.db)
+    let influxCount = await generateandInsertOneDay(date, influxHandler, process.env.DB)
     console.log("INFLUX: DAY ", date, " INSERTED")
     influxTotal += influxCount
   }
@@ -54,7 +54,7 @@ const insertOneDay = ( async (req, res) => {
     req.body.hour,
     0
   )
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
 
   // DATA GENERATION
   let daycount = await generateandInsertOneDay(date, dbHandler)
@@ -65,7 +65,7 @@ const insertOneDay = ( async (req, res) => {
 const insertOneMonth = ( async (req, res) => {
 
   const days = new Date(req.body.year, req.body.month, 0).getDate()
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
   let counter = 0
 
   for (let i = 0; i < days; i++) {
@@ -74,7 +74,7 @@ const insertOneMonth = ( async (req, res) => {
       req.body.month,
       i, 0, 0
     )
-    let dayCount = await generateandInsertOneDay(date, dbHandler, req.body.db)
+    let dayCount = await generateandInsertOneDay(date, dbHandler, process.env.DB)
     console.log("DAY ", date, " INSERTED")
     counter += dayCount
   }
@@ -90,7 +90,7 @@ const insertLogs = ( async (req, res) => {
     req.body.hour,
     0
   )
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
 
   // DATA GENERATION
   const dataFactory = new DataFactory()

@@ -11,7 +11,19 @@
 
 ## Big Data Management 
 
-usiamo direttamente infint come codice?
+1) Codice
+   1) Replication cassandra docker
+   2) Query create table replication
+   3) Pulire i log
+2) Slide
+   1) Cassandra
+      1) Replication
+   2) Project
+      1) Create Table Query
+      2) Docker
+         1) Infrastructure
+         2) Replication
+
 ## PARTITIONING CASSANDRA
 1) vedere come configurare docker con 3 repliche
 2) vedere slide meetup-docker su downloads
@@ -25,13 +37,12 @@ usiamo direttamente infint come codice?
       2) https://docs.datastax.com/en/cql/hcd-1.0/overview/cassandra-structure.html
    2) Logical Data Model (progetto)
       1) Lucidchart
-   3) Native storage data structure
+   3) Native storage data structure - OK
       1) https://www.baeldung.com/cassandra-storage-engine
       2) 
    4) query language (CQL)
-      1) Data Definition
-      2) Data Manipulation
-      3) Materialized views (?)
+      1) Data Definition - OK
+      2) Data Manipulation - OK
    5) features
    6) Project features
       1) Cassandra utils 

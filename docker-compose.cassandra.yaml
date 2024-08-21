@@ -1,0 +1,63 @@
+name: bigdata-cassandra
+services:
+
+  backend:
+    container_name: bigdata-be-cassandra
+    restart: always
+    ports:
+      - 5001:5001
+    build:
+      context: ./backend-node
+      dockerfile: ./Dockerfile
+    environment:
+      DB: "cassandra"
+    volumes:
+      - ./backend-node:/code
+    networks:
+      - main
+    
+
+  frontend:
+    container_name: bigdata-fe-cassandra
+    restart: always
+    ports:
+      - 4200:4200
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+
+  cassandra:
+    image: cassandra:latest
+    container_name: bigdata-cassandra
+    ports:
+      - 9042:9042
+    environment:
+      - CASSANDRA_USER=admin
+      - CASSANDRA_PASSWORD=admin
+    volumes:
+      - cassandra-data:/var/lib/cassandra
+    networks:
+      - main
+
+  cassandra-web:
+    image: ipushc/cassandra-web:latest
+    container_name: bigdata-cassandra-web
+    ports:
+      - 8083:8083
+    environment:
+      - CASSANDRA_HOST=cassandra
+      - CASSANDRA_PORT=9042
+      - CASSANDRA_USERNAME=admin
+      - CASSANDRA_PASSWORD=admin
+    restart: always
+    depends_on:
+      - cassandra
+    networks:
+      - main
+
+volumes:
+  cassandra-data:
+
+networks:
+  main:
+    driver: bridge
