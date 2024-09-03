@@ -7,4 +7,5 @@ Student: Giovanni Della Pelle
 1) Be sure to have docker installed and running
 2) locate inside this folder and command "sh scripts/cassandra.sh"
 
-visit 
+FRONTEND: localhost://4200
+CASSANDRA ADMIN PANEL: localhost://8083
