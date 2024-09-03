@@ -15,7 +15,7 @@ class QueryFactory {
 
     createKeyspaceQuery() {
         const start = "CREATE KEYSPACE IF NOT EXISTS "
-        const end =  " WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '3' }"
+        const end =  " WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '2' }"
         const query = start + this.keyspace + end
         return query
     }
@@ -44,6 +44,7 @@ class LogQueryFactory extends QueryFactory{
         let relevation_columns = "generations int, satisfaction int, wli int, tokens int, "
         let primary_key = "PRIMARY KEY(ts))"
         const query = start + ts_columns + customer_columns + model_columns + parameters_columns + relevation_columns + primary_key
+        console.log(query)
         return query
     }
 
@@ -107,6 +108,7 @@ class RequestQueryFactory extends QueryFactory {
         let request_columns = "input_tokens int, total_tokens int, stream_messages int, loading_time int, input_dimension int, "
         let primary_key = "PRIMARY KEY(ts))"
         const query = start + ts_columns + request_columns + primary_key
+        console.log(query)
         return query
     }
 

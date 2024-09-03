@@ -9,7 +9,7 @@ const basicQuery = ( async (req, res) => {
   const model_filter = req.body.model_filter
 
   let response = []
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
 
   let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
   if (field2 === 'temperature') {
@@ -40,7 +40,7 @@ const basicQueryNoCount = ( async (req, res) => {
   const model_filter = req.body.model_filter
 
   //let response = []
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
 
   let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
 
@@ -58,13 +58,14 @@ const linechartQuery = ( async (req, res) => {
   const model_filter = req.body.model_filter
 
   //let response = []
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
 
   let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
   console.log("RESPONSE LENGTH: ", dbResponse)
   let response = calculateMean(dbResponse, field1, field2)
   console.log('LINECHART RESPONSE', response)
 
+  
   //let arr = roundFloats(dbResponse, [field1, field2])
   //response = countItems(arr, field1, field2) 
   
@@ -78,7 +79,7 @@ const wliBoxplotQuery = ( async (req, res) => {
   const model_filter = req.body.model_filter
 
   let response = []
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
 
   let dbResponse = await dbHandler.basicQuery('wli', field, model_filter)
   //console.log(dbResponse)
@@ -94,7 +95,7 @@ const basicRequestQuery = ( async (req, res) => {
   const field = req.body.field
 
   let response = []
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
 
   let dbResponse = await dbHandler.basicRequestQuery(field)
   console.log("RESPONSE LENGTH: ", dbResponse.length)
@@ -108,7 +109,7 @@ const basicRequestNoCountQuery = ( async (req, res) => {
 
   const field = req.body.field
 
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
 
   let dbResponse = await dbHandler.basicRequestQuery(field)
   console.log("RESPONSE LENGTH: ", dbResponse.length)
@@ -122,7 +123,7 @@ const pcaRequestQuery = ( async (req, res) => {
 
   const field = req.body.field
 
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
 
   let dbResponse = await dbHandler.basicRequestQuery(field)
   console.log("RESPONSE LENGTH: ", dbResponse.length)
@@ -160,7 +161,7 @@ const test = ( async (req, res) => {
 
   const test = ( async (req, res) => {
 
-    let dbHandler = getHandler(req.body.db)
+    let dbHandler = getHandler(process.env.DB)
   
     let dbResponse = await dbHandler.test()
     console.log("dbResponse: ", dbResponse)
@@ -170,7 +171,7 @@ const test = ( async (req, res) => {
   
   })
 
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getHandler(process.env.DB)
 
   let dbResponse = await dbHandler.test()
   console.log("dbResponse: ", dbResponse)

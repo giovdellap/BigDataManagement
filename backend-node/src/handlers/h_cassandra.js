@@ -10,7 +10,7 @@ class CassandraDBHandler extends DBHandler{
     
   DB_USERNAME = "admin"
   DB_PASSWORD = "admin"
-  DB_CONN_STR = "cassandra"
+  DB_CONN_STR = "bigdata-cassandra-1"
   DB_KEYSPACE = "ai_company"
   LOGS_TABLE = "logs"
   REQUEST_TABLE = "requests"

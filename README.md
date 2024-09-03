@@ -1,8 +1,10 @@
-### Cassandra web address: 
-localhost:8083
+# InformationIntegration
+Project for the course of Information Integration A.A. 23/24
+Student: Giovanni Della Pelle
 
-### Influxdb web address:
-localhost:8086
+## To run
 
-### Backend:
-localhost:5051
+1) Be sure to have docker installed and running
+2) locate inside this folder and command "sh scripts/cassandra.sh"
+
+visit 
