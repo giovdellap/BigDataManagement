@@ -1,5 +1,5 @@
-# InformationIntegration
-Project for the course of Information Integration A.A. 23/24
+# Big Data Management
+Project for the course of Information Integration A.A. 23/24  
 Student: Giovanni Della Pelle
 
 ## To run
